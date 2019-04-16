@@ -1,118 +1,30 @@
-﻿using System;
+﻿using MyJobRepo.Models;
+using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Http.Description;
-using MyJobRepo.Models;
 
 namespace MyJobRepo.Controllers
 {
     public class ContactTypeController : ApiController
     {
-        private MyJobRepoContext db = new MyJobRepoContext();
+        private IRepository Repo;
 
-        // GET: api/ContactTypes
-        public IQueryable<ContactType> GetContactTypes()
+        public ContactTypeController(IRepository repo)
         {
-            return db.ContactTypes;
+            Repo = repo;
         }
 
-        // GET: api/ContactTypes/5
-        [ResponseType(typeof(ContactType))]
-        public IHttpActionResult GetContactType(int id)
+        public IQueryable<ContactType> Get()
         {
-            ContactType contactType = db.ContactTypes.Find(id);
-            if (contactType == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(contactType);
+            return Repo.GetAllContactTypes();
         }
 
-        // PUT: api/ContactTypes/5
-        [ResponseType(typeof(void))]
-        public IHttpActionResult PutContactType(int id, ContactType contactType)
+        public ContactType Get(int id)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            if (id != contactType.ContactTypeId)
-            {
-                return BadRequest();
-            }
-
-            db.Entry(contactType).State = EntityState.Modified;
-
-            try
-            {
-                db.SaveChanges();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ContactTypeExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-
-        // POST: api/ContactTypes
-        [ResponseType(typeof(ContactType))]
-        public IHttpActionResult PostContactType(ContactType contactType)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            db.ContactTypes.Add(contactType);
-            db.SaveChanges();
-
-            return CreatedAtRoute("DefaultApi", new { id = contactType.ContactTypeId }, contactType);
-        }
-
-        // DELETE: api/ContactTypes/5
-        [ResponseType(typeof(ContactType))]
-        public IHttpActionResult DeleteContactType(int id)
-        {
-            ContactType contactType = db.ContactTypes.Find(id);
-            if (contactType == null)
-            {
-                return NotFound();
-            }
-
-            db.ContactTypes.Remove(contactType);
-            db.SaveChanges();
-
-            return Ok(contactType);
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
-        private bool ContactTypeExists(int id)
-        {
-            return db.ContactTypes.Count(e => e.ContactTypeId == id) > 0;
+            return Repo.GetContactType(id);
         }
     }
 }

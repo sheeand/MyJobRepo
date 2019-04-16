@@ -21,7 +21,7 @@ namespace MyJobRepo.Models
             return db.ContactTypes;
         }
 
-        public ContactType GetContactTypeById(int id)
+        public ContactType GetContactType(int id)
         {
             return db.ContactTypes.Find(id);
         }
@@ -32,7 +32,7 @@ namespace MyJobRepo.Models
             return db.Contacts;
         }
 
-        public Contact GetContactById(int id)
+        public Contact GetContact(int id)
         {
             return db.Contacts.Find(id);
         }
@@ -43,7 +43,7 @@ namespace MyJobRepo.Models
             return db.Companies;
         }
 
-        public Company GetCompanyById(int id)
+        public Company GetCompany(int id)
         {
             return db.Companies.Find(id);
         }
@@ -54,7 +54,7 @@ namespace MyJobRepo.Models
             return db.Postings;
         }
 
-        public Posting GetPostingById(int id)
+        public Posting GetPosting(int id)
         {
             return db.Postings.Find(id);
         }
@@ -65,7 +65,7 @@ namespace MyJobRepo.Models
             return db.PostingContacts;
         }
 
-        public PostingContact GetPostingContactById(int id)
+        public PostingContact GetPostingContact(int id)
         {
             return db.PostingContacts.Find(id);
         }
@@ -76,10 +76,9 @@ namespace MyJobRepo.Models
             return db.Events;
         }
 
-        public Event GetEventsById(int id)
+        public Event GetEvents(int id)
         {
             return db.Events.Find(id);
         }
-
     }
 }

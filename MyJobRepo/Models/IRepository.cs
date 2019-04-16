@@ -5,16 +5,16 @@ namespace MyJobRepo.Models
     public interface IRepository
     {
         IQueryable<ContactType> GetAllContactTypes();
-        ContactType GetContactTypeById(int id);
+        ContactType GetContactType(int id);
         IQueryable<Contact> GetAllContacts();
-        Contact GetContactById(int id);
+        Contact GetContact(int id);
         IQueryable<Company> GetAllCompanies();
-        Company GetCompanyById(int id);
+        Company GetCompany(int id);
         IQueryable<Posting> GetAllPostings();
-        Posting GetPostingById(int id);
+        Posting GetPosting(int id);
         IQueryable<PostingContact> GetAllPostingContacts();
-        PostingContact GetPostingContactById(int id);
+        PostingContact GetPostingContact(int id);
         IQueryable<Event> GetAllEvents();
-        Event GetEventsById(int id);
+        Event GetEvents(int id);
     }
 }
