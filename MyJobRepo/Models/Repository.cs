@@ -1,84 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 using System.Web;
+using Breeze.ContextProvider;
+using Breeze.ContextProvider.EF6;
+using Newtonsoft.Json.Linq;
 
 namespace MyJobRepo.Models
 {
     public class Repository : IRepository
     {
-        private MyJobRepoContext db;
+        private readonly EFContextProvider<MyJobRepoContext> ContextProvider = new EFContextProvider<MyJobRepoContext>();
 
-        public Repository(MyJobRepoContext db)
-        {
-            this.db = db;
-        }
+        public string MetaData => ContextProvider.Metadata();
+
 
         // End points 
 
-        public IQueryable<ContactType> GetAllContactTypes()
+        public SaveResult SaveChanges(JObject saveBundle)
         {
-            return db.ContactTypes;
+            return ContextProvider.SaveChanges(saveBundle);
         }
 
-        public ContactType GetContactType(int id)
+        public IQueryable<ContactType> ContactTypes()
         {
-            return db.ContactTypes.Find(id);
+            return ContextProvider.Context.ContactTypes;
         }
 
-
-        public IQueryable<Contact> GetAllContacts()
+        public IQueryable<Contact> Contacts()
         {
-            return db.Contacts;
+            return ContextProvider.Context.Contacts;
         }
 
-        public Contact GetContact(int id)
+        public IQueryable<Company> Companies()
         {
-            return db.Contacts.Find(id);
+            return ContextProvider.Context.Companies;
         }
 
-
-        public IQueryable<Company> GetAllCompanies()
+        public IQueryable<Posting> Postings()
         {
-            return db.Companies;
+            return ContextProvider.Context.Postings;
         }
 
-        public Company GetCompany(int id)
+        public IQueryable<PostingContact> PostingContacts()
         {
-            return db.Companies.Find(id);
+            return ContextProvider.Context.PostingContacts;
         }
 
-
-        public IQueryable<Posting> GetAllPostings()
+        public IQueryable<Event> Events()
         {
-            return db.Postings;
-        }
-
-        public Posting GetPosting(int id)
-        {
-            return db.Postings.Find(id);
-        }
-
-
-        public IQueryable<PostingContact> GetAllPostingContacts()
-        {
-            return db.PostingContacts;
-        }
-
-        public PostingContact GetPostingContact(int id)
-        {
-            return db.PostingContacts.Find(id);
-        }
-
-
-        public IQueryable<Event> GetAllEvents()
-        {
-            return db.Events;
-        }
-
-        public Event GetEvents(int id)
-        {
-            return db.Events.Find(id);
+            return ContextProvider.Context.Events;
         }
     }
 }
