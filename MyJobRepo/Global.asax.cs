@@ -16,7 +16,7 @@ namespace MyJobRepo
         {
             System.Data.Entity.Database.SetInitializer(
                 new MyJobRepo_ContextInitializer());
-            AreaRegistration.RegisterAllAreas();
+            //AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

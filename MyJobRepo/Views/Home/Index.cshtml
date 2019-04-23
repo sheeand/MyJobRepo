@@ -1,24 +1,160 @@
-﻿<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS, and JavaScript.</p>
-    <p><a href="https://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+﻿
+@model MyJobRepo.Models.MyJobRepo_Resources
+
+<script type="text/javascript" src="../../Scripts/jquery-3.3.1.min.js"></script>
+
+<script type="text/javascript">
+
+    function GetAllContactTypes() {
+        $.ajax({
+            type: "GET",
+            url: 'http://' + '@ViewBag.Host' + '/API/ContactType',
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                var content = "<h3>Ajax Response</h3>";
+                var optionhtml1 = '<option value="' +
+                    0 +
+                    '">' +
+                    "--Select Contact Type--" +
+                    '</option>';
+                $("#contactTypeDropdown").append(optionhtml1);
+
+                $.each(data,
+                    function(i) {
+
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#contactTypeDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    $(document).ready(function () {
+        GetAllContactTypes();
+    });
+
+    @*
+    function SelectedState(stateID) {
+        $.ajax({
+            type: "GET",
+            url: 'http://' + '@ViewBag.Host' + '/Default/Categories?stateID=' + stateID,
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            complete: function (msg) {
+                $('.Content').html(msg.responseText)
+            }
+        });
+    }
+    function SelectedCategory(stateID, stateName, categoryID) {
+        $.ajax({
+            type: "GET",
+            url: 'http://' + '@ViewBag.Host' + '/Default/Topics?stateID=' + stateID + '&stateName=' + stateName + '&categoryID=' + categoryID,
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            complete: function (msg) {
+                $('.Content').html(msg.responseText)
+                $('#AdTopPlacement').html($('#AdTop').html())
+                $('#AdTop2Placement').html($('#AdTop').html())
+                //$('#AdRightPlacement').html($('#AdRight').html())
+            }
+        });
+    }
+    function SelectedTopic(stateID, stateName, topicID, categoryID, categoryTitle) {
+        // Category is used in admin, so do not remove this parameter
+        $.ajax({
+            type: "GET",
+            url: 'http://' + '@ViewBag.Host' + '/Default/Details?stateID=' + stateID + '&stateName=' + stateName + '&topicID=' + topicID + '&categoryID=' + categoryID + '&categoryTitle=' + categoryTitle,
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            complete: function (msg) {
+                $('.Content').html(msg.responseText)
+                $('#AdTopPlacement').html($('#AdTop').html())
+                $('#AdTop2Placement').html($('#AdTop2').html())
+                //$('#AdRightPlacement').html($('#AdRight').html())
+            }
+        });
+    }
+    function Feedback(stateID, stateName, topicID, topicText) {
+        var postData = {
+            stateID: stateID,
+            stateName: stateName,
+            topicID: topicID,
+            topicText: topicText
+        }
+        $.ajax({
+            type: "POST",
+            url: 'http://' + '@ViewBag.Host' + '/Default/Feedback',
+            data: JSON.stringify(postData),
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            complete: function (msg) {
+                $('.Content').html(msg.responseText)
+            }
+        });
+    }
+    function SuggestNewTopic(stateID, stateName, categoryID, categoryTitle) {
+        // Submission
+        topicText = $('#txtSuggestedTopic').val();
+        postData = {
+            stateID: stateID,
+            stateName: stateName,
+            categoryID: categoryID,
+            categoryTitle: categoryTitle,
+            topicText: topicText
+        }
+        $.ajax({
+            type: "POST",
+            url: 'http://' + '@ViewBag.Host' + '/Default/SuggestTopic',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(postData),
+            async: true,
+            complete: function (msg) {
+                $('.Content').html(msg.responseText)
+            }
+        });
+    }
+    *@
+
+</script>
+
+<div class="jumbotron">
+    <h1>MyJobRepo</h1>
+    <p class="lead">An exercise using Web API</p>
 </div>
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-        a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-        is an ideal platform for building RESTful applications on the .NET Framework.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301870">Learn more &raquo;</a></p>
+    <div class="col-md-3">
+        <h2>New Company</h2>
+        <p>Name:<br /><input id="companyName" name="companyName" type="text" /><br /></p>
+        <p>Link:<br /><input id="companyLink" name="companyLink" type="text" /><br /></p>
+        <p>Description:<br /><textarea id="companyDescription"></textarea><br /></p>
+        <p><a class="btn btn-default">Add</a></p>
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Learn more &raquo;</a></p>
+    <div id="AjaxResponse"></div>
+    <div class="col-md-3">
+        <h2>New Contact</h2>
+        <p>Name:<br /><input id="contactName" name="contactName" type="text" /><br /></p>
+        <p>Type:<br /><select id="contactTypeDropdown"></select><br /></p>
+        <p>Company:<br /><input id="contactCompany" name="contactCompany" type="text" /><br /></p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
     </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301872">Learn more &raquo;</a></p>
+    <div class="col-md-3">
+        <h2>New Posting</h2>
+        <p>Job title:<br /><input id="jobTitle" name="jobTitle" type="text" /><br /></p>
+        <p>Contact:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
+        <p><input id="isPostingActive" type="checkbox" value="Active" /><br /></p>
+        <p>Description:<br /><textarea id="jobDescription"></textarea><br /></p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
+    </div>
+    <div class="col-md-3">
+        <h2>New Event</h2>
+        <p>Company - Job Title:<br /><input id="eventPosting" name="eventPosting" type="text" /><br /></p>
+        <p><input id="requiresAction" type="checkbox" value="Requires Action" /><br /></p>
+        <p>Description:<br /><textarea id="jobDescription"></textarea><br /></p>
+        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
     </div>
 </div>

@@ -11,46 +11,119 @@ namespace MyJobRepo.Models
 {
     public class Repository : IRepository
     {
-        private readonly EFContextProvider<MyJobRepoContext> ContextProvider = new EFContextProvider<MyJobRepoContext>();
+        //private readonly EFContextProvider<MyJobRepoContext> ContextProvider = new EFContextProvider<MyJobRepoContext>();
 
-        public string MetaData => ContextProvider.Metadata();
+        //public string MetaData => ContextProvider.Metadata();
 
 
         // End points 
 
-        public SaveResult SaveChanges(JObject saveBundle)
+        //public SaveResult SaveChanges(JObject saveBundle)
+        //{
+        //    return ContextProvider.SaveChanges(saveBundle);
+        //}
+
+        //public IQueryable<ContactType> ContactTypes()
+        //{
+        //    return ContextProvider.Context.ContactTypes;
+        //}
+
+        //public IQueryable<Contact> Contacts()
+        //{
+        //    return ContextProvider.Context.Contacts;
+        //}
+
+        //public IQueryable<Company> Companies()
+        //{
+        //    return ContextProvider.Context.Companies;
+        //}
+
+        //public IQueryable<Posting> Postings()
+        //{
+        //    return ContextProvider.Context.Postings;
+        //}
+
+        //public IQueryable<PostingContact> PostingContacts()
+        //{
+        //    return ContextProvider.Context.PostingContacts;
+        //}
+
+        //public IQueryable<Event> Events()
+        //{
+        //    return ContextProvider.Context.Events; 
+        //}
+
+        private MyJobRepoContext db;
+
+        public Repository(MyJobRepoContext db)
         {
-            return ContextProvider.SaveChanges(saveBundle);
+            this.db = db;
         }
 
-        public IQueryable<ContactType> ContactTypes()
+        public IQueryable<ContactType> GetAllContactTypes()
         {
-            return ContextProvider.Context.ContactTypes;
+            return db.ContactTypes;
         }
 
-        public IQueryable<Contact> Contacts()
+        //public ContactType GetContactType(int id)
+        //{
+        //    return db.ContactTypes(id);
+        //}
+
+        public IQueryable<Contact> GetAllContacts()
         {
-            return ContextProvider.Context.Contacts;
+            throw new NotImplementedException();
         }
 
-        public IQueryable<Company> Companies()
+        public Contact GetContact(int id)
         {
-            return ContextProvider.Context.Companies;
+            throw new NotImplementedException();
         }
 
-        public IQueryable<Posting> Postings()
+        public IQueryable<Company> GetAllCompanies()
         {
-            return ContextProvider.Context.Postings;
+            throw new NotImplementedException();
         }
 
-        public IQueryable<PostingContact> PostingContacts()
+        public Company GetCompany(int id)
         {
-            return ContextProvider.Context.PostingContacts;
+            throw new NotImplementedException();
         }
 
-        public IQueryable<Event> Events()
+        public IQueryable<Posting> GetAllPostings()
         {
-            return ContextProvider.Context.Events;
+            throw new NotImplementedException();
         }
+
+        public Posting GetPosting(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<PostingContact> GetAllPostingContacts()
+        {
+            throw new NotImplementedException();
+        }
+
+        public PostingContact GetPostingContact(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Event> GetAllEvents()
+        {
+            throw new NotImplementedException();
+        }
+
+        public Event GetEvents(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public ContactType GetContactType(int id)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }
