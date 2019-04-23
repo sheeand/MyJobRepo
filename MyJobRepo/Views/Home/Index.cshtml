@@ -5,14 +5,13 @@
 
 <script type="text/javascript">
 
-    function GetAllContactTypes() {
+    function LoadContactTypesDropdown() {
         $.ajax({
             type: "GET",
             url: 'http://' + '@ViewBag.Host' + '/API/ContactType',
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
-                var content = "<h3>Ajax Response</h3>";
                 var optionhtml1 = '<option value="' +
                     0 +
                     '">' +
@@ -34,8 +33,78 @@
         });
     }
 
+    function LoadCompaniesDropdown() {
+        $.ajax({
+            type: "GET",
+            url: 'http://' + '@ViewBag.Host' + '/API/Company',
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                var optionhtml1 = '<option value="' +
+                    0 +
+                    '">' +
+                    "--Select Company--" +
+                    '</option>';
+                $("#companiesDropdown").append(optionhtml1);
+
+                $.each(data,
+                    function(i) {
+
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#companiesDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function AddNewCompany() {
+        var name = $("[name='companyName']").val();
+        var link = $("[name='companyLink']").val();
+        var description = $("[name='companyDescription']").val();
+        var dataToPost = {
+            Name: name,
+            Link: link,
+            Description: description
+        };
+        //dataToPost = $(this).serialize();
+        $.ajax({
+            type: "POST",
+            url: 'http://' + '@ViewBag.Host' + '/API/Company',
+            //contentType: "application/json; charset=utf-8",
+            async: true,
+            data: dataToPost,
+            success: function (response, status, jqxhr) {
+                var optionhtml1 = '<option value="' +
+                    0 +
+                    '">' +
+                    "--Select Company--" +
+                    '</option>';
+                $("#companiesDropdown").append(optionhtml1);
+
+                $.each(data,
+                    function(i) {
+
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#companiesDropdown").append(optionhtml);
+                    });
+            },
+            complete: function () {
+                LoadCompaniesDropdown();
+            }
+        });
+    }
+
     $(document).ready(function () {
-        GetAllContactTypes();
+        LoadContactTypesDropdown();
+        LoadCompaniesDropdown();
     });
 
     @*
@@ -122,6 +191,14 @@
 
 </script>
 
+<style type="text/css">
+    .dropdownStyle {
+        height: 26px;
+        width: 173px;
+        border-color: #A9A9A9;
+    }
+</style>
+
 <div class="jumbotron">
     <h1>MyJobRepo</h1>
     <p class="lead">An exercise using Web API</p>
@@ -132,14 +209,14 @@
         <p>Name:<br /><input id="companyName" name="companyName" type="text" /><br /></p>
         <p>Link:<br /><input id="companyLink" name="companyLink" type="text" /><br /></p>
         <p>Description:<br /><textarea id="companyDescription"></textarea><br /></p>
-        <p><a class="btn btn-default">Add</a></p>
+        <p><a class="btn btn-default" onclick="AddNewCompany()">Add</a></p>
     </div>
     <div id="AjaxResponse"></div>
     <div class="col-md-3">
         <h2>New Contact</h2>
         <p>Name:<br /><input id="contactName" name="contactName" type="text" /><br /></p>
-        <p>Type:<br /><select id="contactTypeDropdown"></select><br /></p>
-        <p>Company:<br /><input id="contactCompany" name="contactCompany" type="text" /><br /></p>
+        <p>Type:<br /><select id="contactTypeDropdown" class="dropdownStyle"></select><br /></p>
+        <p>Company:<br /><select id="companyDropdown"></select><br /></p>
         <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
     </div>
     <div class="col-md-3">

@@ -16,7 +16,6 @@ namespace MyJobRepo.Controllers
         {
             ViewBag.Title = "Home Page";
             ViewBag.Host = Request.Headers["Host"];
-            IQueryable<ContactType> contactTypes = Repo.GetAllContactTypes();
 
             return View();
         }
