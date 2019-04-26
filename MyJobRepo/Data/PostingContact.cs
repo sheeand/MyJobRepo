@@ -1,4 +1,4 @@
-﻿namespace MyJobRepo.Models
+﻿namespace MyJobRepo.Data
 {
     public class PostingContact
     {

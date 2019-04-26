@@ -1,12 +1,13 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Breeze.ContextProvider;
 using Newtonsoft.Json.Linq;
 
-namespace MyJobRepo.Models
+namespace MyJobRepo.Data
 {
     public interface IRepository
     {
-        IQueryable<ContactType> GetAllContactTypes();
+        //IQueryable<ContactType> GetAllContactTypes();
         ContactType GetContactType(int id);
         IQueryable<Contact> GetAllContacts();
         Contact GetContact(int id);
@@ -17,7 +18,10 @@ namespace MyJobRepo.Models
         IQueryable<PostingContact> GetAllPostingContacts();
         PostingContact GetPostingContact(int id);
         IQueryable<Event> GetAllEvents();
+        Task<ContactType[]> GetAllContactTypesAsync();
         Event GetEvents(int id);
+        Task<Company[]> GetAllCompaniesAsync();
+
 
         //string MetaData { get; }
 

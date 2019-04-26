@@ -7,9 +7,11 @@ namespace MyJobRepo.App_Start
     using System.Web;
     using System.Web.Http;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-    using MyJobRepo.Models;
+    using Data;
     using Ninject;
     using Ninject.Web.Common;
+    using MyJobRepo.Models;
+    using AutoMapper;
 
     public static class NinjectWebCommon 
     {
@@ -71,6 +73,15 @@ namespace MyJobRepo.App_Start
         {
             kernel.Bind<IRepository>().To<Repository>().InRequestScope();
             kernel.Bind<MyJobRepoContext>().To<MyJobRepoContext>();
+
+            kernel.Bind<IMapper>().ToMethod(context =>
+            {
+                var automapperConfiguration = new MapperConfiguration(cfg =>
+                {
+                    cfg.AddProfile<MyJobRepo_MappingProfile>();
+                });
+                return automapperConfiguration.CreateMapper(); ;
+            }).InSingletonScope();
         }        
     }
 }

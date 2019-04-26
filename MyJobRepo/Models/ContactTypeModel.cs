@@ -5,14 +5,9 @@ using System.Web;
 
 namespace MyJobRepo.Models
 {
-    public class ContactType
+    public class ContactTypeModel
     {
-        // Columns
         public int ContactTypeId { get; set; }
         public string Name { get; set; }
-
-        // One-to-many relationships
-        public virtual ICollection<Contact> Contacts { get; set; }
-
     }
 }

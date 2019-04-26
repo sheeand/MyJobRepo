@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using System.Threading.Tasks;
 using System.Web;
 using Breeze.ContextProvider;
 using Breeze.ContextProvider.EF6;
 using Newtonsoft.Json.Linq;
 
-namespace MyJobRepo.Models
+namespace MyJobRepo.Data
 {
     public class Repository : IRepository
     {
@@ -53,21 +55,33 @@ namespace MyJobRepo.Models
         //    return ContextProvider.Context.Events; 
         //}
 
-        private MyJobRepoContext db;
+        private MyJobRepoContext dbContext;
 
-        public Repository(MyJobRepoContext db)
+        public Repository(MyJobRepoContext dbContext)
         {
-            this.db = db;
+            this.dbContext = dbContext;
         }
 
-        public IQueryable<ContactType> GetAllContactTypes()
+        //public IQueryable<ContactType> GetAllContactTypes()
+        //{
+        //    return dbContext.ContactTypes;
+        //}
+
+        public async Task<ContactType[]> GetAllContactTypesAsync()
         {
-            return db.ContactTypes;
+            IQueryable<ContactType> query = dbContext.ContactTypes;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Company[]> GetAllCompaniesAsync()
+        {
+            IQueryable<Company> query = dbContext.Companies;
+            return await query.ToArrayAsync();
         }
 
         //public ContactType GetContactType(int id)
         //{
-        //    return db.ContactTypes(id);
+        //    return dbContext.ContactTypes(id);
         //}
 
         public IQueryable<Contact> GetAllContacts()
@@ -124,6 +138,5 @@ namespace MyJobRepo.Models
         {
             throw new NotImplementedException();
         }
-
     }
 }

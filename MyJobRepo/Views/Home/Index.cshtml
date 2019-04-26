@@ -45,7 +45,7 @@
                     '">' +
                     "--Select Company--" +
                     '</option>';
-                $("#companiesDropdown").append(optionhtml1);
+                $("#companyDropdown").append(optionhtml1);
 
                 $.each(data,
                     function(i) {
@@ -55,7 +55,7 @@
                             '">' +
                             data[i].name +
                             '</option>';
-                        $("#companiesDropdown").append(optionhtml);
+                        $("#companyDropdown").append(optionhtml);
                     });
             }
         });
@@ -64,43 +64,39 @@
     function AddNewCompany() {
         var name = $("[name='companyName']").val();
         var link = $("[name='companyLink']").val();
-        var description = $("[name='companyDescription']").val();
+        var description = $("#companyDescription").val();
         var dataToPost = {
             Name: name,
             Link: link,
             Description: description
         };
+
+        //var dataToPost = "{'Name':'test'}";
         //dataToPost = $(this).serialize();
         $.ajax({
             type: "POST",
-            url: 'http://' + '@ViewBag.Host' + '/API/Company',
-            //contentType: "application/json; charset=utf-8",
+            url: 'http://@ViewBag.Host/API/Company',
+            contentType: 'application/json',
             async: true,
-            data: dataToPost,
-            success: function (response, status, jqxhr) {
-                var optionhtml1 = '<option value="' +
-                    0 +
-                    '">' +
-                    "--Select Company--" +
-                    '</option>';
-                $("#companiesDropdown").append(optionhtml1);
-
-                $.each(data,
-                    function(i) {
-
-                        var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
-                            '">' +
-                            data[i].name +
-                            '</option>';
-                        $("#companiesDropdown").append(optionhtml);
-                    });
-            },
+            data: JSON.stringify(dataToPost),
             complete: function () {
                 LoadCompaniesDropdown();
             }
         });
     }
+
+        //$("#form1").submit(function () {
+        //    var jqxhr = $.post('api/company', $('#form1').serialize())
+        //        .success(function () {
+        //            var loc = jqxhr.getResponseHeader('Location');
+        //            var a = $('<a/>', { href: loc, text: loc });
+        //            $('#message').html(a);
+        //        })
+        //        .error(function () {
+        //            $('#message').html("Error posting the update.");
+        //        });
+        //    return false;
+        //});
 
     $(document).ready(function () {
         LoadContactTypesDropdown();
@@ -187,6 +183,19 @@
             }
         });
     }
+
+    $("#form1").submit(function () {
+        var jqxhr = $.post('api/updates/complex', $('#form1').serialize())
+            .success(function () {
+                var loc = jqxhr.getResponseHeader('Location');
+                var a = $('<a/>', { href: loc, text: loc });
+                $('#message').html(a);
+            })
+            .error(function () {
+                $('#message').html("Error posting the update.");
+            });
+        return false;
+    });
     *@
 
 </script>
@@ -198,40 +207,41 @@
         border-color: #A9A9A9;
     }
 </style>
-
-<div class="jumbotron">
-    <h1>MyJobRepo</h1>
-    <p class="lead">An exercise using Web API</p>
-</div>
-<div class="row">
-    <div class="col-md-3">
-        <h2>New Company</h2>
-        <p>Name:<br /><input id="companyName" name="companyName" type="text" /><br /></p>
-        <p>Link:<br /><input id="companyLink" name="companyLink" type="text" /><br /></p>
-        <p>Description:<br /><textarea id="companyDescription"></textarea><br /></p>
-        <p><a class="btn btn-default" onclick="AddNewCompany()">Add</a></p>
+    <div class="jumbotron">
+        <h1>MyJobRepo</h1>
+        <p class="lead">An exercise using Web API</p>
     </div>
-    <div id="AjaxResponse"></div>
-    <div class="col-md-3">
-        <h2>New Contact</h2>
-        <p>Name:<br /><input id="contactName" name="contactName" type="text" /><br /></p>
-        <p>Type:<br /><select id="contactTypeDropdown" class="dropdownStyle"></select><br /></p>
-        <p>Company:<br /><select id="companyDropdown"></select><br /></p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
+    <div class="row">
+        <div class="col-md-3">
+            <h2>New Company</h2>
+            <form id="form1">
+                <p>Name:<br /><input id="companyName" name="companyName" type="text" /><br /></p>
+                <p>Link:<br /><input id="companyLink" name="companyLink" type="text" /><br /></p>
+                <p>Description:<br /><textarea id="companyDescription"></textarea><br /></p>
+                <p><button class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
+            </form>
+            </div>
+        <div id="AjaxResponse"></div>
+        <div class="col-md-3">
+            <h2>New Contact</h2>
+            <p>Name:<br /><input id="contactName" name="contactName" type="text" /><br /></p>
+            <p>Type:<br /><select id="contactTypeDropdown" class="dropdownStyle"></select><br /></p>
+            <p>Company:<br /><select id="companyDropdown" class="dropdownStyle"></select><br /></p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
+        </div>
+        <div class="col-md-3">
+            <h2>New Posting</h2>
+            <p>Job title:<br /><input id="jobTitle" name="jobTitle" type="text" /><br /></p>
+            <p>Contact:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
+            <p><input id="isPostingActive" type="checkbox" value="Active" /><br /></p>
+            <p>Description:<br /><textarea id="jobDescription"></textarea><br /></p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
+        </div>
+        <div class="col-md-3">
+            <h2>New Event</h2>
+            <p>Company - Job Title:<br /><input id="eventPosting" name="eventPosting" type="text" /><br /></p>
+            <p><input id="requiresAction" type="checkbox" value="Requires Action" /><br /></p>
+            <p>Description:<br /><textarea id="jobDescription"></textarea><br /></p>
+            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
+        </div>
     </div>
-    <div class="col-md-3">
-        <h2>New Posting</h2>
-        <p>Job title:<br /><input id="jobTitle" name="jobTitle" type="text" /><br /></p>
-        <p>Contact:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
-        <p><input id="isPostingActive" type="checkbox" value="Active" /><br /></p>
-        <p>Description:<br /><textarea id="jobDescription"></textarea><br /></p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
-    </div>
-    <div class="col-md-3">
-        <h2>New Event</h2>
-        <p>Company - Job Title:<br /><input id="eventPosting" name="eventPosting" type="text" /><br /></p>
-        <p><input id="requiresAction" type="checkbox" value="Requires Action" /><br /></p>
-        <p>Description:<br /><textarea id="jobDescription"></textarea><br /></p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
-    </div>
-</div>

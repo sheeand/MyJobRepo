@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyJobRepo.Models
+namespace MyJobRepo.Data
 {
     public class Event
     {

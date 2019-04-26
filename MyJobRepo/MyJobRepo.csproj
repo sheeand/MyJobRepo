@@ -46,6 +46,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=8.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.8.0.0\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Breeze.ContextProvider, Version=2.0.1.0, Culture=neutral, PublicKeyToken=f6085f1a45e2ac59, processorArchitecture=MSIL">
       <HintPath>..\packages\Breeze.Server.ContextProvider.2.0.1\lib\Breeze.ContextProvider.dll</HintPath>
     </Reference>
@@ -92,6 +95,9 @@
     </Reference>
     <Reference Include="System.Spatial, Version=5.8.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Spatial.5.8.4\lib\net40\System.Spatial.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
     </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -173,22 +179,29 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CompanyController.cs" />
     <Compile Include="Controllers\ContactTypeController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Data\MyJobRepo_MappingProfile.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Company.cs" />
-    <Compile Include="Models\Contact.cs" />
-    <Compile Include="Models\ContactType.cs" />
-    <Compile Include="Models\Event.cs" />
-    <Compile Include="Models\IRepository.cs" />
-    <Compile Include="Models\MyJobRepoContext.cs" />
-    <Compile Include="Models\MyJobRepo_ContextInitializer.cs" />
+    <Compile Include="Data\Company.cs" />
+    <Compile Include="Data\Contact.cs" />
+    <Compile Include="Data\ContactType.cs" />
+    <Compile Include="Data\Event.cs" />
+    <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\MyJobRepoContext.cs" />
+    <Compile Include="Data\MyJobRepo_ContextInitializer.cs" />
     <Compile Include="Models\MyJobRepo_Resources.cs" />
-    <Compile Include="Models\Posting.cs" />
-    <Compile Include="Models\PostingContact.cs" />
-    <Compile Include="Models\Repository.cs" />
+    <Compile Include="Data\Posting.cs" />
+    <Compile Include="Data\PostingContact.cs" />
+    <Compile Include="Data\Repository.cs" />
+    <Compile Include="Models\CompanyModel.cs" />
+    <Compile Include="Models\ContactModel.cs" />
+    <Compile Include="Models\ContactTypeModel.cs" />
+    <Compile Include="Models\EventModel.cs" />
+    <Compile Include="Models\PostingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

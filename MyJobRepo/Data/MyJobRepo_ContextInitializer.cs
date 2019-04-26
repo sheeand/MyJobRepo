@@ -4,7 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace MyJobRepo.Models
+namespace MyJobRepo.Data
 {
     public class MyJobRepo_ContextInitializer : DropCreateDatabaseAlways<MyJobRepoContext>
     {
