@@ -70,9 +70,6 @@
             Link: link,
             Description: description
         };
-
-        //var dataToPost = "{'Name':'test'}";
-        //dataToPost = $(this).serialize();
         $.ajax({
             type: "POST",
             url: 'http://@ViewBag.Host/API/Company',
@@ -85,118 +82,46 @@
         });
     }
 
-        //$("#form1").submit(function () {
-        //    var jqxhr = $.post('api/company', $('#form1').serialize())
-        //        .success(function () {
-        //            var loc = jqxhr.getResponseHeader('Location');
-        //            var a = $('<a/>', { href: loc, text: loc });
-        //            $('#message').html(a);
-        //        })
-        //        .error(function () {
-        //            $('#message').html("Error posting the update.");
-        //        });
-        //    return false;
-        //});
+    function AddNewContact() {
+        var name = $("[name='contactName']").val();
+        var selectedContactType = "";
+        var selectedCompany = "";
+        $("select#contactTypeDropdown").change(function() {
+            selectedContactType = $(this).children("option:selected").val();
+        });
+
+        $("select#contactCompanyDropdown").change(function() {
+            selectedCompany = $(this).children("option:selected").val();
+        });
+
+        var contactEmail = $("[name='contactEmail']").val();
+        var contactPhone = $("[name='contactPhone']").val();
+        var notes = $("#notes").val();
+        var dataToPost = {
+            Name: name,
+            ContactContactType: selectedContactType,
+            ContactCompany: selectedCompany,
+            ContactEmail: contactEmail,
+            ContactPhone: contactPhone,
+            Notes: notes
+        };
+        $.ajax({
+            type: "POST",
+            url: 'http://@ViewBag.Host/API/Company',
+            contentType: 'application/json',
+            async: true,
+            data: JSON.stringify(dataToPost),
+            complete: function () {
+                LoadCompaniesDropdown();
+            }
+        });
+    }
 
     $(document).ready(function () {
         LoadContactTypesDropdown();
         LoadCompaniesDropdown();
     });
 
-    @*
-    function SelectedState(stateID) {
-        $.ajax({
-            type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/Default/Categories?stateID=' + stateID,
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            complete: function (msg) {
-                $('.Content').html(msg.responseText)
-            }
-        });
-    }
-    function SelectedCategory(stateID, stateName, categoryID) {
-        $.ajax({
-            type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/Default/Topics?stateID=' + stateID + '&stateName=' + stateName + '&categoryID=' + categoryID,
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            complete: function (msg) {
-                $('.Content').html(msg.responseText)
-                $('#AdTopPlacement').html($('#AdTop').html())
-                $('#AdTop2Placement').html($('#AdTop').html())
-                //$('#AdRightPlacement').html($('#AdRight').html())
-            }
-        });
-    }
-    function SelectedTopic(stateID, stateName, topicID, categoryID, categoryTitle) {
-        // Category is used in admin, so do not remove this parameter
-        $.ajax({
-            type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/Default/Details?stateID=' + stateID + '&stateName=' + stateName + '&topicID=' + topicID + '&categoryID=' + categoryID + '&categoryTitle=' + categoryTitle,
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            complete: function (msg) {
-                $('.Content').html(msg.responseText)
-                $('#AdTopPlacement').html($('#AdTop').html())
-                $('#AdTop2Placement').html($('#AdTop2').html())
-                //$('#AdRightPlacement').html($('#AdRight').html())
-            }
-        });
-    }
-    function Feedback(stateID, stateName, topicID, topicText) {
-        var postData = {
-            stateID: stateID,
-            stateName: stateName,
-            topicID: topicID,
-            topicText: topicText
-        }
-        $.ajax({
-            type: "POST",
-            url: 'http://' + '@ViewBag.Host' + '/Default/Feedback',
-            data: JSON.stringify(postData),
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            complete: function (msg) {
-                $('.Content').html(msg.responseText)
-            }
-        });
-    }
-    function SuggestNewTopic(stateID, stateName, categoryID, categoryTitle) {
-        // Submission
-        topicText = $('#txtSuggestedTopic').val();
-        postData = {
-            stateID: stateID,
-            stateName: stateName,
-            categoryID: categoryID,
-            categoryTitle: categoryTitle,
-            topicText: topicText
-        }
-        $.ajax({
-            type: "POST",
-            url: 'http://' + '@ViewBag.Host' + '/Default/SuggestTopic',
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(postData),
-            async: true,
-            complete: function (msg) {
-                $('.Content').html(msg.responseText)
-            }
-        });
-    }
-
-    $("#form1").submit(function () {
-        var jqxhr = $.post('api/updates/complex', $('#form1').serialize())
-            .success(function () {
-                var loc = jqxhr.getResponseHeader('Location');
-                var a = $('<a/>', { href: loc, text: loc });
-                $('#message').html(a);
-            })
-            .error(function () {
-                $('#message').html("Error posting the update.");
-            });
-        return false;
-    });
-    *@
 
 </script>
 
@@ -226,13 +151,22 @@
             <h2>New Contact</h2>
             <p>Name:<br /><input id="contactName" name="contactName" type="text" /><br /></p>
             <p>Type:<br /><select id="contactTypeDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Company:<br /><select id="companyDropdown" class="dropdownStyle"></select><br /></p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
+            <p>Company:<br /><select id="contactCompanyDropdown" class="dropdownStyle"></select><br /></p>
+            <p>Email:<br /><input id="contactEmail" name="contactEmail" type="text" /><br /></p>
+            <p>Phone:<br /><input id="contactPhone" name="contactPhone" type="text" /><br /></p>
+            <p>Notes:<br /><textarea id="contactNotes"></textarea><br /></p>
+            <p><button class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
         </div>
         <div class="col-md-3">
             <h2>New Posting</h2>
             <p>Job title:<br /><input id="jobTitle" name="jobTitle" type="text" /><br /></p>
-            <p>Contact:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
+            <p>Recruiting Company:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
+            <p>Recruiter:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
+            <p>Acct. Manager:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
+            <p>Company:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
+            <p>HR Representative:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
+            <p>Sr. Developer:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
+            <p>Hiring Manager:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
             <p><input id="isPostingActive" type="checkbox" value="Active" /><br /></p>
             <p>Description:<br /><textarea id="jobDescription"></textarea><br /></p>
             <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>

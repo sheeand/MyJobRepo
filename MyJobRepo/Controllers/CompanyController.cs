@@ -55,8 +55,6 @@ namespace MyJobRepo.Controllers
         {
             var json = Name.Content.ReadAsStringAsync().Result;
             JavaScriptSerializer json_serializer = new JavaScriptSerializer();
-            //var company = json_serializer.DeserializeObject(json);
-            //Dictionary<string, object> companyObject;
             Dictionary<string, object> companyObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
             var name = companyObject["Name"].ToString();
