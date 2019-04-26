@@ -6,22 +6,20 @@
 <script type="text/javascript">
 
     function LoadContactTypesDropdown() {
+        var optionhtml1 = '<option value="' +
+            0 +
+            '">' +
+            "--Select Contact Type--" +
+            '</option>';
+        $("#contactTypeDropdown").append(optionhtml1);
         $.ajax({
             type: "GET",
             url: 'http://' + '@ViewBag.Host' + '/API/ContactType',
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
-                var optionhtml1 = '<option value="' +
-                    0 +
-                    '">' +
-                    "--Select Contact Type--" +
-                    '</option>';
-                $("#contactTypeDropdown").append(optionhtml1);
-
                 $.each(data,
                     function(i) {
-
                         var optionhtml = '<option value="' +
                             data[i].contactTypeId +
                             '">' +
@@ -33,20 +31,19 @@
         });
     }
 
-    function LoadCompaniesDropdown() {
+    function LoadContactCompaniesDropdown() {
+        var optionhtml1 = '<option value="' +
+            0 +
+            '">' +
+            "--Select Company--" +
+            '</option>';
+        $("#contactCompanyDropdown").append(optionhtml1);
         $.ajax({
             type: "GET",
             url: 'http://' + '@ViewBag.Host' + '/API/Company',
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
-                var optionhtml1 = '<option value="' +
-                    0 +
-                    '">' +
-                    "--Select Company--" +
-                    '</option>';
-                $("#companyDropdown").append(optionhtml1);
-
                 $.each(data,
                     function(i) {
 
@@ -55,7 +52,33 @@
                             '">' +
                             data[i].name +
                             '</option>';
-                        $("#companyDropdown").append(optionhtml);
+                        $("#contactCompanyDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadPostingContactsDropdown() {
+        var optionhtml1 = '<option value="' +
+            0 +
+            '">' +
+            "--Select Contact--" +
+            '</option>';
+        $("#postingContactsDropdown").append(optionhtml1);
+        $.ajax({
+            type: "GET",
+            url: 'http://' + '@ViewBag.Host' + '/API/Contact',
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#postingContactsDropdown").append(optionhtml);
                     });
             }
         });
@@ -77,49 +100,43 @@
             async: true,
             data: JSON.stringify(dataToPost),
             complete: function () {
-                LoadCompaniesDropdown();
+                LoadContactCompaniesDropdown();
             }
         });
     }
 
     function AddNewContact() {
         var name = $("[name='contactName']").val();
-        var selectedContactType = "";
-        var selectedCompany = "";
-        $("select#contactTypeDropdown").change(function() {
-            selectedContactType = $(this).children("option:selected").val();
-        });
-
-        $("select#contactCompanyDropdown").change(function() {
-            selectedCompany = $(this).children("option:selected").val();
-        });
-
+        var selectedContactTypeId = $("select#contactTypeDropdown")[0].selectedIndex;
+        var selectedCompanyId = $("select#contactCompanyDropdown")[0].selectedIndex;
         var contactEmail = $("[name='contactEmail']").val();
         var contactPhone = $("[name='contactPhone']").val();
-        var notes = $("#notes").val();
+        var contactNotes = $("#contactNotes").val();
         var dataToPost = {
             Name: name,
-            ContactContactType: selectedContactType,
-            ContactCompany: selectedCompany,
-            ContactEmail: contactEmail,
-            ContactPhone: contactPhone,
-            Notes: notes
+            ContactTypeId: selectedContactTypeId,
+            CompanyId: selectedCompanyId,
+            Email: contactEmail,
+            Phone: contactPhone,
+            Notes: contactNotes
         };
         $.ajax({
             type: "POST",
-            url: 'http://@ViewBag.Host/API/Company',
+            url: 'http://@ViewBag.Host/API/Contact',
             contentType: 'application/json',
             async: true,
             data: JSON.stringify(dataToPost),
             complete: function () {
-                LoadCompaniesDropdown();
+                LoadPostingContactsDropdown();
             }
         });
     }
 
     $(document).ready(function () {
         LoadContactTypesDropdown();
-        LoadCompaniesDropdown();
+        LoadContactCompaniesDropdown();
+        LoadPostingContactsDropdown();
+
     });
 
 
@@ -134,34 +151,33 @@
 </style>
     <div class="jumbotron">
         <h1>MyJobRepo</h1>
-        <p class="lead">An exercise using Web API</p>
+        <p class="lead">An exercise in developing a .NET Web API Application</p><br />
+        Working left to right as entities are added, dropdown lists will repopulate asynchronously.
     </div>
     <div class="row">
         <div class="col-md-3">
             <h2>New Company</h2>
-            <form id="form1">
                 <p>Name:<br /><input id="companyName" name="companyName" type="text" /><br /></p>
                 <p>Link:<br /><input id="companyLink" name="companyLink" type="text" /><br /></p>
                 <p>Description:<br /><textarea id="companyDescription"></textarea><br /></p>
                 <p><button class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
-            </form>
             </div>
         <div id="AjaxResponse"></div>
         <div class="col-md-3">
             <h2>New Contact</h2>
-            <p>Name:<br /><input id="contactName" name="contactName" type="text" /><br /></p>
-            <p>Type:<br /><select id="contactTypeDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Company:<br /><select id="contactCompanyDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Email:<br /><input id="contactEmail" name="contactEmail" type="text" /><br /></p>
-            <p>Phone:<br /><input id="contactPhone" name="contactPhone" type="text" /><br /></p>
-            <p>Notes:<br /><textarea id="contactNotes"></textarea><br /></p>
-            <p><button class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
+                <p>Name:<br /><input id="contactName" name="contactName" type="text" /><br /></p>
+                <p>Type:<br /><select id="contactTypeDropdown" class="dropdownStyle"></select><br /></p>
+                <p>Company:<br /><select id="contactCompanyDropdown" class="dropdownStyle"></select><br /></p>
+                <p>Email:<br /><input id="contactEmail" name="contactEmail" type="text" /><br /></p>
+                <p>Phone:<br /><input id="contactPhone" name="contactPhone" type="text" /><br /></p>
+                <p>Notes:<br /><textarea id="contactNotes"></textarea><br /></p>
+                <p><button class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
         </div>
         <div class="col-md-3">
             <h2>New Posting</h2>
             <p>Job title:<br /><input id="jobTitle" name="jobTitle" type="text" /><br /></p>
             <p>Recruiting Company:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
-            <p>Recruiter:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
+            <p>Recruiter:<br /><select id="postingContactsDropdown" class="dropdownStyle"></select><br /></p>
             <p>Acct. Manager:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
             <p>Company:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>
             <p>HR Representative:<br /><input id="postingContact" name="postingContact" type="text" /><br /></p>

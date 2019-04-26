@@ -7,7 +7,6 @@ namespace MyJobRepo.Data
 {
     public interface IRepository
     {
-        //IQueryable<ContactType> GetAllContactTypes();
         ContactType GetContactType(int id);
         IQueryable<Contact> GetAllContacts();
         Contact GetContact(int id);
@@ -20,21 +19,7 @@ namespace MyJobRepo.Data
         IQueryable<Event> GetAllEvents();
         Task<ContactType[]> GetAllContactTypesAsync();
         Event GetEvents(int id);
+        Task<Contact[]> GetAllContactsAsync();
         Task<Company[]> GetAllCompaniesAsync();
-
-
-        //string MetaData { get; }
-
-        // One endpoint for all CRUD
-        // jObject is a Json object
-        //SaveResult SaveChanges(JObject saveBundle);
-
-        //IQueryable<ContactType> ContactTypes();
-        //IQueryable<Contact> Contacts();
-        //IQueryable<Company> Companies();
-        //IQueryable<Posting> Postings();
-        //IQueryable<PostingContact> PostingContacts();
-        //IQueryable<Event> Events();
-
     }
 }

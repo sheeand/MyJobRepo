@@ -13,47 +13,6 @@ namespace MyJobRepo.Data
 {
     public class Repository : IRepository
     {
-        //private readonly EFContextProvider<MyJobRepoContext> ContextProvider = new EFContextProvider<MyJobRepoContext>();
-
-        //public string MetaData => ContextProvider.Metadata();
-
-
-        // End points 
-
-        //public SaveResult SaveChanges(JObject saveBundle)
-        //{
-        //    return ContextProvider.SaveChanges(saveBundle);
-        //}
-
-        //public IQueryable<ContactType> ContactTypes()
-        //{
-        //    return ContextProvider.Context.ContactTypes;
-        //}
-
-        //public IQueryable<Contact> Contacts()
-        //{
-        //    return ContextProvider.Context.Contacts;
-        //}
-
-        //public IQueryable<Company> Companies()
-        //{
-        //    return ContextProvider.Context.Companies;
-        //}
-
-        //public IQueryable<Posting> Postings()
-        //{
-        //    return ContextProvider.Context.Postings;
-        //}
-
-        //public IQueryable<PostingContact> PostingContacts()
-        //{
-        //    return ContextProvider.Context.PostingContacts;
-        //}
-
-        //public IQueryable<Event> Events()
-        //{
-        //    return ContextProvider.Context.Events; 
-        //}
 
         private MyJobRepoContext dbContext;
 
@@ -62,10 +21,7 @@ namespace MyJobRepo.Data
             this.dbContext = dbContext;
         }
 
-        //public IQueryable<ContactType> GetAllContactTypes()
-        //{
-        //    return dbContext.ContactTypes;
-        //}
+        // End points 
 
         public async Task<ContactType[]> GetAllContactTypesAsync()
         {
@@ -79,14 +35,10 @@ namespace MyJobRepo.Data
             return await query.ToArrayAsync();
         }
 
-        //public ContactType GetContactType(int id)
-        //{
-        //    return dbContext.ContactTypes(id);
-        //}
-
-        public IQueryable<Contact> GetAllContacts()
+        public async Task<Contact[]> GetAllContactsAsync()
         {
-            throw new NotImplementedException();
+            IQueryable<Contact> query = dbContext.Contacts;
+            return await query.ToArrayAsync();
         }
 
         public Contact GetContact(int id)
@@ -135,6 +87,11 @@ namespace MyJobRepo.Data
         }
 
         public ContactType GetContactType(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IQueryable<Contact> GetAllContacts()
         {
             throw new NotImplementedException();
         }

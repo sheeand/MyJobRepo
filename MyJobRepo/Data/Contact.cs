@@ -17,6 +17,6 @@ namespace MyJobRepo.Data
         public string Notes { get; set; }
 
         // One-to-many relationships
-        public virtual ICollection<PostingContact> PostingContacts { get; set; }
+        //public virtual ICollection<PostingContact> PostingContacts { get; set; }
     }
 }
