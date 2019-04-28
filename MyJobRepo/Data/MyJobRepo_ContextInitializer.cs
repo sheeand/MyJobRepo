@@ -15,8 +15,10 @@ namespace MyJobRepo.Data
             {
                 new ContactType() {ContactTypeId = 1, Name = "Acquaintance"},
                 new ContactType() {ContactTypeId = 1, Name = "Recruiter"},
+                new ContactType() {ContactTypeId = 1, Name = "Account Manager"},
                 new ContactType() {ContactTypeId = 1, Name = "HR Representative"},
                 new ContactType() {ContactTypeId = 1, Name = "Developer"},
+                new ContactType() {ContactTypeId = 1, Name = "Senior Developer"},
                 new ContactType() {ContactTypeId = 1, Name = "Hiring Manager"},
                 new ContactType() {ContactTypeId = 1, Name = "Executive"}
             };

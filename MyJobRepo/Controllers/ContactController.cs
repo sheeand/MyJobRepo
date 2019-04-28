@@ -66,6 +66,27 @@ namespace MyJobRepo.Controllers
         [Route("ByType/{ContactType}")]
         public async Task<IHttpActionResult> Get(string contactType)
         {
+            switch (contactType)
+            {
+                case "HR":
+                    contactType = "HR Representative";
+                    break;
+
+                case "HM":
+                    contactType = "Hiring Manager";
+                    break;
+
+                case "SR":
+                    contactType = "Senior Developer";
+                    break;
+
+                case "AM":
+                    contactType = "Account Manager";
+                    break;
+
+                default:
+                    break;
+            }
             try
             {
                 var result = await Repo.GetContactsByContactTypeAsync(contactType);

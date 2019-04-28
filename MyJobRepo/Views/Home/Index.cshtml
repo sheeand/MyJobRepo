@@ -20,7 +20,12 @@
         $("select").find('option').remove();
         LoadContactTypeDropdown();
         LoadCompanyDropdown();
-        LoadRecruitersDropdown();
+        LoadRecruiterDropdown();
+        LoadHRRepDropdown();
+        LoadSrDevDropdown();
+        LoadDevDropdown();
+        LoadHiringMgrDropdown();
+        LoadAcctManagerrDropdown();
     }
 
     function LoadContactTypeDropdown() {
@@ -66,10 +71,10 @@
     }
 
     function LoadRecruiterDropdown() {
-        PreloadFirstDropdownOption("postingRecruiterDropdown", "Contact");
+        PreloadFirstDropdownOption("recruiterDropdown", "Contact");
         $.ajax({
             type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/API/Contact',
+            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/Recruiter',
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
@@ -80,7 +85,112 @@
                             '">' +
                             data[i].name +
                             '</option>';
-                        $("#postingRecruiterDropdown").append(optionhtml);
+                        $("#recruiterDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadHRRepDropdown() {
+        PreloadFirstDropdownOption("hrRepDropdown", "Contact");
+        $.ajax({
+            type: "GET",
+            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/HR',
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#hrRepDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadSrDevDropdown() {
+        PreloadFirstDropdownOption("srDevDropdown", "Contact");
+        $.ajax({
+            type: "GET",
+            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/SR',
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#srDevDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadDevDropdown() {
+        PreloadFirstDropdownOption("devDropdown", "Contact");
+        $.ajax({
+            type: "GET",
+            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/Developer',
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#devDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadHiringMgrDropdown() {
+        PreloadFirstDropdownOption("hiringMgrDropdown", "Contact");
+        $.ajax({
+            type: "GET",
+            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/HM',
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#hiringMgrDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadAcctManagerrDropdown() {
+        PreloadFirstDropdownOption("acctManagerDropdown", "Contact");
+        $.ajax({
+            type: "GET",
+            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/AM',
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#acctManagerDropdown").append(optionhtml);
                     });
             }
         });
@@ -176,16 +286,17 @@
         </div>
         <div class="col-md-3">
             <h2>New Posting</h2>
-            <p>Job title:<br /><input id="postingJobTitle" name="postingJobTitle" type="text" /><br /></p>
+            <p>Job title:<br /><input id="jobTitle" name="postingJobTitle" type="text" /><br /></p>
             <p>Company:<br /><input id="postingCompany" name="postingCompany" type="text" /><br /></p>
-            <p>HR Representative:<br /><input id="postingHRRep" name="postingHRRep" type="text" /><br /></p>
-            <p>Sr. Developer:<br /><input id="postingSrDev" name="postingSrDev" type="text" /><br /></p>
-            <p>Hiring Manager:<br /><input id="postingHiringMgr" name="postingHiringMgr" type="text" /><br /></p>
+            <p>HR Representative:<br /><select id="hrRepDropdown" class="dropdownStyle"></select><br /></p>
+            <p>Senior Developer:<br /><select id="srDevDropdown" class="dropdownStyle"></select><br /></p>
+            <p>Developer:<br /><select id="devDropdown" class="dropdownStyle"></select><br /></p>
+            <p>Hiring Manager:<br /><select id="hiringMgrDropdown" class="dropdownStyle"></select><br /></p>
             <p><input id="isPostingActive" type="checkbox" value="Active" /><br /></p>
-            <p>Description:<br /><textarea id="postingJobDescr"></textarea><br /></p>
-            <p>Recruiting Company:<br /><label id="postingRecruitingCompany" /><br /></p>
-            <p>Recruiter:<br /><select id="postingRecruiterDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Acct. Manager:<br /><input id="postingAcctManager" name="postingAcctManager" type="text" /><br /></p>
+            <p>Description:<br /><textarea id="jobDescr"></textarea><br /></p>
+            <p>Recruiting Company:<br /><label id="recruitingCompany" /><br /></p>
+            <p>Recruiter:<br /><select id="recruiterDropdown" class="dropdownStyle"></select><br /></p>
+            <p>Acct. Manager:<br /><select id="acctManagerDropdown" class="dropdownStyle"></select><br /></p>
             <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
         </div>
         <div class="col-md-3">
