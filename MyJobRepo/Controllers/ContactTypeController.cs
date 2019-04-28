@@ -11,6 +11,7 @@ using MyJobRepo.Models;
 
 namespace MyJobRepo.Controllers
 {
+    [RoutePrefix("api/contacttype")]
     public class ContactTypeController : ApiController
     {
         private IRepository Repo;
@@ -22,11 +23,7 @@ namespace MyJobRepo.Controllers
             Mapper = mapper;
         }
 
-        //public IQueryable<ContactType> Get()
-        //{
-        //    return Repo.GetAllContactTypes();
-        //}
-
+        [Route()]
         public async Task<IHttpActionResult> Get()
         {
             try
@@ -42,12 +39,25 @@ namespace MyJobRepo.Controllers
             {
                 return InternalServerError();
             }
-
         }
 
-        public ContactType Get(int id)
+        [Route("{ContactTypeId}")]
+        public async Task<IHttpActionResult> Get(int contactTypeId)
         {
-            return Repo.GetContactType(id);
+            try
+            {
+                var result = await Repo.GetContactTypeAsync(contactTypeId);
+
+                // mapping
+                var mappedResult = Mapper.Map<ContactTypeModel>(result);
+
+                //return Ok(mappedResult);
+                return Ok(Mapper.Map<ContactTypeModel>(result));
+            }
+            catch //(Exception e)
+            {
+                return InternalServerError();
+            }
         }
     }
 }

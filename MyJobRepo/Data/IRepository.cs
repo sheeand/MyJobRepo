@@ -21,5 +21,9 @@ namespace MyJobRepo.Data
         Event GetEvents(int id);
         Task<Contact[]> GetAllContactsAsync();
         Task<Company[]> GetAllCompaniesAsync();
+        Task<ContactType> GetContactTypeAsync(int contactTypeId);
+        Task<Contact> GetContactAsync(int contactId);
+        Task<Company> GetCompanyAsync(int companyId);
+        Task<Contact[]> GetContactsByContactTypeAsync(string contactType);
     }
 }

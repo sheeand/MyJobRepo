@@ -12,6 +12,7 @@ using System.Web.Script.Serialization;
 
 namespace MyJobRepo.Controllers
 {
+    [RoutePrefix("api/contact")]
     public class ContactController : ApiController
     {
         private IRepository Repo;
@@ -23,12 +24,7 @@ namespace MyJobRepo.Controllers
             Mapper = mapper;
         }
 
-        // GET: api/Company/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
+        [Route("all")]
         public async Task<IHttpActionResult> Get()
         {
             try
@@ -47,8 +43,46 @@ namespace MyJobRepo.Controllers
 
         }
 
+        [Route("ById/{ContactId}")]
+        public async Task<IHttpActionResult> Get(int contactId)
+        {
+            try
+            {
+                var result = await Repo.GetContactAsync(contactId);
 
+                // mapping
+                var mappedResult = Mapper.Map<ContactModel>(result);
+
+                //return Ok(mappedResult);
+                return Ok(Mapper.Map<ContactModel>(result));
+            }
+            catch //(Exception e)
+            {
+                return InternalServerError();
+            }
+        }
+
+
+        [Route("ByType/{ContactType}")]
+        public async Task<IHttpActionResult> Get(string contactType)
+        {
+            try
+            {
+                var result = await Repo.GetContactsByContactTypeAsync(contactType);
+
+                // mapping
+                var mappedResult = Mapper.Map<IEnumerable<ContactModel>>(result);
+
+                return Ok(mappedResult);
+            }
+            catch //(Exception e)
+            {
+                return InternalServerError();
+            }
+
+        }
         //POST: api/Company
+        [Route()]
         [HttpPost]
         public HttpResponseMessage Contact(HttpRequestMessage Name)
         {

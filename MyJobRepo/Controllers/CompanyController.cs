@@ -13,6 +13,7 @@ using MyJobRepo.Models;
 
 namespace MyJobRepo.Controllers
 {
+    [RoutePrefix("api/company")]
     public class CompanyController : ApiController
     {
         private IRepository Repo;
@@ -24,12 +25,7 @@ namespace MyJobRepo.Controllers
             Mapper = mapper;
         }
 
-        // GET: api/Company/5
-        public string Get(int id)
-        {
-            return "value";
-        }
-
+        [Route()]
         public async Task<IHttpActionResult> Get()
         {
             try
@@ -48,8 +44,27 @@ namespace MyJobRepo.Controllers
 
         }
 
+        [Route("{CompanyId}")]
+        public async Task<IHttpActionResult> Get(int companyId)
+        {
+            try
+            {
+                var result = await Repo.GetCompanyAsync(companyId);
+
+                // mapping
+                var mappedResult = Mapper.Map<CompanyModel>(result);
+
+                //return Ok(mappedResult);
+                return Ok(Mapper.Map<CompanyModel>(result));
+            }
+            catch //(Exception e)
+            {
+                return InternalServerError();
+            }
+        }
 
         //POST: api/Company
+        [Route()]
         [HttpPost]
         public HttpResponseMessage Company(HttpRequestMessage Name)
         {
