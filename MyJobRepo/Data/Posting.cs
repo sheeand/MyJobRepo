@@ -16,6 +16,8 @@ namespace MyJobRepo.Data
         public string Description { get; set; }
         public bool IsActive { get; set; }
 
+
+
         // One-to-many relationships
         //public virtual ICollection<Event> Events { get; set; }
         //public virtual ICollection<PostingContact> PostingContacts { get; set; }

@@ -32,6 +32,7 @@ namespace MyJobRepo.Controllers
 
                 // mapping
                 var mappedResult = Mapper.Map<IEnumerable<ContactTypeModel>>(result);
+                if (result == null) return NotFound();
 
                 return Ok(mappedResult);
             }
@@ -50,6 +51,7 @@ namespace MyJobRepo.Controllers
 
                 // mapping
                 var mappedResult = Mapper.Map<ContactTypeModel>(result);
+                if (result == null) return NotFound();
 
                 //return Ok(mappedResult);
                 return Ok(Mapper.Map<ContactTypeModel>(result));

@@ -33,6 +33,28 @@ namespace MyJobRepo.Controllers
 
                     // mapping
                     var mappedResult = Mapper.Map<IEnumerable<PostingModel>>(result);
+                    if (result == null) return NotFound();
+
+                return Ok(mappedResult);
+                }
+                catch //(Exception e)
+                {
+                    return InternalServerError();
+                }
+
+            }
+
+            [Route("ForEventDropdown")]
+            [HttpGet]
+            public async Task<IHttpActionResult> EventDropdown()
+            {
+                try
+                {
+                    var result = await Repo.GetAllPostingsAsync();
+
+                    // mapping
+                    var mappedResult = Mapper.Map<IEnumerable<PostingModel>>(result);
+                    if (result == null) return NotFound();
 
                     return Ok(mappedResult);
                 }
@@ -43,7 +65,7 @@ namespace MyJobRepo.Controllers
 
             }
 
-            [Route("ById/{PostingId}")]
+        [Route("ById/{PostingId}")]
             public async Task<IHttpActionResult> Get(int postingId)
             {
                 try
@@ -52,9 +74,10 @@ namespace MyJobRepo.Controllers
 
                     // mapping
                     var mappedResult = Mapper.Map<PostingModel>(result);
+                    if (result == null) return NotFound();
 
-                    //return Ok(mappedResult);
-                    return Ok(Mapper.Map<PostingModel>(result));
+                //return Ok(mappedResult);
+                return Ok(Mapper.Map<PostingModel>(result));
                 }
                 catch //(Exception e)
                 {

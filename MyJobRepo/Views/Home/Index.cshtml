@@ -62,7 +62,7 @@
                         var optionhtml = '<option value="' +
                             data[i].contactTypeId +
                             '">' +
-                            data[i].name +
+                            data[i].companyName +
                             '</option>';
                         $("#companyEditDropdown").append(optionhtml);
                     });
@@ -81,9 +81,9 @@
                 $.each(data,
                     function(i) {
                         var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
+                            data[i].contactId +
                             '">' +
-                            data[i].name +
+                            data[i].contactName +
                             '</option>';
                         $("#contactTypeDropdown").append(optionhtml);
                     });
@@ -133,6 +133,27 @@
         });
     }
 
+    function LoadEventAddDropdown() {
+        PreloadFirstEditDropdownOption("eventEditDropdown");
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Posting/ForEventDropdown",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#eventEditDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
     function LoadContactTypeDropdown() {
         PreloadFirstDropdownOption("contactTypeDropdown", "Contact Type");
         $.ajax({
@@ -165,9 +186,9 @@
                 $.each(data,
                     function(i) {
                         var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
+                            data[i].companyId +
                             '">' +
-                            data[i].name +
+                            data[i].companyName +
                             '</option>';
                         $("#contactCompanyDropdown").append(optionhtml);
                     });
@@ -186,9 +207,9 @@
                 $.each(data,
                     function(i) {
                         var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
+                            data[i].companyId +
                             '">' +
-                            data[i].name +
+                            data[i].companyName +
                             '</option>';
                         $("#postingCompanyDropdown").append(optionhtml);
                     });
@@ -207,9 +228,9 @@
                 $.each(data,
                     function(i) {
                         var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
+                            data[i].contactId +
                             '">' +
-                            data[i].name +
+                            data[i].contactName +
                             '</option>';
                         $("#recruiterDropdown").append(optionhtml);
                     });
@@ -228,9 +249,9 @@
                 $.each(data,
                     function(i) {
                         var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
+                            data[i].contactId +
                             '">' +
-                            data[i].name +
+                            data[i].contactName +
                             '</option>';
                         $("#hrRepDropdown").append(optionhtml);
                     });
@@ -249,9 +270,9 @@
                 $.each(data,
                     function(i) {
                         var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
+                            data[i].contactId +
                             '">' +
-                            data[i].name +
+                            data[i].contactName +
                             '</option>';
                         $("#srDevDropdown").append(optionhtml);
                     });
@@ -270,9 +291,9 @@
                 $.each(data,
                     function(i) {
                         var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
+                            data[i].contactId +
                             '">' +
-                            data[i].name +
+                            data[i].contactName +
                             '</option>';
                         $("#devDropdown").append(optionhtml);
                     });
@@ -291,9 +312,9 @@
                 $.each(data,
                     function(i) {
                         var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
+                            data[i].contactId +
                             '">' +
-                            data[i].name +
+                            data[i].contactName +
                             '</option>';
                         $("#hiringMgrDropdown").append(optionhtml);
                     });
@@ -312,9 +333,9 @@
                 $.each(data,
                     function(i) {
                         var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
+                            data[i].contactId +
                             '">' +
-                            data[i].name +
+                            data[i].contactName +
                             '</option>';
                         $("#acctManagerDropdown").append(optionhtml);
                     });
@@ -323,11 +344,11 @@
     }
 
     function AddNewCompany() {
-        var name = $("[name='companyName']").val();
+        var companyName = $("[name='companyName']").val();
         var link = $("[name='companyLink']").val();
         var description = $("#companyDescription").val();
         var dataToPost = {
-            Name: name,
+            CompanyName: companyName,
             Link: link,
             Description: description
         };
@@ -344,14 +365,14 @@
     }
 
     function AddNewContact() {
-        var name = $("[name='contactName']").val();
+        var contactName = $("[name='contactName']").val();
         var selectedContactTypeId = $("select#contactTypeDropdown")[0].selectedIndex;
         var selectedCompanyId = $("select#contactCompanyDropdown")[0].selectedIndex;
         var contactEmail = $("[name='contactEmail']").val();
         var contactPhone = $("[name='contactPhone']").val();
         var contactNotes = $("#contactNotes").val();
         var dataToPost = {
-            Name: name,
+            ContactName: contactName,
             ContactTypeId: selectedContactTypeId,
             CompanyId: selectedCompanyId,
             Email: contactEmail,
@@ -436,7 +457,7 @@
                 <input type="radio" name="contactRadio" value="edit" onclick="RadioEdit('contactEditDropdown', 'contactAddButton', 'contactEditButton', 'contact')" /> Edit &nbsp;
                 <select id="contactEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
             </p>
-            <p><label class="contact">Name:</label><br /><input id="contactName" name="contactName" type="text" class="contact" /><br /></p>
+            <p><label class="contact">Name:</label><br /><input id="contactName" name="contactContactName" type="text" class="contact" /><br /></p>
             <p><label class="contact">Type:</label><br /><select id="contactTypeDropdown" class="dropdownStyle contact"></select><br /></p>
             <p><label class="contact">Company:</label><br /><select id="contactCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
             <p><label class="contact">Email:</label><br /><input id="contactEmail" name="contactEmail" type="text" class="contact" /><br /></p>
@@ -477,6 +498,7 @@
             <h2>Event</h2>
             <p>
                 <input type="radio" name="eventRadio" value="add" checked="checked" onclick="RadioAdd('eventEditDropdown', 'eventAddButton', 'eventEditButton', 'event')" /> Add
+                <select id="eventAddDropdown" class="editDropdownStyle"></select>
             </p>
             <p>
                 <input type="radio" name="eventRadio" value="edit" onclick="RadioEdit('eventEditDropdown', 'eventAddButton', 'eventEditButton', 'event')" /> Edit &nbsp;

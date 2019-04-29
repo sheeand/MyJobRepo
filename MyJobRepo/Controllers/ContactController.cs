@@ -33,6 +33,7 @@ namespace MyJobRepo.Controllers
 
                 // mapping
                 var mappedResult = Mapper.Map<IEnumerable<ContactModel>>(result);
+                if (result == null) return NotFound();
 
                 return Ok(mappedResult);
             }
@@ -52,6 +53,7 @@ namespace MyJobRepo.Controllers
 
                 // mapping
                 var mappedResult = Mapper.Map<ContactModel>(result);
+                if (result == null) return NotFound();
 
                 //return Ok(mappedResult);
                 return Ok(Mapper.Map<ContactModel>(result));
@@ -93,6 +95,7 @@ namespace MyJobRepo.Controllers
 
                 // mapping
                 var mappedResult = Mapper.Map<IEnumerable<ContactModel>>(result);
+                if (result == null) return NotFound();
 
                 return Ok(mappedResult);
             }
@@ -113,7 +116,7 @@ namespace MyJobRepo.Controllers
 
             var companyId = (int)contactObject["CompanyId"];
             var contactTypeId = (int)contactObject["ContactTypeId"];
-            var name = contactObject["Name"].ToString();
+            var contactName = contactObject["ContactName"].ToString();
             var email = contactObject["Email"].ToString();
             var phone = contactObject["Phone"].ToString();
             var notes = contactObject["Notes"].ToString();
@@ -121,7 +124,7 @@ namespace MyJobRepo.Controllers
             contact.CompanyId = companyId;
             contact.ContactTypeId = contactTypeId;
             contact.Email = email;
-            contact.Name = name;
+            contact.ContactName = contactName;
             contact.Notes = notes;
             contact.Phone = phone;
 
@@ -140,7 +143,7 @@ namespace MyJobRepo.Controllers
                 ContactId = model.ContactId,
                 CompanyId = model.CompanyId,
                 ContactTypeId = model.ContactTypeId,
-                Name = model.Name,
+                ContactName = model.ContactName,
                 Email = model.Email,
                 Phone = model.Phone,
                 Notes = model.Notes

@@ -34,6 +34,7 @@ namespace MyJobRepo.Controllers
 
                 // mapping
                 var mappedResult = Mapper.Map<IEnumerable<CompanyModel>>(result);
+                if (result == null) return NotFound();
 
                 return Ok(mappedResult);
             }
@@ -53,6 +54,7 @@ namespace MyJobRepo.Controllers
 
                 // mapping
                 var mappedResult = Mapper.Map<CompanyModel>(result);
+                if (result == null) return NotFound();
 
                 //return Ok(mappedResult);
                 return Ok(Mapper.Map<CompanyModel>(result));
@@ -72,11 +74,11 @@ namespace MyJobRepo.Controllers
             JavaScriptSerializer json_serializer = new JavaScriptSerializer();
             Dictionary<string, object> companyObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
-            var name = companyObject["Name"].ToString();
+            var companyName = companyObject["CompanyName"].ToString();
             var link = companyObject["Link"].ToString();
             var desc = companyObject["Description"].ToString();
             var company = new CompanyModel();
-            company.Name = name;
+            company.CompanyName = companyName;
             company.Link = link;
             company.Description = desc;
 
@@ -95,7 +97,7 @@ namespace MyJobRepo.Controllers
                 CompanyId = model.CompanyId,
                 Description = model.Description,
                 Link = model.Link,
-                Name = model.Name
+                CompanyName = model.CompanyName
             };
 
             using (var context = new MyJobRepoContext())
