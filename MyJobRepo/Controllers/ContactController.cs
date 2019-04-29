@@ -105,7 +105,7 @@ namespace MyJobRepo.Controllers
             }
 
         }
-        //POST: api/Company
+
         [Route()]
         [HttpPost]
         public HttpResponseMessage Contact(HttpRequestMessage Data)

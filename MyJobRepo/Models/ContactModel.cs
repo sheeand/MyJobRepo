@@ -14,6 +14,6 @@ namespace MyJobRepo.Models
         public string Email { get; set; }
         public string Phone { get; set; }
         public string Notes { get; set; }
-        public string Name { get; internal set; }
+        //public string Name { get; internal set; }
     }
 }

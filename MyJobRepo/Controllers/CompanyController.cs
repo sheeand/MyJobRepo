@@ -68,9 +68,9 @@ namespace MyJobRepo.Controllers
         //POST: api/Company
         [Route()]
         [HttpPost]
-        public HttpResponseMessage Company(HttpRequestMessage Name)
+        public HttpResponseMessage Company(HttpRequestMessage request)
         {
-            var json = Name.Content.ReadAsStringAsync().Result;
+            var json = request.Content.ReadAsStringAsync().Result;
             JavaScriptSerializer json_serializer = new JavaScriptSerializer();
             Dictionary<string, object> companyObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
