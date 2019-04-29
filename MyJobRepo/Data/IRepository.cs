@@ -7,23 +7,14 @@ namespace MyJobRepo.Data
 {
     public interface IRepository
     {
-        ContactType GetContactType(int id);
-        IQueryable<Contact> GetAllContacts();
-        Contact GetContact(int id);
-        IQueryable<Company> GetAllCompanies();
-        Company GetCompany(int id);
-        IQueryable<Posting> GetAllPostings();
-        Posting GetPosting(int id);
-        IQueryable<PostingContact> GetAllPostingContacts();
-        PostingContact GetPostingContact(int id);
-        IQueryable<Event> GetAllEvents();
-        Task<ContactType[]> GetAllContactTypesAsync();
-        Event GetEvents(int id);
-        Task<Contact[]> GetAllContactsAsync();
-        Task<Company[]> GetAllCompaniesAsync();
         Task<ContactType> GetContactTypeAsync(int contactTypeId);
+        Task<ContactType[]> GetAllContactTypesAsync();
         Task<Contact> GetContactAsync(int contactId);
-        Task<Company> GetCompanyAsync(int companyId);
+        Task<Contact[]> GetAllContactsAsync();
         Task<Contact[]> GetContactsByContactTypeAsync(string contactType);
+        Task<Company> GetCompanyAsync(int companyId);
+        Task<Company[]> GetAllCompaniesAsync();
+        Task<Posting> GetPostingAsync(int postingId);
+        Task<Posting[]> GetAllPostingsAsync();
     }
 }

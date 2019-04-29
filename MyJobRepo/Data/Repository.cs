@@ -42,61 +42,6 @@ namespace MyJobRepo.Data
             return await query.ToArrayAsync();
         }
 
-        public Contact GetContact(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Company> GetAllCompanies()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Company GetCompany(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Posting> GetAllPostings()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Posting GetPosting(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<PostingContact> GetAllPostingContacts()
-        {
-            throw new NotImplementedException();
-        }
-
-        public PostingContact GetPostingContact(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Event> GetAllEvents()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Event GetEvents(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public ContactType GetContactType(int id)
-        {
-            throw new NotImplementedException();
-        }
-
-        public IQueryable<Contact> GetAllContacts()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<ContactType> GetContactTypeAsync(int contactTypeId)
         {
             IQueryable<ContactType> query = dbContext.ContactTypes
@@ -126,6 +71,19 @@ namespace MyJobRepo.Data
         {
             IQueryable<Company> query = dbContext.Companies
                 .Where(x => x.CompanyId == companyId);
+            return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<Posting[]> GetAllPostingsAsync()
+        {
+            IQueryable<Posting> query = dbContext.Postings;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Posting> GetPostingAsync(int postingId)
+        {
+            IQueryable<Posting> query = dbContext.Postings
+                .Where(x => x.PostingId == postingId);
             return await query.FirstOrDefaultAsync();
         }
     }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 
 namespace MyJobRepo.Data
@@ -16,7 +17,12 @@ namespace MyJobRepo.Data
         public bool IsActive { get; set; }
 
         // One-to-many relationships
-        public virtual ICollection<Event> Events { get; set; }
-        public virtual ICollection<PostingContact> PostingContacts { get; set; }
+        //public virtual ICollection<Event> Events { get; set; }
+        //public virtual ICollection<PostingContact> PostingContacts { get; set; }
+
+        public static implicit operator Task<object>(Posting v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -105,9 +105,9 @@ namespace MyJobRepo.Controllers
         //POST: api/Company
         [Route()]
         [HttpPost]
-        public HttpResponseMessage Contact(HttpRequestMessage Name)
+        public HttpResponseMessage Contact(HttpRequestMessage Data)
         {
-            var json = Name.Content.ReadAsStringAsync().Result;
+            var json = Data.Content.ReadAsStringAsync().Result;
             JavaScriptSerializer json_serializer = new JavaScriptSerializer();
             Dictionary<string, object> contactObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
@@ -130,24 +130,6 @@ namespace MyJobRepo.Controllers
             HttpResponseMessage message = new HttpResponseMessage();
             message.StatusCode = HttpStatusCode.OK;
             return message;
-        }
-
-        private void SaveNewCompany(CompanyModel model)
-        {
-
-            var entity = new Company()
-            {
-                CompanyId = model.CompanyId,
-                Description = model.Description,
-                Link = model.Link,
-                Name = model.Name
-            };
-
-            using (var context = new MyJobRepoContext())
-            {
-                context.Companies.Add(entity);
-                context.SaveChanges();
-            }
         }
 
         private void SaveNewContact(ContactModel model)

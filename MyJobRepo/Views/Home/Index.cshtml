@@ -5,6 +5,10 @@
 
 <script type="text/javascript">
 
+    $(document).ready(function () {
+        LoadDropdowns()
+    });
+
     function PreloadFirstDropdownOption(id, text)
     {
         var optionhtml1 = '<option value="' +
@@ -15,24 +19,62 @@
         $("#" + id).append(optionhtml1);
     }
 
+    function PreloadFirstEditDropdownOption(id) {
+        var optionhtml1 = '<option value="' +
+            0 +
+            '">' +
+            "--Select--" +
+            '</option>';
+        $("#" + id).append(optionhtml1);
+    }
+
     function ResetForm() {
         $("input[type=text], textarea").val("");
         $("select").find('option').remove();
+        LoadDropdowns();
+    }
+
+    function LoadDropdowns() {
         LoadContactTypeDropdown();
-        LoadCompanyDropdown();
+        LoadContactCompanyDropdown();
         LoadRecruiterDropdown();
         LoadHRRepDropdown();
         LoadSrDevDropdown();
         LoadDevDropdown();
         LoadHiringMgrDropdown();
-        LoadAcctManagerrDropdown();
+        LoadAcctManagerDropdown();
+        LoadCompanyEditDropdown();
+        LoadContactEditDropdown();
+        LoadPostingEditDropdown();
+        LoadEventEditDropdown();
     }
 
-    function LoadContactTypeDropdown() {
-        PreloadFirstDropdownOption("contactTypeDropdown", "Contact Type");
+    function LoadCompanyEditDropdown() {
+        PreloadFirstEditDropdownOption("companyEditDropdown");
         $.ajax({
             type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/API/ContactType',
+            url: "http://" + "@ViewBag.Host" + "/API/Company",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#companyEditDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadContactEditDropdown() {
+        PreloadFirstEditDropdownOption("contactEditDropdown");
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Contact",
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
@@ -49,11 +91,74 @@
         });
     }
 
-    function LoadCompanyDropdown() {
+    function LoadPostingEditDropdown() {
+        PreloadFirstEditDropdownOption("postingEditDropdown");
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Posting",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#postingEditDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadEventEditDropdown() {
+        PreloadFirstEditDropdownOption("eventEditDropdown");
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Event",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#eventEditDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadContactTypeDropdown() {
+        PreloadFirstDropdownOption("contactTypeDropdown", "Contact Type");
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/ContactType",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#contactTypeDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadContactCompanyDropdown() {
         PreloadFirstDropdownOption("contactCompanyDropdown", "Company");
         $.ajax({
             type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/API/Company',
+            url: "http://" + "@ViewBag.Host" + "/API/Company",
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
@@ -70,11 +175,32 @@
         });
     }
 
+    function LoadPostingCompanyDropdown() {
+        PreloadFirstDropdownOption("postingCompanyDropdown", "Company");
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Company",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#postingCompanyDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
     function LoadRecruiterDropdown() {
         PreloadFirstDropdownOption("recruiterDropdown", "Contact");
         $.ajax({
             type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/Recruiter',
+            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/Recruiter",
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
@@ -91,11 +217,11 @@
         });
     }
 
-    function LoadHRRepDropdown() {
+    function LoadHRRepDropdown(contactTypeId) {
         PreloadFirstDropdownOption("hrRepDropdown", "Contact");
         $.ajax({
             type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/HR',
+            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/HR",
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
@@ -116,7 +242,7 @@
         PreloadFirstDropdownOption("srDevDropdown", "Contact");
         $.ajax({
             type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/SR',
+            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/SR",
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
@@ -137,7 +263,7 @@
         PreloadFirstDropdownOption("devDropdown", "Contact");
         $.ajax({
             type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/Developer',
+            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/Developer",
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
@@ -158,7 +284,7 @@
         PreloadFirstDropdownOption("hiringMgrDropdown", "Contact");
         $.ajax({
             type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/HM',
+            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/HM",
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
@@ -175,11 +301,11 @@
         });
     }
 
-    function LoadAcctManagerrDropdown() {
+    function LoadAcctManagerDropdown() {
         PreloadFirstDropdownOption("acctManagerDropdown", "Contact");
         $.ajax({
             type: "GET",
-            url: 'http://' + '@ViewBag.Host' + '/API/Contact/ByType/AM',
+            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/AM",
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
@@ -207,11 +333,11 @@
         };
         $.ajax({
             type: "POST",
-            url: 'http://@ViewBag.Host/API/Company',
+            url: "http://" + "@ViewBag.Host" + "/API/Company",
             contentType: 'application/json',
             async: true,
             data: JSON.stringify(dataToPost),
-            complete: function () {
+            complete: function() {
                 ResetForm();
             }
         });
@@ -234,7 +360,7 @@
         };
         $.ajax({
             type: "POST",
-            url: 'http://@ViewBag.Host/API/Contact',
+            url: "http://" + "@ViewBag.Host" + "/API/Contact",
             contentType: 'application/json',
             async: true,
             data: JSON.stringify(dataToPost),
@@ -244,12 +370,18 @@
         });
     }
 
-    $(document).ready(function () {
-        LoadContactTypeDropdown();
-        LoadCompanyDropdown();
-        LoadRecruiterDropdown();
-    });
+    function RadioAdd(dropdownId, addButtonId, editButtonId) {
+        document.getElementById(dropdownId).disabled = true;
+        document.getElementById(dropdownId).selectedIndex = 0;
+        document.getElementById(addButtonId).style.display = "inline";
+        document.getElementById(editButtonId).style.display = "none";
+    }
 
+    function RadioEdit(dropdownId, addButtonId, editButtonId) {
+        document.getElementById(dropdownId).disabled = false;
+        document.getElementById(addButtonId).style.display = "none";
+        document.getElementById(editButtonId).style.display = "inline";
+    }
 
 </script>
 
@@ -258,52 +390,104 @@
         height: 26px;
         width: 173px;
         border-color: #A9A9A9;
+        }
+    .editDropdownStyle {
+        height: 26px;
+        width: 122px;
+        border-color: #A9A9A9;
     }
 </style>
-    <div class="jumbotron">
-        <h1>MyJobRepo</h1>
-        <p class="lead">An exercise in developing a .NET Web API Application</p><br />
-        Working from left to right, add the entities. As they are added, dropdown lists will repopulate asynchronously.
-    </div>
+<div class="jumbotron">
+    <h1>MyJobRepo</h1>
+    <p class="lead">An exercise in developing a .NET Web API Application</p><br />
+    Add the entities, working from left to right. The dropdown lists will repopulate asynchronously.
+</div>
     <div class="row">
-        <div class="col-md-3">
-            <h2>New Company</h2>
-                <p>Name:<br /><input id="companyName" name="companyName" type="text" /><br /></p>
-                <p>Link:<br /><input id="companyLink" name="companyLink" type="text" /><br /></p>
-                <p>Description:<br /><textarea id="companyDescription"></textarea><br /></p>
-                <p><button class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
-            </div>
-        <div id="AjaxResponse"></div>
-        <div class="col-md-3">
-            <h2>New Contact</h2>
-                <p>Name:<br /><input id="contactName" name="contactName" type="text" /><br /></p>
-                <p>Type:<br /><select id="contactTypeDropdown" class="dropdownStyle"></select><br /></p>
-                <p>Company:<br /><select id="contactCompanyDropdown" class="dropdownStyle"></select><br /></p>
-                <p>Email:<br /><input id="contactEmail" name="contactEmail" type="text" /><br /></p>
-                <p>Phone:<br /><input id="contactPhone" name="contactPhone" type="text" /><br /></p>
-                <p>Notes:<br /><textarea id="contactNotes"></textarea><br /></p>
-                <p><button class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
+        <div id="companyColumn" class="col-md-3">
+            <h2>Company</h2>
+            <p><input type="radio" name="companyRadio" value="add" checked="checked" onclick="RadioAdd('companyEditDropdown', 'companyAddButton', 'companyEditButton')" /> Add</p>
+            <p>
+                <input type="radio" name="companyRadio" value="edit" onclick="RadioEdit('companyEditDropdown','companyAddButton', 'companyEditButton')" /> Edit &nbsp;
+                <select id="companyEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
+            </p>
+            <p>Name:<br /><input id="companyName" name="companyName" type="text" /><br /></p>
+            <p>Link:<br /><input id="companyLink" name="companyLink" type="text" /><br /></p>
+            <p>Description:<br /><textarea id="companyDescription"></textarea><br /></p>
+            <p><button id="companyAddButton" class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
+            <p><button id="companyEditButton" class="btn btn-default" type="submit" onclick="EditCompany()" style="display: none;">Edit</button></p>
         </div>
-        <div class="col-md-3">
-            <h2>New Posting</h2>
+        <div id="contactColumn" class="col-md-3">
+            <h2>Contact</h2>
+            <p>
+                <input type="radio" name="contactRadio" value="add" checked="checked" onclick="RadioAdd('contactEditDropdown', 'contactAddButton', 'contactEditButton')" /> Add
+            </p>
+            <p>
+                <input type="radio" name="contactRadio" value="edit" onclick="RadioEdit('contactEditDropdown', 'contactAddButton', 'contactEditButton')" /> Edit &nbsp;
+                <select id="contactEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
+            </p>
+            <p>Name:<br /><input id="contactName" name="contactName" type="text" /><br /></p>
+            <p>Type:<br /><select id="contactTypeDropdown" class="dropdownStyle"></select><br /></p>
+            <p>Company:<br /><select id="contactCompanyDropdown" class="dropdownStyle"></select><br /></p>
+            <p>Email:<br /><input id="contactEmail" name="contactEmail" type="text" /><br /></p>
+            <p>Phone:<br /><input id="contactPhone" name="contactPhone" type="text" /><br /></p>
+            <p>Notes:<br /><textarea id="contactNotes"></textarea><br /></p>
+            <p><button id="contactAddButton" class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
+            <p><button id="contactEditButton" class="btn btn-default" type="submit" onclick="EditContact()" style="display: none;">Edit</button></p>
+        </div>
+        <div id="postingColumn" class="col-md-3">
+            <h2>Opportunity</h2>
+            <p>
+                <input type="radio" name="postingRadio" value="add" checked="checked" onclick="RadioAdd('postingEditDropdown', 'postingAddButton', 'postingEditButton')" /> Add
+            </p>
+            <p>
+                <input type="radio" name="postingRadio" value="edit" onclick="RadioEdit('postingEditDropdown', 'postingAddButton', 'postingEditButton')" /> Edit &nbsp;
+                <select id="postingEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
+            </p>
             <p>Job title:<br /><input id="jobTitle" name="postingJobTitle" type="text" /><br /></p>
-            <p>Company:<br /><input id="postingCompany" name="postingCompany" type="text" /><br /></p>
+            <p>Company:<br /><label id="postingCompany" /><br /></p>
             <p>HR Representative:<br /><select id="hrRepDropdown" class="dropdownStyle"></select><br /></p>
             <p>Senior Developer:<br /><select id="srDevDropdown" class="dropdownStyle"></select><br /></p>
             <p>Developer:<br /><select id="devDropdown" class="dropdownStyle"></select><br /></p>
             <p>Hiring Manager:<br /><select id="hiringMgrDropdown" class="dropdownStyle"></select><br /></p>
-            <p><input id="isPostingActive" type="checkbox" value="Active" /><br /></p>
-            <p>Description:<br /><textarea id="jobDescr"></textarea><br /></p>
+        </div>
+        <div class="col-md-3">
+            <h2>&nbsp;</h2>
+            <p>Discontinued: <input id="isPostingActive" type="checkbox" value="Active" /><br /><br /></p>
             <p>Recruiting Company:<br /><label id="recruitingCompany" /><br /></p>
             <p>Recruiter:<br /><select id="recruiterDropdown" class="dropdownStyle"></select><br /></p>
             <p>Acct. Manager:<br /><select id="acctManagerDropdown" class="dropdownStyle"></select><br /></p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
+            <p>Description:<br /><textarea id="jobDescr"></textarea><br /></p>
+            <p><button id="postingAddButton" class="btn btn-default" type="submit" onclick="AddNewPosting()">Add</button></p>
+            <p><button id="postingEditButton" class="btn btn-default" type="submit" onclick="EditPosting()" style="display: none;">Edit</button></p>
+        </div>
+    </div>
+    <div class="row">
+        <div id="eventColumn" class="col-md-3">
+            <h2>Event</h2>
+            <p>
+                <input type="radio" name="eventRadio" value="add" checked="checked" onclick="RadioAdd('eventEditDropdown', 'eventAddButton', 'eventEditButton')" /> Add
+            </p>
+            <p>
+                <input type="radio" name="eventRadio" value="edit" onclick="RadioEdit('eventEditDropdown', 'eventAddButton', 'eventEditButton')" /> Edit &nbsp;
+                <select id="eventEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
+            </p>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <p>Date:<br /><input id="eventDate" name="eventPosting" type="date" /><br /></p>
         </div>
         <div class="col-md-3">
-            <h2>New Event</h2>
-            <p>Company - Job Title:<br /><input id="eventPosting" name="eventPosting" type="text" /><br /></p>
-            <p><input id="requiresAction" type="checkbox" value="Requires Action" /><br /></p>
-            <p>Description:<br /><textarea id="jobDescription"></textarea><br /></p>
-            <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301871">Add</a></p>
+            <p>Posting:<br /><select id="eventPosting" class="dropdownStyle"></select><br /></p>
+        </div>
+        <div class="col-md-3">
+            <p>Action:<br /><textarea id="jobDescription"></textarea><br /></p>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <p>Action is required: <input id="requiresAction" type="checkbox" /><br /></p>
+                <p><button id="eventAddButton" class="btn btn-default" type="submit" onclick="AddNewEvent()">Add</button></p>
+                <p><button id="eventEditButton" class="btn btn-default" type="submit" onclick="EditEvent()" style="display: none;">Edit</button></p>
+            </div>
         </div>
     </div>
