@@ -370,17 +370,23 @@
         });
     }
 
-    function RadioAdd(dropdownId, addButtonId, editButtonId) {
+    function RadioAdd(dropdownId, addButtonId, editButtonId, column) {
         document.getElementById(dropdownId).disabled = true;
         document.getElementById(dropdownId).selectedIndex = 0;
         document.getElementById(addButtonId).style.display = "inline";
         document.getElementById(editButtonId).style.display = "none";
+        ExposeColumn(column);
     }
 
-    function RadioEdit(dropdownId, addButtonId, editButtonId) {
+    function RadioEdit(dropdownId, addButtonId, editButtonId, column) {
         document.getElementById(dropdownId).disabled = false;
         document.getElementById(addButtonId).style.display = "none";
         document.getElementById(editButtonId).style.display = "inline";
+        document.getElementById(column).style.display = "none";
+    }
+
+    function ExposeColumn(column) {
+        document.getElementById(column).style.display = "inline";
     }
 
 </script>
@@ -396,6 +402,9 @@
         width: 122px;
         border-color: #A9A9A9;
     }
+    label {
+        font-weight: normal;
+    }
 </style>
 <div class="jumbotron">
     <h1>MyJobRepo</h1>
@@ -405,42 +414,44 @@
     <div class="row">
         <div id="companyColumn" class="col-md-3">
             <h2>Company</h2>
-            <p><input type="radio" name="companyRadio" value="add" checked="checked" onclick="RadioAdd('companyEditDropdown', 'companyAddButton', 'companyEditButton')" /> Add</p>
+            <p><input type="radio" name="companyRadio" value="add" checked="checked" onclick="RadioAdd('companyEditDropdown', 'companyAddButton', 'companyEditButton', 'company')" /> Add</p>
             <p>
-                <input type="radio" name="companyRadio" value="edit" onclick="RadioEdit('companyEditDropdown','companyAddButton', 'companyEditButton')" /> Edit &nbsp;
-                <select id="companyEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
+                <input type="radio" name="companyRadio" value="edit" onclick="RadioEdit('companyEditDropdown','companyAddButton', 'companyEditButton', 'company')" /> Edit &nbsp;
+                <select id="companyEditDropdown" class="editDropdownStyle" disabled="disabled" onchange="ExposeColumn('company')"></select>
             </p>
-            <p>Name:<br /><input id="companyName" name="companyName" type="text" /><br /></p>
-            <p>Link:<br /><input id="companyLink" name="companyLink" type="text" /><br /></p>
-            <p>Description:<br /><textarea id="companyDescription"></textarea><br /></p>
-            <p><button id="companyAddButton" class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
-            <p><button id="companyEditButton" class="btn btn-default" type="submit" onclick="EditCompany()" style="display: none;">Edit</button></p>
+            <div id="company">
+                <p>Name:<br /><input id="companyName" name="companyName" type="text" /><br /></p>
+                <p>Link:<br /><input id="companyLink" name="companyLink" type="text" /><br /></p>
+                <p>Description:><br /><textarea id="companyDescription"></textarea><br /></p>
+                <p><button id="companyAddButton" class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
+                <p><button id="companyEditButton" class="btn btn-default" type="submit" onclick="EditCompany()" style="display: none;">Edit</button></p>
+            </div>
         </div>
         <div id="contactColumn" class="col-md-3">
             <h2>Contact</h2>
             <p>
-                <input type="radio" name="contactRadio" value="add" checked="checked" onclick="RadioAdd('contactEditDropdown', 'contactAddButton', 'contactEditButton')" /> Add
+                <input type="radio" name="contactRadio" value="add" checked="checked" onclick="RadioAdd('contactEditDropdown', 'contactAddButton', 'contactEditButton', 'contact')" /> Add
             </p>
             <p>
-                <input type="radio" name="contactRadio" value="edit" onclick="RadioEdit('contactEditDropdown', 'contactAddButton', 'contactEditButton')" /> Edit &nbsp;
+                <input type="radio" name="contactRadio" value="edit" onclick="RadioEdit('contactEditDropdown', 'contactAddButton', 'contactEditButton', 'contact')" /> Edit &nbsp;
                 <select id="contactEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
             </p>
-            <p>Name:<br /><input id="contactName" name="contactName" type="text" /><br /></p>
-            <p>Type:<br /><select id="contactTypeDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Company:<br /><select id="contactCompanyDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Email:<br /><input id="contactEmail" name="contactEmail" type="text" /><br /></p>
-            <p>Phone:<br /><input id="contactPhone" name="contactPhone" type="text" /><br /></p>
-            <p>Notes:<br /><textarea id="contactNotes"></textarea><br /></p>
+            <p><label class="contact">Name:</label><br /><input id="contactName" name="contactName" type="text" class="contact" /><br /></p>
+            <p><label class="contact">Type:</label><br /><select id="contactTypeDropdown" class="dropdownStyle contact"></select><br /></p>
+            <p><label class="contact">Company:</label><br /><select id="contactCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
+            <p><label class="contact">Email:</label><br /><input id="contactEmail" name="contactEmail" type="text" class="contact" /><br /></p>
+            <p><label class="contact">Phone:</label><br /><input id="contactPhone" name="contactPhone" type="text" class="contact" /><br /></p>
+            <p><label class="contact">Notes:</label><br /><textarea id="contactNotes" class="contact"></textarea><br /></p>
             <p><button id="contactAddButton" class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
-            <p><button id="contactEditButton" class="btn btn-default" type="submit" onclick="EditContact()" style="display: none;">Edit</button></p>
+            <p><button id="contactEditButton" class="btn btn-default contact" type="submit" onclick="EditContact()" style="display: none;">Edit</button></p>
         </div>
         <div id="postingColumn" class="col-md-3">
             <h2>Opportunity</h2>
             <p>
-                <input type="radio" name="postingRadio" value="add" checked="checked" onclick="RadioAdd('postingEditDropdown', 'postingAddButton', 'postingEditButton')" /> Add
+                <input type="radio" name="postingRadio" value="add" checked="checked" onclick="RadioAdd('postingEditDropdown', 'postingAddButton', 'postingEditButton', 'posting')" /> Add
             </p>
             <p>
-                <input type="radio" name="postingRadio" value="edit" onclick="RadioEdit('postingEditDropdown', 'postingAddButton', 'postingEditButton')" /> Edit &nbsp;
+                <input type="radio" name="postingRadio" value="edit" onclick="RadioEdit('postingEditDropdown', 'postingAddButton', 'postingEditButton', 'posting')" /> Edit &nbsp;
                 <select id="postingEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
             </p>
             <p>Job title:<br /><input id="jobTitle" name="postingJobTitle" type="text" /><br /></p>
@@ -465,10 +476,10 @@
         <div id="eventColumn" class="col-md-3">
             <h2>Event</h2>
             <p>
-                <input type="radio" name="eventRadio" value="add" checked="checked" onclick="RadioAdd('eventEditDropdown', 'eventAddButton', 'eventEditButton')" /> Add
+                <input type="radio" name="eventRadio" value="add" checked="checked" onclick="RadioAdd('eventEditDropdown', 'eventAddButton', 'eventEditButton', 'event')" /> Add
             </p>
             <p>
-                <input type="radio" name="eventRadio" value="edit" onclick="RadioEdit('eventEditDropdown', 'eventAddButton', 'eventEditButton')" /> Edit &nbsp;
+                <input type="radio" name="eventRadio" value="edit" onclick="RadioEdit('eventEditDropdown', 'eventAddButton', 'eventEditButton', 'event')" /> Edit &nbsp;
                 <select id="eventEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
             </p>
         </div>
