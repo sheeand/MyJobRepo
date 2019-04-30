@@ -45,8 +45,11 @@
         LoadAcctManagerDropdown();
         LoadCompanyEditDropdown();
         LoadContactEditDropdown();
+        LoadPostingCompanyDropdown();
         LoadPostingEditDropdown();
         LoadEventEditDropdown();
+        LoadEventAddDropdown();
+        LoadEventPostingDropdown();
     }
 
     function LoadCompanyEditDropdown() {
@@ -91,69 +94,6 @@
         });
     }
 
-    function LoadPostingEditDropdown() {
-        PreloadFirstEditDropdownOption("postingEditDropdown");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Posting",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
-                            '">' +
-                            data[i].name +
-                            '</option>';
-                        $("#postingEditDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadEventEditDropdown() {
-        PreloadFirstEditDropdownOption("eventEditDropdown");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Event",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
-                            '">' +
-                            data[i].name +
-                            '</option>';
-                        $("#eventEditDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadEventAddDropdown() {
-        PreloadFirstEditDropdownOption("eventEditDropdown");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Posting/ForEventDropdown",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
-                            '">' +
-                            data[i].name +
-                            '</option>';
-                        $("#eventEditDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
     function LoadContactTypeDropdown() {
         PreloadFirstDropdownOption("contactTypeDropdown", "Contact Type");
         $.ajax({
@@ -191,6 +131,27 @@
                             data[i].companyName +
                             '</option>';
                         $("#contactCompanyDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadPostingEditDropdown() {
+        PreloadFirstEditDropdownOption("postingEditDropdown");
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Posting",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#postingEditDropdown").append(optionhtml);
                     });
             }
         });
@@ -343,6 +304,69 @@
         });
     }
 
+    function LoadEventEditDropdown() {
+        PreloadFirstEditDropdownOption("eventEditDropdown");
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Event",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].contactTypeId +
+                            '">' +
+                            data[i].name +
+                            '</option>';
+                        $("#eventEditDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadEventAddDropdown() {
+        PreloadFirstEditDropdownOption("eventEditDropdown");
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Posting/ForEventDropdown",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].companyId +
+                            '">' +
+                            data[i].companyName +
+                            '</option>';
+                        $("#eventEditDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadEventPostingDropdown() {
+        PreloadFirstEditDropdownOption("eventPostingDropdown");
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Posting/All",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].postingId +
+                            '">' +
+                            data[i].companyName +
+                            '</option>';
+                        $("#eventPostingDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
     function AddNewCompany() {
         var companyName = $("[name='companyName']").val();
         var link = $("[name='companyLink']").val();
@@ -393,6 +417,7 @@
 
     function AddNewPosting() {
         var jobTitle = $("[name='postingJobTitle']").val();
+        var selectedCompanyName = $("select#postingCompanyDropdown")[0].selectedOptions[0].text;
         var selectedHRRepId = $("select#hrRepDropdown")[0].value;
         var selectedSrDevId = $("select#srDevDropdown")[0].value;
         var selectedDevId = $("select#devDropdown")[0].value;
@@ -404,6 +429,7 @@
         var description = $("[name='jobDescr']").val();
         var dataToPost = {
             Title: jobTitle,
+            CompanyName: selectedCompanyName,
             HRRepContactId: selectedHRRepId,
             SrDevContactId: selectedSrDevId,
             DevContactId: selectedDevId,
@@ -511,7 +537,7 @@
                 <select id="postingEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
             </p>
             <p>Job title:<br /><input id="jobTitle" name="postingJobTitle" type="text" /><br /></p>
-            <p>Company:<br /><label id="postingCompany" /><br /></p>
+            <p>Company:<br /><select id="postingCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
             <p>Link:<br /><input id="postingLink" name="postingLink" type="text" /><br /></p>
             <p>HR Representative:<br /><select id="hrRepDropdown" class="dropdownStyle"></select><br /></p>
             <p>Senior Developer:<br /><select id="srDevDropdown" class="dropdownStyle"></select><br /></p>
@@ -547,7 +573,7 @@
             <p>Date:<br /><input id="eventDate" name="eventPosting" type="date" /><br /></p>
         </div>
         <div class="col-md-3">
-            <p>Posting:<br /><select id="eventPosting" class="dropdownStyle"></select><br /></p>
+            <p>Posting:<br /><select id="eventPostingDropdown" class="dropdownStyle"></select><br /></p>
         </div>
         <div class="col-md-3">
             <p>Action:<br /><textarea id="jobDescription"></textarea><br /></p>

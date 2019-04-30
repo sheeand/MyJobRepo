@@ -50,10 +50,13 @@ namespace MyJobRepo.Controllers
             {
                 try
                 {
-                    var result = await Repo.GetAllPostingsAsync();
+                    var result = await Repo.GetAllPostingsForEventDropdownAsync();
 
                     // mapping
                     var mappedResult = Mapper.Map<IEnumerable<PostingModel>>(result);
+
+                // add job company
+
                     if (result == null) return NotFound();
 
                     return Ok(mappedResult);
@@ -94,6 +97,7 @@ namespace MyJobRepo.Controllers
                 Dictionary<string, object> postingObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
                 var title = postingObject["Title"].ToString();
+                var companyName = postingObject["CompanyName"].ToString();
                 var hrRepContactId = Convert.ToInt32(postingObject["HRRepContactId"]);
                 var srDevContactId = Convert.ToInt32(postingObject["SrDevContactId"]);
                 var devContactId = Convert.ToInt32(postingObject["DevContactId"]);
@@ -106,6 +110,7 @@ namespace MyJobRepo.Controllers
 
                 var posting = new PostingModel();
                 posting.Title = title;
+                posting.CompanyName = companyName;
                 posting.HRRepContactId = hrRepContactId;
                 posting.SrDevContactId = srDevContactId;
                 posting.DevContactId = devContactId;
@@ -127,7 +132,7 @@ namespace MyJobRepo.Controllers
         {
             var postingEntity = new Posting()
             {
-                PostingId = model.PostingId,
+                CompanyName = model.CompanyName,
                 Title = model.Title,
                 Link = model.Link,
                 Description = model.Description,

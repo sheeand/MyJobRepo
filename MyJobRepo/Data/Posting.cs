@@ -10,6 +10,7 @@ namespace MyJobRepo.Data
     {
         // Columns
         public int PostingId { get; set; }
+        public string CompanyName { get; set; }
         public string Title { get; set; }
         public int HRRepContactId { get; set; }
         public int SrDevContactId { get; set; }

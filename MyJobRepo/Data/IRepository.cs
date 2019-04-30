@@ -16,5 +16,6 @@ namespace MyJobRepo.Data
         Task<Company[]> GetAllCompaniesAsync();
         Task<Posting> GetPostingAsync(int postingId);
         Task<Posting[]> GetAllPostingsAsync();
+        Task<Posting[]> GetAllPostingsForEventDropdownAsync();
     }
 }

@@ -86,5 +86,11 @@ namespace MyJobRepo.Data
                 .Where(x => x.PostingId == postingId);
             return await query.FirstOrDefaultAsync();
         }
+
+        public async Task<Posting[]> GetAllPostingsForEventDropdownAsync()
+        {
+            IQueryable<Posting> query = dbContext.Postings;
+            return await query.ToArrayAsync();
+        }
     }
 }
