@@ -12,7 +12,7 @@ namespace MyJobRepo.Data
         public string Name { get; set; }
 
         // One-to-many relationships
-        public virtual ICollection<Contact> Contacts { get; set; }
+        //public virtual ICollection<Contact> Contacts { get; set; }
 
     }
 }

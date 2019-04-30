@@ -114,8 +114,8 @@ namespace MyJobRepo.Controllers
             JavaScriptSerializer json_serializer = new JavaScriptSerializer();
             Dictionary<string, object> contactObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
-            var companyId = (int)contactObject["CompanyId"];
-            var contactTypeId = (int)contactObject["ContactTypeId"];
+            var companyId = Convert.ToInt32(contactObject["CompanyId"]);
+            var contactTypeId = Convert.ToInt32(contactObject["ContactTypeId"]);
             var contactName = contactObject["ContactName"].ToString();
             var email = contactObject["Email"].ToString();
             var phone = contactObject["Phone"].ToString();

@@ -85,7 +85,6 @@ namespace MyJobRepo.Controllers
                 }
             }
 
-            //POST: api/Company
             [Route()]
             [HttpPost]
             public HttpResponseMessage Posting(HttpRequestMessage Data)
@@ -94,16 +93,25 @@ namespace MyJobRepo.Controllers
                 JavaScriptSerializer json_serializer = new JavaScriptSerializer();
                 Dictionary<string, object> postingObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
-                var postingId = (int)postingObject["PostingId"];
-                var companyId = (int)postingObject["CompanyId"];
                 var title = postingObject["Title"].ToString();
+                var hrRepContactId = Convert.ToInt32(postingObject["HRRepContactId"]);
+                var srDevContactId = Convert.ToInt32(postingObject["SrDevContactId"]);
+                var devContactId = Convert.ToInt32(postingObject["DevContactId"]);
+                var hiringMgrContactId = Convert.ToInt32(postingObject["HiringMgrContactId"]);
+                var recruiterContactId = Convert.ToInt32(postingObject["RecruiterContactId"]);
+                var acctManagerContactId = Convert.ToInt32(postingObject["AcctManagerContactId"]);
                 var link = postingObject["Link"].ToString();
                 var description = postingObject["Description"].ToString();
                 var isActive = (bool)postingObject["IsActive"];
+
                 var posting = new PostingModel();
-                posting.CompanyId = companyId;
-                posting.PostingId = postingId;
                 posting.Title = title;
+                posting.HRRepContactId = hrRepContactId;
+                posting.SrDevContactId = srDevContactId;
+                posting.DevContactId = devContactId;
+                posting.HiringMgrContactId = hiringMgrContactId;
+                posting.RecruiterContactId = recruiterContactId;
+                posting.AcctManagerContactId = acctManagerContactId;
                 posting.Link = link;
                 posting.Description = description;
                 posting.IsActive = isActive;
@@ -116,23 +124,27 @@ namespace MyJobRepo.Controllers
             }
 
         private void SaveNewPosting(PostingModel model)
+        {
+            var postingEntity = new Posting()
             {
+                PostingId = model.PostingId,
+                Title = model.Title,
+                Link = model.Link,
+                Description = model.Description,
+                IsActive = model.IsActive,
+                HRRepContactId = model.HRRepContactId,
+                SrDevContactId = model.SrDevContactId,
+                DevContactId = model.DevContactId,
+                HiringMgrContactId = model.HiringMgrContactId,
+                RecruiterContactId = model.RecruiterContactId,
+                AcctManagerContactId = model.AcctManagerContactId
+            };
 
-                var entity = new Posting()
-                {
-                    PostingId = model.PostingId,
-                    CompanyId = model.CompanyId,
-                    Title = model.Title,
-                    Link = model.Link,
-                    Description = model.Description,
-                    IsActive = model.IsActive
-                };
-
-                using (var context = new MyJobRepoContext())
-                {
-                    context.Postings.Add(entity);
-                    context.SaveChanges();
-                }
+            using (var context = new MyJobRepoContext())
+            {
+                context.Postings.Add(postingEntity);
+                context.SaveChanges();
             }
         }
     }
+}

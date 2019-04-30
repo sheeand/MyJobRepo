@@ -366,8 +366,8 @@
 
     function AddNewContact() {
         var contactName = $("[name='contactName']").val();
-        var selectedContactTypeId = $("select#contactTypeDropdown")[0].selectedIndex;
-        var selectedCompanyId = $("select#contactCompanyDropdown")[0].selectedIndex;
+        var selectedContactTypeId = $("select#contactTypeDropdown")[0].value;
+        var selectedCompanyId = $("select#contactCompanyDropdown")[0].value;
         var contactEmail = $("[name='contactEmail']").val();
         var contactPhone = $("[name='contactPhone']").val();
         var contactNotes = $("#contactNotes").val();
@@ -382,6 +382,41 @@
         $.ajax({
             type: "POST",
             url: "http://" + "@ViewBag.Host" + "/API/Contact",
+            contentType: 'application/json',
+            async: true,
+            data: JSON.stringify(dataToPost),
+            complete: function () {
+                ResetForm();
+            }
+        });
+    }
+
+    function AddNewPosting() {
+        var jobTitle = $("[name='postingJobTitle']").val();
+        var selectedHRRepId = $("select#hrRepDropdown")[0].value;
+        var selectedSrDevId = $("select#srDevDropdown")[0].value;
+        var selectedDevId = $("select#devDropdown")[0].value;
+        var selectedHiringMgrId = $("select#hiringMgrDropdown")[0].value;
+        var selectedRecruiterId = $("select#recruiterDropdown")[0].value;
+        var selectedAccountMgrId = $("select#acctManagerDropdown")[0].value;
+        var isActive = $("#isPostingActive")[0].checked;
+        var link = $("[name='postingLink']").val();
+        var description = $("[name='jobDescr']").val();
+        var dataToPost = {
+            Title: jobTitle,
+            HRRepContactId: selectedHRRepId,
+            SrDevContactId: selectedSrDevId,
+            DevContactId: selectedDevId,
+            HiringMgrContactId: selectedHiringMgrId,
+            RecruiterContactId: selectedRecruiterId,
+            AcctManagerContactId: selectedAccountMgrId,
+            IsActive: isActive,
+            Link: link,
+            Description: description
+        };
+        $.ajax({
+            type: "POST",
+            url: "http://" + "@ViewBag.Host" + "/API/Posting",
             contentType: 'application/json',
             async: true,
             data: JSON.stringify(dataToPost),
@@ -477,6 +512,7 @@
             </p>
             <p>Job title:<br /><input id="jobTitle" name="postingJobTitle" type="text" /><br /></p>
             <p>Company:<br /><label id="postingCompany" /><br /></p>
+            <p>Link:<br /><input id="postingLink" name="postingLink" type="text" /><br /></p>
             <p>HR Representative:<br /><select id="hrRepDropdown" class="dropdownStyle"></select><br /></p>
             <p>Senior Developer:<br /><select id="srDevDropdown" class="dropdownStyle"></select><br /></p>
             <p>Developer:<br /><select id="devDropdown" class="dropdownStyle"></select><br /></p>
@@ -484,11 +520,11 @@
         </div>
         <div class="col-md-3">
             <h2>&nbsp;</h2>
-            <p>Discontinued: <input id="isPostingActive" type="checkbox" value="Active" /><br /><br /></p>
+            <p>Active: <input id="isPostingActive" name="isPostingActive" type="checkbox" value="Active" /><br /><br /></p>
             <p>Recruiting Company:<br /><label id="recruitingCompany" /><br /></p>
             <p>Recruiter:<br /><select id="recruiterDropdown" class="dropdownStyle"></select><br /></p>
             <p>Acct. Manager:<br /><select id="acctManagerDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Description:<br /><textarea id="jobDescr"></textarea><br /></p>
+            <p>Description:<br /><textarea id="jobDescr" name="jobDescr"></textarea><br /></p>
             <p><button id="postingAddButton" class="btn btn-default" type="submit" onclick="AddNewPosting()">Add</button></p>
             <p><button id="postingEditButton" class="btn btn-default" type="submit" onclick="EditPosting()" style="display: none;">Edit</button></p>
         </div>
