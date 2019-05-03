@@ -1,5 +1,5 @@
-﻿
-@model MyJobRepo.Models.MyJobRepo_Resources
+﻿@using System.Web.UI.HtmlControls
+
 
 <script type="text/javascript" src="../../Scripts/jquery-3.3.1.min.js"></script>
 
@@ -50,6 +50,7 @@
         LoadEventEditDropdown();
         LoadEventAddDropdown();
         LoadEventPostingDropdown();
+        LoadPostingListDropdown();
     }
 
     function LoadCompanyEditDropdown() {
@@ -308,7 +309,7 @@
         PreloadFirstEditDropdownOption("eventEditDropdown");
         $.ajax({
             type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Event",
+            url: "http://" + "@ViewBag.Host" + "/API/Event/All",
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
@@ -326,21 +327,21 @@
     }
 
     function LoadEventAddDropdown() {
-        PreloadFirstEditDropdownOption("eventEditDropdown");
+        PreloadFirstEditDropdownOption("eventAddDropdown");
         $.ajax({
             type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Posting/ForEventDropdown",
+            url: "http://" + "@ViewBag.Host" + "/API/Posting/All",
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
                 $.each(data,
                     function(i) {
                         var optionhtml = '<option value="' +
-                            data[i].companyId +
+                            data[i].postingId +
                             '">' +
                             data[i].companyName +
                             '</option>';
-                        $("#eventEditDropdown").append(optionhtml);
+                        $("#eventAddDropdown").append(optionhtml);
                     });
             }
         });
@@ -362,6 +363,46 @@
                             data[i].companyName +
                             '</option>';
                         $("#eventPostingDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadPostingListDropdown() {
+        PreloadFirstDropdownOption("postingListDropdown", "Company");
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Company",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        var optionhtml = '<option value="' +
+                            data[i].companyId +
+                            '">' +
+                            data[i].companyName +
+                            '</option>';
+                        $("#postingListDropdown").append(optionhtml);
+                    });
+            }
+        });
+    }
+
+    function LoadEventPostingList() {
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Event",
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function (data) {
+                $.each(data,
+                    function (i) {
+                        var div = document.CreateElement("div");
+                        div.innerHTML.id = "postingListColumn-" + i + "-Button";
+                        div.innerHTML.class = "col-md-2";
+                        div.innerText = data[i];
+                        document.getElementById("#eventPostingList").appendChild(div);
                     });
             }
         });
@@ -418,6 +459,7 @@
     function AddNewPosting() {
         var jobTitle = $("[name='postingJobTitle']").val();
         var selectedCompanyName = $("select#postingCompanyDropdown")[0].selectedOptions[0].text;
+        var selectedCompanyId = $("select#postingCompanyDropdown")[0].selectedOptions[0].value;
         var selectedHRRepId = $("select#hrRepDropdown")[0].value;
         var selectedSrDevId = $("select#srDevDropdown")[0].value;
         var selectedDevId = $("select#devDropdown")[0].value;
@@ -430,6 +472,7 @@
         var dataToPost = {
             Title: jobTitle,
             CompanyName: selectedCompanyName,
+            CompanyId: selectedCompanyId,
             HRRepContactId: selectedHRRepId,
             SrDevContactId: selectedSrDevId,
             DevContactId: selectedDevId,
@@ -443,6 +486,29 @@
         $.ajax({
             type: "POST",
             url: "http://" + "@ViewBag.Host" + "/API/Posting",
+            contentType: 'application/json',
+            async: true,
+            data: JSON.stringify(dataToPost),
+            complete: function () {
+                ResetForm();
+            }
+        });
+    }
+
+    function AddNewEvent() {
+        var entryDateTime = $("[name='entryDateTime']").val();
+        var selectedPostingId = $("select#eventPostingDropdown")[0].selectedOptions[0].value;
+        var requiresAction = $("#requiresAction")[0].checked;
+        var action = $("#eventAction").text();
+        var dataToPost = {
+            PostingId: selectedPostingId,
+            EntryDateTime: entryDateTime,
+            RequiresAction: requiresAction,
+            Action: action,
+        };
+        $.ajax({
+            type: "POST",
+            url: "http://" + "@ViewBag.Host" + "/API/Event",
             contentType: 'application/json',
             async: true,
             data: JSON.stringify(dataToPost),
@@ -478,111 +544,171 @@
         height: 26px;
         width: 173px;
         border-color: #A9A9A9;
-        }
+    }
+
     .editDropdownStyle {
         height: 26px;
         width: 122px;
         border-color: #A9A9A9;
     }
+
     label {
         font-weight: normal;
     }
 </style>
+
+<input id="postingList" type="hidden" name="postingList" />
+
+
 <div class="jumbotron">
     <h1>MyJobRepo</h1>
-    <p class="lead">An exercise in developing a .NET Web API Application</p><br />
+    <p class="lead">An exercise building a .NET Web API / MVC Application</p><br />
     Add the entities, working from left to right. The dropdown lists will repopulate asynchronously.
 </div>
-    <div class="row">
-        <div id="companyColumn" class="col-md-3">
-            <h2>Company</h2>
-            <p><input type="radio" name="companyRadio" value="add" checked="checked" onclick="RadioAdd('companyEditDropdown', 'companyAddButton', 'companyEditButton', 'company')" /> Add</p>
-            <p>
-                <input type="radio" name="companyRadio" value="edit" onclick="RadioEdit('companyEditDropdown','companyAddButton', 'companyEditButton', 'company')" /> Edit &nbsp;
-                <select id="companyEditDropdown" class="editDropdownStyle" disabled="disabled" onchange="ExposeColumn('company')"></select>
-            </p>
-            <div id="company">
-                <p>Name:<br /><input id="companyName" name="companyName" type="text" /><br /></p>
-                <p>Link:<br /><input id="companyLink" name="companyLink" type="text" /><br /></p>
-                <p>Description:><br /><textarea id="companyDescription"></textarea><br /></p>
-                <p><button id="companyAddButton" class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
-                <p><button id="companyEditButton" class="btn btn-default" type="submit" onclick="EditCompany()" style="display: none;">Edit</button></p>
-            </div>
-        </div>
-        <div id="contactColumn" class="col-md-3">
-            <h2>Contact</h2>
-            <p>
-                <input type="radio" name="contactRadio" value="add" checked="checked" onclick="RadioAdd('contactEditDropdown', 'contactAddButton', 'contactEditButton', 'contact')" /> Add
-            </p>
-            <p>
-                <input type="radio" name="contactRadio" value="edit" onclick="RadioEdit('contactEditDropdown', 'contactAddButton', 'contactEditButton', 'contact')" /> Edit &nbsp;
-                <select id="contactEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
-            </p>
-            <p><label class="contact">Name:</label><br /><input id="contactName" name="contactName" type="text" class="contact" /><br /></p>
-            <p><label class="contact">Type:</label><br /><select id="contactTypeDropdown" class="dropdownStyle contact"></select><br /></p>
-            <p><label class="contact">Company:</label><br /><select id="contactCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
-            <p><label class="contact">Email:</label><br /><input id="contactEmail" name="contactEmail" type="text" class="contact" /><br /></p>
-            <p><label class="contact">Phone:</label><br /><input id="contactPhone" name="contactPhone" type="text" class="contact" /><br /></p>
-            <p><label class="contact">Notes:</label><br /><textarea id="contactNotes" class="contact"></textarea><br /></p>
-            <p><button id="contactAddButton" class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
-            <p><button id="contactEditButton" class="btn btn-default contact" type="submit" onclick="EditContact()" style="display: none;">Edit</button></p>
-        </div>
-        <div id="postingColumn" class="col-md-3">
-            <h2>Opportunity</h2>
-            <p>
-                <input type="radio" name="postingRadio" value="add" checked="checked" onclick="RadioAdd('postingEditDropdown', 'postingAddButton', 'postingEditButton', 'posting')" /> Add
-            </p>
-            <p>
-                <input type="radio" name="postingRadio" value="edit" onclick="RadioEdit('postingEditDropdown', 'postingAddButton', 'postingEditButton', 'posting')" /> Edit &nbsp;
-                <select id="postingEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
-            </p>
-            <p>Job title:<br /><input id="jobTitle" name="postingJobTitle" type="text" /><br /></p>
-            <p>Company:<br /><select id="postingCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
-            <p>Link:<br /><input id="postingLink" name="postingLink" type="text" /><br /></p>
-            <p>HR Representative:<br /><select id="hrRepDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Senior Developer:<br /><select id="srDevDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Developer:<br /><select id="devDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Hiring Manager:<br /><select id="hiringMgrDropdown" class="dropdownStyle"></select><br /></p>
-        </div>
-        <div class="col-md-3">
-            <h2>&nbsp;</h2>
-            <p>Active: <input id="isPostingActive" name="isPostingActive" type="checkbox" value="Active" /><br /><br /></p>
-            <p>Recruiting Company:<br /><label id="recruitingCompany" /><br /></p>
-            <p>Recruiter:<br /><select id="recruiterDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Acct. Manager:<br /><select id="acctManagerDropdown" class="dropdownStyle"></select><br /></p>
-            <p>Description:<br /><textarea id="jobDescr" name="jobDescr"></textarea><br /></p>
-            <p><button id="postingAddButton" class="btn btn-default" type="submit" onclick="AddNewPosting()">Add</button></p>
-            <p><button id="postingEditButton" class="btn btn-default" type="submit" onclick="EditPosting()" style="display: none;">Edit</button></p>
+<div class="row">
+    <div id="companyColumn" class="col-md-3">
+        <h2>Company</h2>
+        <p><input type="radio" name="companyRadio" value="add" checked="checked" onclick="RadioAdd('companyEditDropdown', 'companyAddButton', 'companyEditButton', 'company')" /> Add</p>
+        <p>
+            <input type="radio" name="companyRadio" value="edit" onclick="RadioEdit('companyEditDropdown','companyAddButton', 'companyEditButton', 'company')" /> Edit &nbsp;
+            <select id="companyEditDropdown" class="editDropdownStyle" disabled="disabled" onchange="ExposeColumn('company')"></select>
+        </p>
+        <div id="company">
+            <p><label class="company">Name:</label><br /><input id="companyName" name="companyName" type="text" /><br /></p>
+            <p><label class="company">Link:</label><br /><input id="companyLink" name="companyLink" type="text" /><br /></p>
+            <p><label class="company">Description:></label><br /><textarea id="companyDescription"></textarea><br /></p>
+            <p><button id="companyAddButton" class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
+            <p><button id="companyEditButton" class="btn btn-default" type="submit" onclick="EditCompany()" style="display: none;">Edit</button></p>
         </div>
     </div>
-    <div class="row">
-        <div id="eventColumn" class="col-md-3">
-            <h2>Event</h2>
-            <p>
-                <input type="radio" name="eventRadio" value="add" checked="checked" onclick="RadioAdd('eventEditDropdown', 'eventAddButton', 'eventEditButton', 'event')" /> Add
-                <select id="eventAddDropdown" class="editDropdownStyle"></select>
-            </p>
-            <p>
-                <input type="radio" name="eventRadio" value="edit" onclick="RadioEdit('eventEditDropdown', 'eventAddButton', 'eventEditButton', 'event')" /> Edit &nbsp;
-                <select id="eventEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
-            </p>
-        </div>
+    <div id="contactColumn" class="col-md-3">
+        <h2>Contact</h2>
+        <p>
+            <input type="radio" name="contactRadio" value="add" checked="checked" onclick="RadioAdd('contactEditDropdown', 'contactAddButton', 'contactEditButton', 'contact')" /> Add
+        </p>
+        <p>
+            <input type="radio" name="contactRadio" value="edit" onclick="RadioEdit('contactEditDropdown', 'contactAddButton', 'contactEditButton', 'contact')" /> Edit &nbsp;
+            <select id="contactEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
+        </p>
+        <p><label class="contact">Name:</label><br /><input id="contactName" name="contactName" type="text" class="contact" /><br /></p>
+        <p><label class="contact">Type:</label><br /><select id="contactTypeDropdown" class="dropdownStyle contact"></select><br /></p>
+        <p><label class="contact">Company:</label><br /><select id="contactCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
+        <p><label class="contact">Email:</label><br /><input id="contactEmail" name="contactEmail" type="text" class="contact" /><br /></p>
+        <p><label class="contact">Phone:</label><br /><input id="contactPhone" name="contactPhone" type="text" class="contact" /><br /></p>
+        <p><label class="contact">Notes:</label><br /><textarea id="contactNotes" class="contact"></textarea><br /></p>
+        <p><button id="contactAddButton" class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
+        <p><button id="contactEditButton" class="btn btn-default contact" type="submit" onclick="EditContact()" style="display: none;">Edit</button></p>
+    </div>
+    <div id="postingColumn" class="col-md-3">
+        <h2>Opportunity</h2>
+        <p>
+            <input type="radio" name="postingRadio" value="add" checked="checked" onclick="RadioAdd('postingEditDropdown', 'postingAddButton', 'postingEditButton', 'posting')" /> Add
+        </p>
+        <p>
+            <input type="radio" name="postingRadio" value="edit" onclick="RadioEdit('postingEditDropdown', 'postingAddButton', 'postingEditButton', 'posting')" /> Edit &nbsp;
+            <select id="postingEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
+        </p>
+        <p><label class="posting">Job title:</label><br /><input id="jobTitle" name="postingJobTitle" type="text" /><br /></p>
+        <p><label class="posting">Company:</label><br /><select id="postingCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
+        <p><label class="posting">Link:</label><br /><input id="postingLink" name="postingLink" type="text" /><br /></p>
+        <p><label class="posting">HR Representative:</label><br /><select id="hrRepDropdown" class="dropdownStyle"></select><br /></p>
+        <p><label class="posting">Senior Developer:</label><br /><select id="srDevDropdown" class="dropdownStyle"></select><br /></p>
+        <p><label class="posting">Developer:</label><br /><select id="devDropdown" class="dropdownStyle"></select><br /></p>
+        <p><label class="posting">Hiring Manager:</label><br /><select id="hiringMgrDropdown" class="dropdownStyle"></select><br /></p>
+    </div>
+    <div class="col-md-3">
+        <h2>&nbsp;</h2>
+        <p><label class="posting">Active: </label><input id="isPostingActive" name="isPostingActive" type="checkbox" value="Active" /><br /><br /></p>
+        <p><label class="posting">Recruiting Company:</label><br /><select id="postingRecruitingCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
+        <p><label class="posting">Recruiter:</label><br /><select id="recruiterDropdown" class="dropdownStyle"></select><br /></p>
+        <p><label class="posting">Acct. Manager:</label><br /><select id="acctManagerDropdown" class="dropdownStyle"></select><br /></p>
+        <p><label class="posting">Description:</label><br /><textarea id="jobDescr" name="jobDescr"></textarea><br /></p>
+        <p><button id="postingAddButton" class="btn btn-default" type="submit" onclick="AddNewPosting()">Add</button></p>
+        <p><button id="postingEditButton" class="btn btn-default" type="submit" onclick="EditPosting()" style="display: none;">Edit</button></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <h2>Event</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <p>
+            <input type="radio" name="eventRadio" value="add" checked="checked" onclick="RadioAdd('eventEditDropdown', 'eventAddButton', 'eventEditButton', 'event')" /> Add by Company: <br />
+            <select id="eventAddDropdown" class="editDropdownStyle"></select>
+        </p>
+    </div>
+    <div class="col-md-3">
+        <p>
+            <input type="radio" name="eventRadio" value="edit" onclick="RadioEdit('eventEditDropdown', 'eventAddButton', 'eventEditButton', 'event')" /> Edit Event: <br />
+            <select id="eventEditDropdown" class="editDropdownStyle" disabled="disabled"></select>
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <p><label class="event">EntryDateTime:</label><br /><input id="entryDateTime" name="entryDateTime" type="date" /><br /></p>
+    </div>
+    <div class="col-md-3">
+        <p><label class="event">Posting:</label><br /><select id="eventPostingDropdown" class="dropdownStyle"></select><br /></p>
+    </div>
+    <div class="col-md-3">
+        <p><label class="event">Action:</label><br /><textarea id="eventAction"></textarea><br /></p>
     </div>
     <div class="row">
         <div class="col-md-3">
-            <p>Date:<br /><input id="eventDate" name="eventPosting" type="date" /><br /></p>
-        </div>
-        <div class="col-md-3">
-            <p>Posting:<br /><select id="eventPostingDropdown" class="dropdownStyle"></select><br /></p>
-        </div>
-        <div class="col-md-3">
-            <p>Action:<br /><textarea id="jobDescription"></textarea><br /></p>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <p>Action is required: <input id="requiresAction" type="checkbox" /><br /></p>
-                <p><button id="eventAddButton" class="btn btn-default" type="submit" onclick="AddNewEvent()">Add</button></p>
-                <p><button id="eventEditButton" class="btn btn-default" type="submit" onclick="EditEvent()" style="display: none;">Edit</button></p>
-            </div>
+            <p><label class="event">Action is required: </label><input id="requiresAction" type="checkbox" /><br /></p>
+            <p><button id="eventAddButton" class="btn btn-default" type="submit" onclick="AddNewEvent()">Add</button></p>
+            <p><button id="eventEditButton" class="btn btn-default" type="submit" onclick="EditEvent()" style="display: none;">Edit</button></p>
         </div>
     </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Events by Opportunity</h2>
+    </div>
+</div>
+<div class="row">
+    <select id="eventListDropdown" class="editDropdownStyle" onchange="LoadEventList()"></select>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-2">Posting Id</div>
+    <div class="col-md-2">Company</div>
+    <div class="col-md-2">Title</div>
+    <div class="col-md-2">Recruiting Company</div>
+    <div class="col-md-2">Status</div>
+</div>
+
+@*Dynamic html goes in here that will look like this*@
+
+<div id="eventPostingList" class="row">
+
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <h2>Opportunities by Company</h2>
+    </div>
+</div>
+<div class="row">
+    <select id="postingListDropdown" class="editDropdownStyle" onchange="LoadEventPostingList()"></select>
+</div>
+<div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-2">Posting Id</div>
+    <div class="col-md-2">Company</div>
+    <div class="col-md-2">Title</div>
+    <div class="col-md-2">Recruiting Company</div>
+    <div class="col-md-2">Status</div>
+</div>
+
+@*Dynamic html goes in here that will look like this*@
+
+<div id="eventPostingList" class="row">
+
+</div>
+
+

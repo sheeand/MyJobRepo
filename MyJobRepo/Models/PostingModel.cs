@@ -8,6 +8,7 @@ namespace MyJobRepo.Models
     public class PostingModel
     {
         public int PostingId { get; set; }
+        public int CompanyId { get; set; }
         public string CompanyName { get; set; }
         public string Title { get; set; }
         public int HRRepContactId { get; set; }

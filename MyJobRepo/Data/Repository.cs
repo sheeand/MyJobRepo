@@ -87,10 +87,24 @@ namespace MyJobRepo.Data
             return await query.FirstOrDefaultAsync();
         }
 
-        public async Task<Posting[]> GetAllPostingsForEventDropdownAsync()
+        public async Task<Event[]> GetAllEventsByCompanyIdAsync(int companyId)
         {
-            IQueryable<Posting> query = dbContext.Postings;
+            IQueryable<Event> query = dbContext.Events
+                .Where(x => x.CompanyId == companyId);
             return await query.ToArrayAsync();
+        }
+
+        public async Task<Event[]> GetAllEventsAsync()
+        {
+            IQueryable<Event> query = dbContext.Events;
+            return await query.ToArrayAsync();
+        }
+
+        public async Task<Event> GetEventByIdAsync(int eventId)
+        {
+            IQueryable<Event> query = dbContext.Events
+                .Where(x => x.EventId == eventId);
+            return await query.FirstOrDefaultAsync();
         }
     }
 }

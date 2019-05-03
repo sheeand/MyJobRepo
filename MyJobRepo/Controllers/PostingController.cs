@@ -44,30 +44,6 @@ namespace MyJobRepo.Controllers
 
             }
 
-            [Route("ForEventDropdown")]
-            [HttpGet]
-            public async Task<IHttpActionResult> EventDropdown()
-            {
-                try
-                {
-                    var result = await Repo.GetAllPostingsForEventDropdownAsync();
-
-                    // mapping
-                    var mappedResult = Mapper.Map<IEnumerable<PostingModel>>(result);
-
-                // add job company
-
-                    if (result == null) return NotFound();
-
-                    return Ok(mappedResult);
-                }
-                catch //(Exception e)
-                {
-                    return InternalServerError();
-                }
-
-            }
-
         [Route("ById/{PostingId}")]
             public async Task<IHttpActionResult> Get(int postingId)
             {
@@ -98,6 +74,7 @@ namespace MyJobRepo.Controllers
 
                 var title = postingObject["Title"].ToString();
                 var companyName = postingObject["CompanyName"].ToString();
+                var companyId = Convert.ToInt32(postingObject["CompanyId"]);
                 var hrRepContactId = Convert.ToInt32(postingObject["HRRepContactId"]);
                 var srDevContactId = Convert.ToInt32(postingObject["SrDevContactId"]);
                 var devContactId = Convert.ToInt32(postingObject["DevContactId"]);
@@ -111,6 +88,7 @@ namespace MyJobRepo.Controllers
                 var posting = new PostingModel();
                 posting.Title = title;
                 posting.CompanyName = companyName;
+                posting.CompanyId = companyId;
                 posting.HRRepContactId = hrRepContactId;
                 posting.SrDevContactId = srDevContactId;
                 posting.DevContactId = devContactId;
