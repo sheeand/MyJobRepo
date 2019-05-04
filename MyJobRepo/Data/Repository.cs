@@ -36,6 +36,14 @@ namespace MyJobRepo.Data
             return await query.ToArrayAsync();
         }
 
+        public async Task<Company[]> GetCompaniesAsync(bool isEmployer)
+        {
+            IQueryable<Company> query = dbContext.Companies
+                .Where(y => y.IsEmployer == isEmployer);
+
+            return await query.ToArrayAsync();
+        }
+
         public async Task<Contact[]> GetAllContactsAsync()
         {
             IQueryable<Contact> query = dbContext.Contacts;

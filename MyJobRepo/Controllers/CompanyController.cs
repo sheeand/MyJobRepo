@@ -25,12 +25,54 @@ namespace MyJobRepo.Controllers
             Mapper = mapper;
         }
 
-        [Route()]
+        [Route("All")]
         public async Task<IHttpActionResult> Get()
         {
             try
             {
                 var result = await Repo.GetAllCompaniesAsync();
+
+                // mapping
+                var mappedResult = Mapper.Map<IEnumerable<CompanyModel>>(result);
+                if (result == null) return NotFound();
+
+                return Ok(mappedResult);
+            }
+            catch //(Exception e)
+            {
+                return InternalServerError();
+            }
+
+        }
+
+        [HttpGet]
+        [Route("Employers")]
+        public async Task<IHttpActionResult> Employers()
+        {
+            try
+            {
+                var result = await Repo.GetCompaniesAsync(true);
+
+                // mapping
+                var mappedResult = Mapper.Map<IEnumerable<CompanyModel>>(result);
+                if (result == null) return NotFound();
+
+                return Ok(mappedResult);
+            }
+            catch //(Exception e)
+            {
+                return InternalServerError();
+            }
+
+        }
+
+        [HttpGet]
+        [Route("Recruiters")]
+        public async Task<IHttpActionResult> Recruiters()
+        {
+            try
+            {
+                var result = await Repo.GetCompaniesAsync(false);
 
                 // mapping
                 var mappedResult = Mapper.Map<IEnumerable<CompanyModel>>(result);
@@ -76,9 +118,11 @@ namespace MyJobRepo.Controllers
 
             var companyName = companyObject["CompanyName"].ToString();
             var link = companyObject["Link"].ToString();
+            var isEmployer = Convert.ToBoolean(companyObject["IsEmployer"]);
             var desc = companyObject["Description"].ToString();
             var company = new CompanyModel();
             company.CompanyName = companyName;
+            company.IsEmployer = isEmployer;
             company.Link = link;
             company.Description = desc;
 
@@ -97,7 +141,8 @@ namespace MyJobRepo.Controllers
                 CompanyId = model.CompanyId,
                 Description = model.Description,
                 Link = model.Link,
-                CompanyName = model.CompanyName
+                CompanyName = model.CompanyName,
+                IsEmployer = model.IsEmployer
             };
 
             using (var context = new MyJobRepoContext())

@@ -19,5 +19,6 @@ namespace MyJobRepo.Data
         Task<Event[]> GetAllEventsByCompanyIdAsync(int companyId);
         Task<Event[]> GetAllEventsAsync();
         Task<Event> GetEventByIdAsync(int eventId);
+        Task<Company[]> GetCompaniesAsync(bool isEmployer);
     }
 }
