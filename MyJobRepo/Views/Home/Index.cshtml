@@ -48,10 +48,9 @@
         LoadContactEditDropdown();
         LoadPostingCompanyDropdown();
         LoadPostingEditDropdown();
-        LoadEventEditDropdown();
-        LoadEventAddDropdown();
+        //LoadEventEditDropdown();
+        LoadEventCompanyDropdown();
         LoadEventPostingDropdown();
-        LoadPostingListDropdown();
     }
 
     function LoadCompanyEditDropdown() {
@@ -348,8 +347,8 @@
         });
     }
 
-    function LoadEventAddDropdown() {
-        PreloadFirstEditDropdownOption("eventAddDropdown");
+    function LoadEventCompanyDropdown() {
+        PreloadFirstEditDropdownOption("eventCompanyDropdown");
         $.ajax({
             type: "GET",
             url: "http://" + "@ViewBag.Host" + "/API/Posting/All",
@@ -363,7 +362,7 @@
                             '">' +
                             data[i].companyName +
                             '</option>';
-                        $("#eventAddDropdown").append(optionhtml);
+                        $("#eventCompanyDropdown").append(optionhtml);
                     });
             }
         });
@@ -385,65 +384,6 @@
                             data[i].companyName +
                             '</option>';
                         $("#eventPostingDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadPostingListDropdown() {
-        PreloadFirstDropdownOption("postingListDropdown", "Company");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Company/All",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].companyId +
-                            '">' +
-                            data[i].companyName +
-                            '</option>';
-                        $("#postingListDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadEventsByPostingList() {
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Posting/All",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function (data) {
-                $.each(data,
-                    function (i) {
-                        var div = document.CreateElement("div");
-                        div.innerHTML.id = "postingListColumn-" + i + "-Button";
-                        div.innerHTML.class = "col-md-2";
-                        div.innerText = data[i];
-                        document.getElementById("#eventByPostingList").appendChild(div);
-                    });
-            }
-        });
-    }
-
-    function LoadPostingsByCompanyList() {
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Event/All",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function (data) {
-                $.each(data,
-                    function (i) {
-                        var div = document.CreateElement("div");
-                        div.innerHTML.id = "postingListColumn-" + i + "-Button";
-                        div.innerHTML.class = "col-md-2";
-                        div.innerText = data[i];
-                        document.getElementById("#postingByCompanyList").appendChild(div);
                     });
             }
         });
@@ -542,11 +482,12 @@
         var entryDateTime = $("[name='entryDateTime']").val();
         var selectedCompanyId = $("select#eventCompanyDropdown")[0].selectedOptions[0].value;
         var requiresAction = $("#requiresAction")[0].checked;
-        var action = $("#eventAction").text();
+        var action = $("#eventAction")[0].value;
         var dataToPost = {
+            PostingId: selectedCompanyId,
             CompanyId: selectedCompanyId,
             EntryDateTime: entryDateTime,
-            RequiresAction: requiresAction,
+            IsActionRequired: requiresAction,
             Action: action,
         };
         $.ajax({
@@ -623,12 +564,12 @@
             <input type="radio" name="companyRadio" value="edit" onclick="RadioEditSelect('company')" /> Edit &nbsp;
             <select id="companyEditDropdown" class="editDropdownStyle" style="display:none" onchange="ColumnDisplay('company', 'inline', true)"></select>
         </p>
-            <p><label class="company">Name:</label><br /><input id="companyName" class="company" name="companyName" type="text" /><br /></p>
-            <p><label class="company">Is an employer?</label> &nbsp; <input id="companyIsEmployer" class="company" type="checkbox" /><br /></p>
-            <p><label class="company">Link:</label><br /><input id="companyLink" class="company" name="companyLink" type="text" /><br /></p>
-            <p><label class="company">Description:</label><br /><textarea id="companyDescription" class="company"></textarea><br /></p>
-            <p><button id="companyAddButton" class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
-            <p><button id="companyEditButton" class="btn btn-default" type="submit" onclick="EditCompany()" style="display: none;">Edit</button></p>
+        <p><label class="company">Name:</label><br /><input id="companyName" class="company" name="companyName" type="text" /><br /></p>
+        <p><label class="company">Is an employer?</label> &nbsp; <input id="companyIsEmployer" class="company" type="checkbox" /><br /></p>
+        <p><label class="company">Link:</label><br /><input id="companyLink" class="company" name="companyLink" type="text" /><br /></p>
+        <p><label class="company">Description:</label><br /><textarea id="companyDescription" class="company"></textarea><br /></p>
+        <p><button id="companyAddButton" class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
+        <p><button id="companyEditButton" class="btn btn-default" type="submit" onclick="EditCompany()" style="display: none;">Edit</button></p>
     </div>
     <div id="contactColumn" class="col-md-3">
         <h2>Contact</h2>
@@ -639,17 +580,17 @@
             <input type="radio" name="contactRadio" value="edit" onclick="RadioEditSelect('contact')" /> Edit &nbsp;
             <select id="contactEditDropdown" class="editDropdownStyle" style="display:none" onchange="ColumnDisplay('contact', 'inline', true)"></select>
         </p>
-            <p><label class="contact">Name:</label><br /><input id="contactName" name="contactName" type="text" class="contact" /><br /></p>
-            <p><label class="contact">Type:</label><br /><select id="contactTypeDropdown" class="dropdownStyle contact"></select><br /></p>
-            <p><label class="contact">Company:</label><br /><select id="contactCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
-            <p><label class="contact">Email:</label><br /><input id="contactEmail" name="contactEmail" type="text" class="contact" /><br /></p>
-            <p><label class="contact">Phone:</label><br /><input id="contactPhone" name="contactPhone" type="text" class="contact" /><br /></p>
-            <p><label class="contact">Notes:</label><br /><textarea id="contactNotes" class="contact"></textarea><br /></p>
-            <p><button id="contactAddButton" class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
-            <p><button id="contactEditButton" class="btn btn-default" type="submit" onclick="EditContact()" style="display: none;">Edit</button></p>
+        <p><label class="contact">Name:</label><br /><input id="contactName" name="contactName" type="text" class="contact" /><br /></p>
+        <p><label class="contact">Type:</label><br /><select id="contactTypeDropdown" class="dropdownStyle contact"></select><br /></p>
+        <p><label class="contact">Company:</label><br /><select id="contactCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
+        <p><label class="contact">Email:</label><br /><input id="contactEmail" name="contactEmail" type="text" class="contact" /><br /></p>
+        <p><label class="contact">Phone:</label><br /><input id="contactPhone" name="contactPhone" type="text" class="contact" /><br /></p>
+        <p><label class="contact">Notes:</label><br /><textarea id="contactNotes" class="contact"></textarea><br /></p>
+        <p><button id="contactAddButton" class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
+        <p><button id="contactEditButton" class="btn btn-default" type="submit" onclick="EditContact()" style="display: none;">Edit</button></p>
     </div>
     <div id="postingColumn" class="col-md-3">
-        <h2>Opportunity</h2>
+        <h2>Posting</h2>
         <p>
             <input type="radio" name="postingRadio" value="add" checked="checked" onclick="RadioAddSelect('posting')" /> Add
         </p>
@@ -657,13 +598,13 @@
             <input type="radio" name="postingRadio" value="edit" onclick="RadioEditSelect('posting')" /> Edit &nbsp;
             <select id="postingEditDropdown" class="editDropdownStyle" style="display:none" onchange="ColumnDisplay('posting', 'inline', true)"></select>
         </p>
-            <p><label class="posting">Job title:</label><br /><input id="jobTitle" class="posting" name="postingJobTitle" type="text" /><br /></p>
-            <p><label class="posting">Company:</label><br /><select id="postingCompanyDropdown" class="dropdownStyle posting"></select><br /></p>
-            <p><label class="posting">Link:</label><br /><input id="postingLink" class="posting" name="postingLink" type="text" /><br /></p>
-            <p><label class="posting">HR Representative:</label><br /><select id="hrRepDropdown" class="dropdownStyle posting"></select><br /></p>
-            <p><label class="posting">Senior Developer:</label><br /><select id="srDevDropdown" class="dropdownStyle posting"></select><br /></p>
-            <p><label class="posting">Developer:</label><br /><select id="devDropdown" class="dropdownStyle posting"></select><br /></p>
-            <p><label class="posting">Hiring Manager:</label><br /><select id="hiringMgrDropdown" class="dropdownStyle posting"></select><br /></p>
+        <p><label class="posting">Job title:</label><br /><input id="jobTitle" class="posting" name="postingJobTitle" type="text" /><br /></p>
+        <p><label class="posting">Company:</label><br /><select id="postingCompanyDropdown" class="dropdownStyle posting"></select><br /></p>
+        <p><label class="posting">Link:</label><br /><input id="postingLink" class="posting" name="postingLink" type="text" /><br /></p>
+        <p><label class="posting">HR Representative:</label><br /><select id="hrRepDropdown" class="dropdownStyle posting"></select><br /></p>
+        <p><label class="posting">Senior Developer:</label><br /><select id="srDevDropdown" class="dropdownStyle posting"></select><br /></p>
+        <p><label class="posting">Developer:</label><br /><select id="devDropdown" class="dropdownStyle posting"></select><br /></p>
+        <p><label class="posting">Hiring Manager:</label><br /><select id="hiringMgrDropdown" class="dropdownStyle posting"></select><br /></p>
     </div>
     <div class="col-md-3">
         <h2>&nbsp;</h2>
@@ -671,7 +612,7 @@
         <p><label class="posting">Recruiting Company:</label><br /><select id="postingRecruitingCompanyDropdown" class="dropdownStyle posting"></select><br /></p>
         <p><label class="posting">Recruiter:</label><br /><select id="recruiterDropdown" class="dropdownStyle posting"></select><br /></p>
         <p><label class="posting">Acct. Manager:</label><br /><select id="acctManagerDropdown" class="dropdownStyle posting"></select><br /></p>
-        <p><label class="posting">Description:</label><br /><textarea id="jobDescr" name="jobDescr" class="posting" ></textarea><br /></p>
+        <p><label class="posting">Description:</label><br /><textarea id="jobDescr" name="jobDescr" class="posting"></textarea><br /></p>
         <p><button id="postingAddButton" class="btn btn-default" type="submit" onclick="AddNewPosting()">Add</button></p>
         <p><button id="postingEditButton" class="btn btn-default" type="submit" onclick="EditPosting()" style="display: none;">Edit</button></p>
     </div>
@@ -679,7 +620,7 @@
 <hr />
 <div class="row">
     <div class="col-md-3">
-        <h2>Activity</h2>
+        <h2>Event</h2>
     </div>
 </div>
 <div class="row">
@@ -690,56 +631,59 @@
         <p><label class="event">EntryDateTime:</label><br /><input id="entryDateTime" name="entryDateTime" type="date" /><br /></p>
     </div>
     <div class="col-md-3">
-        <p><label class="event">Activity:</label><br /><textarea id="eventAction"></textarea><br /></p>
+        <p><label class="event">Event:</label><br /><textarea id="eventAction"></textarea><br /></p>
     </div>
     <div class="col-md-3">
         <p><label class="event">Action is required: </label><input id="requiresAction" type="checkbox" /></p>
-        <p><button id="eventAddButton" class="btn btn-default" type="submit" onclick="AddNewEvent()">Add</button>
-        <button id="eventEditButton" class="btn btn-default" type="submit" onclick="EditEvent()" style="display: none;">Edit</button></p>
+        <p>
+            <button id="eventAddButton" class="btn btn-default" type="submit" onclick="AddNewEvent()">Add</button>
+            <button id="eventEditButton" class="btn btn-default" type="submit" onclick="EditEvent()" style="display: none;">Edit</button>
+        </p>
     </div>
 </div>
 <hr />
 <div class="row">
     <div class="col-md-6">
-        <h2>Activities by Opportunity</h2>
+        <h2>Events by Posting</h2>
     </div>
 </div>
 <div class="row">
-    <select id="eventListDropdown" class="editDropdownStyle" onchange="LoadEventList()"></select>
-</div>
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-2">Posting Id</div>
-    <div class="col-md-2">Company</div>
-    <div class="col-md-2">Title</div>
-    <div class="col-md-2">Recruiting Company</div>
-    <div class="col-md-2">Status</div>
-</div>
-
-<div id="eventByPostingList" class="row">
-
-</div>
-
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <h2>Opportunities by Company</h2>
+    <div class="col-md-2">
+        <label class="event">Company:</label><br /><select id="eventPostingDropdown" class="dropdownStyle" onchange="LoadEventsByPosting()"></select><br />
     </div>
 </div>
+<div class="row">&nbsp;</div>
 <div class="row">
-    <select id="postingListDropdown" class="editDropdownStyle" onchange="LoadPostingsByCompanyList()"></select>
-</div>
-<div class="row">
-    <div class="col-md-2"></div>
-    <div class="col-md-2">Posting Id</div>
+    <div class="col-md-1">Posting Id</div>
     <div class="col-md-2">Company</div>
-    <div class="col-md-2">Title</div>
-    <div class="col-md-2">Recruiting Company</div>
-    <div class="col-md-2">Status</div>
+    <div class="col-md-6">Event</div>
+    <div class="col-md-2">Action required</div>
+</div>
+<div id="eventByPosting" class="row">
 </div>
 
-<div id="postingByCompanyList" class="row">
+<script type="text/javascript">
 
-</div>
+    function LoadEventsByPosting() {
+        var selectedCompanyId = $("select#eventPostingDropdown")[0].selectedOptions[0].value.toString();
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Event/ByPosting/" + selectedCompanyId,
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        // PostingId, CompanyName, Action, IsActionRequired
+                        var div = document.createElement("div");
+                        div.id = "postingListColumn-" + i + "-Button";
+                        div.class = "col-md-2";
+                        div.testContent = "test";
+                        document.querySelector("div#eventByPosting").appendChild(div);
+                    });
+            }
+        });
+    }
+</script>
 
 

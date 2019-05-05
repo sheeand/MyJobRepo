@@ -45,7 +45,7 @@ namespace MyJobRepo.Controllers
         }
 
         [HttpGet]
-        [Route("ByCompanyId/{CompanyId}")]
+        [Route("ByPosting/{CompanyId}")]
         public async Task<IHttpActionResult> EventList(int companyId)
         {
             try
@@ -93,13 +93,15 @@ namespace MyJobRepo.Controllers
             JavaScriptSerializer json_serializer = new JavaScriptSerializer();
             Dictionary<string, object> eventObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
+            var postingId = Convert.ToInt32(eventObject["PostingId"]);
             var entryDateTime = Convert.ToDateTime(eventObject["EntryDateTime"]);
             var companyId = Convert.ToInt32(eventObject["CompanyId"]);
-            var requiresAction = Convert.ToBoolean(eventObject["RequiresAction"]);
+            var isActionRequired = Convert.ToBoolean(eventObject["IsActionRequired"]);
             var eventModel = new EventModel();
+            eventModel.PostingId = postingId;
             eventModel.EntryDateTime = entryDateTime;
             eventModel.CompanyId = companyId;
-            eventModel.IsActionRequired = requiresAction;
+            eventModel.IsActionRequired = isActionRequired;
 
             SaveNewEvent(eventModel);
 
@@ -114,7 +116,8 @@ namespace MyJobRepo.Controllers
             var entity = new Event()
             {
                 EntryDateTime = model.EntryDateTime,
-                PostingId = model.CompanyId,
+                CompanyId = model.CompanyId,
+                PostingId = model.PostingId,
                 IsActionRequired = model.IsActionRequired
             };
 
