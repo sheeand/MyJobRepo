@@ -93,16 +93,12 @@ namespace MyJobRepo.Controllers
             JavaScriptSerializer json_serializer = new JavaScriptSerializer();
             Dictionary<string, object> eventObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
-            var companyName = eventObject["CompanyName"].ToString();
-            var link = eventObject["Link"].ToString();
-            var desc = eventObject["Description"].ToString();
-
             var entryDateTime = Convert.ToDateTime(eventObject["EntryDateTime"]);
-            var postingId = Convert.ToInt32(eventObject["PostingId"]);
+            var companyId = Convert.ToInt32(eventObject["CompanyId"]);
             var requiresAction = Convert.ToBoolean(eventObject["RequiresAction"]);
             var eventModel = new EventModel();
             eventModel.EntryDateTime = entryDateTime;
-            eventModel.PostingId = postingId;
+            eventModel.CompanyId = companyId;
             eventModel.IsActionRequired = requiresAction;
 
             SaveNewEvent(eventModel);
@@ -118,7 +114,7 @@ namespace MyJobRepo.Controllers
             var entity = new Event()
             {
                 EntryDateTime = model.EntryDateTime,
-                PostingId = model.PostingId,
+                PostingId = model.CompanyId,
                 IsActionRequired = model.IsActionRequired
             };
 
