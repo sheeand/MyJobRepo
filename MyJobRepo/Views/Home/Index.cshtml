@@ -502,6 +502,42 @@
         });
     }
 
+    function LoadEventsByPosting() {
+        var selectedCompanyId = $("#eventPostingDropdown")[0].selectedOptions[0].value;
+        $.ajax({
+            type: "GET",
+            url: "http://" + "@ViewBag.Host" + "/API/Event/ByPosting/" + selectedCompanyId,
+            contentType: "application/json; charset=utf-8",
+            async: true,
+            success: function(data) {
+                $.each(data,
+                    function(i) {
+                        // PostingId, CompanyName, Action, IsActionRequired
+                        var div1 = document.createElement("div");
+                        div1.id = "event-" + i + "-eventId";
+                        div1.setAttribute("class", "col-md-1");
+                        div1.textContent = data[i].eventId;
+
+                        var div2 = document.createElement("div");
+                        div2.id = "event-" + i + "-entryDateTime";
+                        div2.setAttribute("class", "col-md-2");
+                        div2.textContent = data[i].entryDateTime;
+
+                        var div3 = document.createElement("div");
+                        div3.id = "action" + i;
+                        div3.setAttribute("class", "col-md-6");
+                        div3.textContent = data[i].action;
+
+                        var div4 = document.createElement("div");
+                        div4.id = "isActionRequired" + i;
+                        div4.setAttribute("class", "col-md-2");
+                        div4.textContent = data[i].isActionRequired;
+                        document.querySelector("div#eventByPosting").appendChild(div1).appendChild(div2).appendChild(div3).appendChild(div4);
+                    });
+            }
+        });
+    }
+
     function RadioAddSelect(column) {
         document.getElementById(column + "EditDropdown").style.display = "none";
         document.getElementById(column + "EditDropdown").selectedIndex = 0;
@@ -654,36 +690,15 @@
 </div>
 <div class="row">&nbsp;</div>
 <div class="row">
-    <div class="col-md-1">Posting Id</div>
-    <div class="col-md-2">Company</div>
+    <div class="col-md-1">Event Id</div>
+    <div class="col-md-2">Entry Date</div>
     <div class="col-md-6">Event</div>
-    <div class="col-md-2">Action required</div>
+    <div class="col-md-2">Action required?</div>
 </div>
 <div id="eventByPosting" class="row">
 </div>
 
 <script type="text/javascript">
-
-    function LoadEventsByPosting() {
-        var selectedCompanyId = $("select#eventPostingDropdown")[0].selectedOptions[0].value.toString();
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Event/ByPosting/" + selectedCompanyId,
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        // PostingId, CompanyName, Action, IsActionRequired
-                        var div = document.createElement("div");
-                        div.id = "postingListColumn-" + i + "-Button";
-                        div.class = "col-md-2";
-                        div.testContent = "test";
-                        document.querySelector("div#eventByPosting").appendChild(div);
-                    });
-            }
-        });
-    }
 </script>
 
 

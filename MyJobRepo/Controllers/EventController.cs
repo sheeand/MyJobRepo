@@ -97,11 +97,13 @@ namespace MyJobRepo.Controllers
             var entryDateTime = Convert.ToDateTime(eventObject["EntryDateTime"]);
             var companyId = Convert.ToInt32(eventObject["CompanyId"]);
             var isActionRequired = Convert.ToBoolean(eventObject["IsActionRequired"]);
+            var action = eventObject["Action"].ToString();
             var eventModel = new EventModel();
             eventModel.PostingId = postingId;
             eventModel.EntryDateTime = entryDateTime;
             eventModel.CompanyId = companyId;
             eventModel.IsActionRequired = isActionRequired;
+            eventModel.Action = action;
 
             SaveNewEvent(eventModel);
 
@@ -118,7 +120,8 @@ namespace MyJobRepo.Controllers
                 EntryDateTime = model.EntryDateTime,
                 CompanyId = model.CompanyId,
                 PostingId = model.PostingId,
-                IsActionRequired = model.IsActionRequired
+                IsActionRequired = model.IsActionRequired,
+                Action = model.Action
             };
 
             using (var context = new MyJobRepoContext())

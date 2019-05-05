@@ -14,8 +14,8 @@ namespace MyJobRepo
     {
         protected void Application_Start()
         {
-            System.Data.Entity.Database.SetInitializer(
-                new MyJobRepo_ContextInitializer());
+            //System.Data.Entity.Database.SetInitializer(
+            //    new MyJobRepo_ContextInitializer());
             //AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
