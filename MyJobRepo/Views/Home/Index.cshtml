@@ -9,25 +9,6 @@
         LoadDropdowns()
     });
 
-    function PreloadFirstDropdownOption(id, text)
-    {
-        var optionhtml1 = '<option value="' +
-            0 +
-            '">' +
-            "--Select " + text + "--" +
-            '</option>';
-        $("#" + id).append(optionhtml1);
-    }
-
-    function PreloadFirstEditDropdownOption(id) {
-        var optionhtml1 = '<option value="' +
-            0 +
-            '">' +
-            "--Select--" +
-            '</option>';
-        $("#" + id).append(optionhtml1);
-    }
-
     function ResetForm() {
         $("input[type=text], textarea").val("");
         $("select").find('option').remove();
@@ -35,355 +16,44 @@
     }
 
     function LoadDropdowns() {
-        LoadContactTypeDropdown();
-        LoadContactCompanyDropdown();
-        LoadPostingRecruitingCompanyDropdown();
-        LoadRecruiterDropdown();
-        LoadHRRepDropdown();
-        LoadSrDevDropdown();
-        LoadDevDropdown();
-        LoadHiringMgrDropdown();
-        LoadAcctManagerDropdown();
-        LoadCompanyEditDropdown();
-        LoadContactEditDropdown();
-        LoadPostingCompanyDropdown();
-        LoadPostingEditDropdown();
-        //LoadEventEditDropdown();
-        LoadEventCompanyDropdown();
-        LoadEventPostingDropdown();
+        LoadDropdown("contactTypeDropdown", "Contact Type", "ContactType", "contactTypeId", "name");
+        LoadDropdown("contactCompanyDropdown", "Company", "Company/All", "companyId", "companyName");
+        LoadDropdown("postingCompanyDropdown", "Company", "Company/Employers", "companyId", "companyName");
+        LoadDropdown("postingRecruitingCompanyDropdown", "Company", "Company/Recruiters", "companyId", "companyName");
+        LoadDropdown("hrRepDropdown", "Contact", "Contact/ByType/HR", "contactId", "contactName");
+        LoadDropdown("srDevDropdown", "Contact", "Contact/ByType/SR", "contactId", "contactName");
+        LoadDropdown("devDropdown", "Contact", "Contact/ByType/Developer", "contactId", "contactName");
+        LoadDropdown("hiringMgrDropdown", "Contact", "Contact/ByType/HM", "contactId", "contactName");
+        LoadDropdown("acctManagerDropdown", "Contact", "Contact/ByType/AM", "contactId", "contactName");
+        LoadDropdown("eventCompanyDropdown", "Company", "Posting/All", "postingId", "companyName");
+        LoadDropdown("eventPostingDropdown", "", "Posting/All", "postingId", "companyName");
+        LoadDropdown("recruiterDropdown", "Contact", "Contact/ByType/Recruiter", "contactId", "contactName");
+        LoadDropdown("postingEditDropdown", "", "Posting/All", "postingId", "companyName");
+        LoadDropdown("contactEditDropdown", "", "Contact/All", "contactId", "contactName");
+        LoadDropdown("companyEditDropdown", "", "Company/All", "companyId", "companyName");
     }
 
-    function LoadCompanyEditDropdown() {
-        PreloadFirstEditDropdownOption("companyEditDropdown");
+    function LoadDropdown(dropdownId, title, path, dataId, dataValue) {
+        var optionhtml0 = '<option value="' +
+            0 +
+            '">' +
+            "--Select " + title + "--" +
+            '</option>';
+        $("#" + dropdownId).append(optionhtml0);
         $.ajax({
             type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Company/All",
+            url: "http://" + "@ViewBag.Host" + "/API/" + path,
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
                 $.each(data,
                     function(i) {
                         var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
+                            data[i][dataId] +
                             '">' +
-                            data[i].companyName +
+                            data[i][dataValue] +
                             '</option>';
-                        $("#companyEditDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadContactEditDropdown() {
-        PreloadFirstEditDropdownOption("contactEditDropdown");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Contact/All",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactId +
-                            '">' +
-                            data[i].contactName +
-                            '</option>';
-                        $("#contactEditDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadContactTypeDropdown() {
-        PreloadFirstDropdownOption("contactTypeDropdown", "Contact Type");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/ContactType",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
-                            '">' +
-                            data[i].name +
-                            '</option>';
-                        $("#contactTypeDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadContactCompanyDropdown() {
-        PreloadFirstDropdownOption("contactCompanyDropdown", "Company");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Company/All",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].companyId +
-                            '">' +
-                            data[i].companyName +
-                            '</option>';
-                        $("#contactCompanyDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadPostingEditDropdown() {
-        PreloadFirstEditDropdownOption("postingEditDropdown");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Posting/All",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].postingId +
-                            '">' +
-                            data[i].companyName +
-                            '</option>';
-                        $("#postingEditDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadPostingCompanyDropdown() {
-        PreloadFirstDropdownOption("postingCompanyDropdown", "Company");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Company/Employers",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].companyId +
-                            '">' +
-                            data[i].companyName +
-                            '</option>';
-                        $("#postingCompanyDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadPostingRecruitingCompanyDropdown() {
-        PreloadFirstDropdownOption("postingRecruitingCompanyDropdown", "Company");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Company/Recruiters",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].companyId +
-                            '">' +
-                            data[i].companyName +
-                            '</option>';
-                        $("#postingRecruitingCompanyDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadRecruiterDropdown() {
-        PreloadFirstDropdownOption("recruiterDropdown", "Contact");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/Recruiter",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactId +
-                            '">' +
-                            data[i].contactName +
-                            '</option>';
-                        $("#recruiterDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadHRRepDropdown(contactTypeId) {
-        PreloadFirstDropdownOption("hrRepDropdown", "Contact");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/HR",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactId +
-                            '">' +
-                            data[i].contactName +
-                            '</option>';
-                        $("#hrRepDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadSrDevDropdown() {
-        PreloadFirstDropdownOption("srDevDropdown", "Contact");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/SR",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactId +
-                            '">' +
-                            data[i].contactName +
-                            '</option>';
-                        $("#srDevDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadDevDropdown() {
-        PreloadFirstDropdownOption("devDropdown", "Contact");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/Developer",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactId +
-                            '">' +
-                            data[i].contactName +
-                            '</option>';
-                        $("#devDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadHiringMgrDropdown() {
-        PreloadFirstDropdownOption("hiringMgrDropdown", "Contact");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/HM",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactId +
-                            '">' +
-                            data[i].contactName +
-                            '</option>';
-                        $("#hiringMgrDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadAcctManagerDropdown() {
-        PreloadFirstDropdownOption("acctManagerDropdown", "Contact");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Contact/ByType/AM",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactId +
-                            '">' +
-                            data[i].contactName +
-                            '</option>';
-                        $("#acctManagerDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadEventEditDropdown() {
-        PreloadFirstEditDropdownOption("eventEditDropdown");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Event/All",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].contactTypeId +
-                            '">' +
-                            data[i].name +
-                            '</option>';
-                        $("#eventEditDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadEventCompanyDropdown() {
-        PreloadFirstDropdownOption("eventCompanyDropdown", "Company");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Posting/All",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].postingId +
-                            '">' +
-                            data[i].companyName +
-                            '</option>';
-                        $("#eventCompanyDropdown").append(optionhtml);
-                    });
-            }
-        });
-    }
-
-    function LoadEventPostingDropdown() {
-        PreloadFirstEditDropdownOption("eventPostingDropdown");
-        $.ajax({
-            type: "GET",
-            url: "http://" + "@ViewBag.Host" + "/API/Posting/All",
-            contentType: "application/json; charset=utf-8",
-            async: true,
-            success: function(data) {
-                $.each(data,
-                    function(i) {
-                        var optionhtml = '<option value="' +
-                            data[i].postingId +
-                            '">' +
-                            data[i].companyName +
-                            '</option>';
-                        $("#eventPostingDropdown").append(optionhtml);
+                        $("#" + dropdownId).append(optionhtml);
                     });
             }
         });
@@ -709,6 +379,4 @@
 </div>
 <div id="eventsByPosting">
 </div>
-
-
 
