@@ -348,7 +348,7 @@
     }
 
     function LoadEventCompanyDropdown() {
-        PreloadFirstEditDropdownOption("eventCompanyDropdown");
+        PreloadFirstDropdownOption("eventCompanyDropdown", "Company");
         $.ajax({
             type: "GET",
             url: "http://" + "@ViewBag.Host" + "/API/Posting/All",
@@ -510,29 +510,41 @@
             contentType: "application/json; charset=utf-8",
             async: true,
             success: function(data) {
+
+                var divEventsByPosting = document.querySelector("div#eventsByPosting");
+                while (divEventsByPosting.firstChild) {
+                    divEventsByPosting.firstChild.remove();
+                }
+
                 $.each(data,
                     function(i) {
                         // PostingId, CompanyName, Action, IsActionRequired
-                        var div1 = document.createElement("div");
-                        div1.id = "event-" + i + "-eventId";
-                        div1.setAttribute("class", "col-md-1");
-                        div1.textContent = data[i].eventId;
 
-                        var div2 = document.createElement("div");
-                        div2.id = "event-" + i + "-entryDateTime";
-                        div2.setAttribute("class", "col-md-2");
-                        div2.textContent = data[i].entryDateTime;
+                        var divRow = document.createElement("div");
+                        divRow.id = "event-" + i;
+                        divRow.setAttribute("class", "row");
 
-                        var div3 = document.createElement("div");
-                        div3.id = "action" + i;
-                        div3.setAttribute("class", "col-md-6");
-                        div3.textContent = data[i].action;
+                        var divEntryId = document.createElement("div");
+                        divEntryId.setAttribute("class", "col-md-1");
+                        divEntryId.textContent = data[i].eventId;
 
-                        var div4 = document.createElement("div");
-                        div4.id = "isActionRequired" + i;
-                        div4.setAttribute("class", "col-md-2");
-                        div4.textContent = data[i].isActionRequired;
-                        document.querySelector("div#eventByPosting").appendChild(div1).appendChild(div2).appendChild(div3).appendChild(div4);
+                        var divEntryDate = document.createElement("div");
+                        divEntryDate.setAttribute("class", "col-md-2");
+                        divEntryDate.textContent = data[i].entryDateTime;
+
+                        var divEvent = document.createElement("div");
+                        divEvent.setAttribute("class", "col-md-6");
+                        divEvent.textContent = data[i].action;
+
+                        var divIsActionRequired = document.createElement("div");
+                        divIsActionRequired.setAttribute("class", "col-md-2");
+                        divIsActionRequired.textContent = data[i].isActionRequired;
+
+                        divEventsByPosting.appendChild(divRow);
+                        document.querySelector("div#event-" + i).appendChild(divEntryId);
+                        document.querySelector("div#event-" + i).appendChild(divEntryDate);
+                        document.querySelector("div#event-" + i).appendChild(divEvent);
+                        document.querySelector("div#event-" + i).appendChild(divIsActionRequired);
                     });
             }
         });
@@ -695,10 +707,8 @@
     <div class="col-md-6">Event</div>
     <div class="col-md-2">Action required?</div>
 </div>
-<div id="eventByPosting" class="row">
+<div id="eventsByPosting">
 </div>
 
-<script type="text/javascript">
-</script>
 
 
