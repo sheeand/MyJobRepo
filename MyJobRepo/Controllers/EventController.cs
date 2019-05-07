@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MyJobRepo.Data;
+using MyJobRepo.DataAccess;
 using MyJobRepo.Models;
 using System;
 using System.Collections.Generic;
@@ -124,7 +124,7 @@ namespace MyJobRepo.Controllers
                 Action = model.Action
             };
 
-            using (var context = new MyJobRepoContext())
+            using (var context = new MyJobRepo_DataContext())
             {
                 context.Events.Add(entity);
                 context.SaveChanges();

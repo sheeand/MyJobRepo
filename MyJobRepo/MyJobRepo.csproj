@@ -186,21 +186,21 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\PostingContactController.cs" />
     <Compile Include="Controllers\PostingController.cs" />
-    <Compile Include="Data\MyJobRepo_MappingProfile.cs" />
+    <Compile Include="DataAccess\MyJobRepo_MappingProfile.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Data\Company.cs" />
-    <Compile Include="Data\Contact.cs" />
-    <Compile Include="Data\ContactType.cs" />
-    <Compile Include="Data\Event.cs" />
-    <Compile Include="Data\IRepository.cs" />
-    <Compile Include="Data\MyJobRepoContext.cs" />
-    <Compile Include="Data\MyJobRepo_ContextInitializer.cs" />
+    <Compile Include="DTO\Company.cs" />
+    <Compile Include="DTO\Contact.cs" />
+    <Compile Include="DTO\ContactType.cs" />
+    <Compile Include="DTO\Event.cs" />
+    <Compile Include="DataAccess\IRepository.cs" />
+    <Compile Include="DataAccess\MyJobRepo_DataContext.cs" />
+    <Compile Include="DataAccess\MyJobRepo_DataContextInitializer.cs" />
     <Compile Include="Models\MyJobRepo_Resources.cs" />
-    <Compile Include="Data\Posting.cs" />
-    <Compile Include="Data\PostingContact.cs" />
-    <Compile Include="Data\Repository.cs" />
+    <Compile Include="DTO\Posting.cs" />
+    <Compile Include="DTO\PostingContact.cs" />
+    <Compile Include="DataAccess\Repository.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\ContactModel.cs" />
     <Compile Include="Models\ContactTypeModel.cs" />

@@ -10,14 +10,14 @@ using Breeze.ContextProvider;
 using Breeze.ContextProvider.EF6;
 using Newtonsoft.Json.Linq;
 
-namespace MyJobRepo.Data
+namespace MyJobRepo.DataAccess
 {
     public class Repository : IRepository
     {
 
-        private MyJobRepoContext dbContext;
+        private MyJobRepo_DataContext dbContext;
 
-        public Repository(MyJobRepoContext dbContext)
+        public Repository(MyJobRepo_DataContext dbContext)
         {
             this.dbContext = dbContext;
         }

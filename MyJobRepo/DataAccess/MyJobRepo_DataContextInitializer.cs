@@ -4,11 +4,11 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace MyJobRepo.Data
+namespace MyJobRepo.DataAccess
 {
-    public class MyJobRepo_ContextInitializer : DropCreateDatabaseAlways<MyJobRepoContext>
+    public class MyJobRepo_DataContextInitializer : DropCreateDatabaseAlways<MyJobRepo_DataContext>
     {
-        protected override void Seed(MyJobRepoContext context)
+        protected override void Seed(MyJobRepo_DataContext context)
         {
             // Define an initial list
             var contactTypes = new List<ContactType>

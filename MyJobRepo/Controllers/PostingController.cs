@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MyJobRepo.Data;
+using MyJobRepo.DataAccess;
 using MyJobRepo.Models;
 using System;
 using System.Collections.Generic;
@@ -123,7 +123,7 @@ namespace MyJobRepo.Controllers
                 AcctManagerContactId = model.AcctManagerContactId
             };
 
-            using (var context = new MyJobRepoContext())
+            using (var context = new MyJobRepo_DataContext())
             {
                 context.Postings.Add(postingEntity);
                 context.SaveChanges();

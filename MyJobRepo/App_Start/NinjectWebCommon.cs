@@ -7,7 +7,7 @@ namespace MyJobRepo.App_Start
     using System.Web;
     using System.Web.Http;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-    using Data;
+    using DataAccess;
     using Ninject;
     using Ninject.Web.Common;
     using MyJobRepo.Models;
@@ -72,7 +72,7 @@ namespace MyJobRepo.App_Start
         private static void RegisterServices(IKernel kernel)
         {
             kernel.Bind<IRepository>().To<Repository>().InRequestScope();
-            kernel.Bind<MyJobRepoContext>().To<MyJobRepoContext>();
+            kernel.Bind<MyJobRepo_DataContext>().To<MyJobRepo_DataContext>();
 
             kernel.Bind<IMapper>().ToMethod(context =>
             {

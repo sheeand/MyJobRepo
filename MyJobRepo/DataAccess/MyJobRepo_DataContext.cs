@@ -4,11 +4,11 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 
-namespace MyJobRepo.Data
+namespace MyJobRepo.DataAccess
 {
-    public class MyJobRepoContext : DbContext
+    public class MyJobRepo_DataContext : DbContext
     {
-        //internal static readonly MyJobRepoContext dbContext;
+        //internal static readonly MyJobRepo_DataContext dbContext;
 
         // You can add custom code to this file. Changes will not be overwritten.
         // 
@@ -17,7 +17,7 @@ namespace MyJobRepo.Data
         // For more information refer to the documentation:
         // http://msdn.microsoft.com/en-us/data/jj591621.aspx
 
-        public MyJobRepoContext() : base("name=MyJobRepoContext")
+        public MyJobRepo_DataContext() : base("name=MyJobRepo_DataContext")
         {
         }
 

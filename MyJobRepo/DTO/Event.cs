@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MyJobRepo.Data
+namespace MyJobRepo.DataAccess
 {
     public class Event
     {

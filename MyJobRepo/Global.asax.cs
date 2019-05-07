@@ -6,7 +6,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
-using MyJobRepo.Data;
+using MyJobRepo.DataAccess;
 
 namespace MyJobRepo
 {
@@ -15,7 +15,7 @@ namespace MyJobRepo
         protected void Application_Start()
         {
             //System.Data.Entity.Database.SetInitializer(
-            //    new MyJobRepo_ContextInitializer());
+            //    new MyJobRepo_DataContextInitializer());
             //AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

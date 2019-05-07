@@ -5,7 +5,7 @@ using System.Web;
 using AutoMapper;
 using MyJobRepo.Models;
 
-namespace MyJobRepo.Data
+namespace MyJobRepo.DataAccess
 {
     public class MyJobRepo_MappingProfile : Profile
     {

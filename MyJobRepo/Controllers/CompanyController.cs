@@ -8,7 +8,7 @@ using System.Web.Http;
 using System.Web.Http.Routing;
 using System.Web.Script.Serialization;
 using AutoMapper;
-using MyJobRepo.Data;
+using MyJobRepo.DataAccess;
 using MyJobRepo.Models;
 
 namespace MyJobRepo.Controllers
@@ -88,7 +88,7 @@ namespace MyJobRepo.Controllers
         }
 
         [Route("{CompanyId}")]
-        public async Task<IHttpActionResult> Get(int companyId)
+        public async Task<IHttpActionResult> Get(int companyId)  //--  Model-bound method syntax (parameters in the signature)
         {
             try
             {
@@ -145,7 +145,7 @@ namespace MyJobRepo.Controllers
                 IsEmployer = model.IsEmployer
             };
 
-            using (var context = new MyJobRepoContext())
+            using (var context = new MyJobRepo_DataContext())
             {
                 context.Companies.Add(entity);
                 context.SaveChanges();

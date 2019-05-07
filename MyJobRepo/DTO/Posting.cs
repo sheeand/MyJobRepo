@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 
-namespace MyJobRepo.Data
+namespace MyJobRepo.DataAccess
 {
     public class Posting
     {

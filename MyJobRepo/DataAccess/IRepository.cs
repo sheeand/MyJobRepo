@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Breeze.ContextProvider;
 using Newtonsoft.Json.Linq;
 
-namespace MyJobRepo.Data
+namespace MyJobRepo.DataAccess
 {
     public interface IRepository
     {
