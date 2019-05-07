@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MyJobRepo.DataAccess;
 using MyJobRepo.Models;
+using MyJobRepo.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
-namespace MyJobRepo.API
+namespace MyJobRepo.ApiControllers
 {
     [RoutePrefix("api/contact")]
     public class ContactController : ApiController
@@ -114,46 +115,27 @@ namespace MyJobRepo.API
             JavaScriptSerializer json_serializer = new JavaScriptSerializer();
             Dictionary<string, object> contactObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
-            var companyId = Convert.ToInt32(contactObject["CompanyId"]);
-            var contactTypeId = Convert.ToInt32(contactObject["ContactTypeId"]);
-            var contactName = contactObject["ContactName"].ToString();
-            var email = contactObject["Email"].ToString();
-            var phone = contactObject["Phone"].ToString();
-            var notes = contactObject["Notes"].ToString();
             var contact = new ContactModel();
-            contact.CompanyId = companyId;
-            contact.ContactTypeId = contactTypeId;
-            contact.Email = email;
-            contact.ContactName = contactName;
-            contact.Notes = notes;
-            contact.Phone = phone;
+            contact.CompanyId = Convert.ToInt32(contactObject["CompanyId"]);
+            contact.ContactTypeId = Convert.ToInt32(contactObject["ContactTypeId"]);
+            contact.ContactName = contactObject["ContactName"].ToString();
+            contact.Email = contactObject["Email"].ToString();
+            contact.Phone = contactObject["Phone"].ToString();
+            contact.Notes = contactObject["Notes"].ToString();
 
-            SaveNewContact(contact);
+            ContactService service = new ContactService();
+            bool success = service.SaveNewContact(contact);
 
             HttpResponseMessage message = new HttpResponseMessage();
-            message.StatusCode = HttpStatusCode.OK;
-            return message;
-        }
-
-        private void SaveNewContact(ContactModel model)
-        {
-
-            var entity = new Contact()
+            if (success)
             {
-                ContactId = model.ContactId,
-                CompanyId = model.CompanyId,
-                ContactTypeId = model.ContactTypeId,
-                ContactName = model.ContactName,
-                Email = model.Email,
-                Phone = model.Phone,
-                Notes = model.Notes
-            };
-
-            using (var context = new MyJobRepo_DataContext())
-            {
-                context.Contacts.Add(entity);
-                context.SaveChanges();
+                message.StatusCode = HttpStatusCode.OK;
             }
+            else
+            {
+                message.StatusCode = HttpStatusCode.InternalServerError;
+            }
+            return message;
         }
 
         // PUT: api/Company/5

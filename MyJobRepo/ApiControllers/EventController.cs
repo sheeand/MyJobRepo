@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MyJobRepo.DataAccess;
 using MyJobRepo.Models;
+using MyJobRepo.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
-namespace MyJobRepo.API
+namespace MyJobRepo.ApiControllers
 {
     [RoutePrefix("api/event")]
     public class EventController : ApiController
@@ -93,42 +94,26 @@ namespace MyJobRepo.API
             JavaScriptSerializer json_serializer = new JavaScriptSerializer();
             Dictionary<string, object> eventObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
-            var postingId = Convert.ToInt32(eventObject["PostingId"]);
-            var entryDateTime = Convert.ToDateTime(eventObject["EntryDateTime"]);
-            var companyId = Convert.ToInt32(eventObject["CompanyId"]);
-            var isActionRequired = Convert.ToBoolean(eventObject["IsActionRequired"]);
-            var action = eventObject["Action"].ToString();
             var eventModel = new EventModel();
-            eventModel.PostingId = postingId;
-            eventModel.EntryDateTime = entryDateTime;
-            eventModel.CompanyId = companyId;
-            eventModel.IsActionRequired = isActionRequired;
-            eventModel.Action = action;
+            eventModel.PostingId = Convert.ToInt32(eventObject["PostingId"]);
+            eventModel.EntryDateTime = Convert.ToDateTime(eventObject["EntryDateTime"]);
+            eventModel.CompanyId = Convert.ToInt32(eventObject["CompanyId"]);
+            eventModel.IsActionRequired = Convert.ToBoolean(eventObject["IsActionRequired"]);
+            eventModel.Action = eventObject["Action"].ToString();
 
-            SaveNewEvent(eventModel);
+            EventService service = new EventService();
+            bool success = service.SaveNewEvent(eventModel);
 
             HttpResponseMessage message = new HttpResponseMessage();
-            message.StatusCode = HttpStatusCode.OK;
-            return message;
-        }
-
-        private void SaveNewEvent(EventModel model)
-        {
-
-            var entity = new Event()
+            if (success)
             {
-                EntryDateTime = model.EntryDateTime,
-                CompanyId = model.CompanyId,
-                PostingId = model.PostingId,
-                IsActionRequired = model.IsActionRequired,
-                Action = model.Action
-            };
-
-            using (var context = new MyJobRepo_DataContext())
-            {
-                context.Events.Add(entity);
-                context.SaveChanges();
+                message.StatusCode = HttpStatusCode.OK;
             }
+            else
+            {
+                message.StatusCode = HttpStatusCode.InternalServerError;
+            }
+            return message;
         }
     }
 }

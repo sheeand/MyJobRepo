@@ -9,8 +9,9 @@ using System.Web.Script.Serialization;
 using AutoMapper;
 using MyJobRepo.DataAccess;
 using MyJobRepo.Models;
+using MyJobRepo.Services;
 
-namespace MyJobRepo.API
+namespace MyJobRepo.ApiControllers
 {
     [RoutePrefix("api/company")]
     public class CompanyController : ApiController
@@ -115,40 +116,25 @@ namespace MyJobRepo.API
             JavaScriptSerializer json_serializer = new JavaScriptSerializer();
             Dictionary<string, object> companyObject = (Dictionary<string, object>)json_serializer.DeserializeObject(json);
 
-            var companyName = companyObject["CompanyName"].ToString();
-            var link = companyObject["Link"].ToString();
-            var isEmployer = Convert.ToBoolean(companyObject["IsEmployer"]);
-            var desc = companyObject["Description"].ToString();
             var company = new CompanyModel();
-            company.CompanyName = companyName;
-            company.IsEmployer = isEmployer;
-            company.Link = link;
-            company.Description = desc;
+            company.CompanyName = companyObject["CompanyName"].ToString();
+            company.Link = companyObject["Link"].ToString();
+            company.IsEmployer = Convert.ToBoolean(companyObject["IsEmployer"]);
+            company.Description = companyObject["Description"].ToString();
 
-            SaveNewCompany(company);
+            CompanyService service = new CompanyService();
+            bool success = service.SaveNewCompany(company);
 
             HttpResponseMessage message = new HttpResponseMessage();
-            message.StatusCode = HttpStatusCode.OK;
-            return message;
-        }
-
-        private void SaveNewCompany(CompanyModel model)
-        {
-
-            var entity = new Company()
+            if (success)
             {
-                CompanyId = model.CompanyId,
-                Description = model.Description,
-                Link = model.Link,
-                CompanyName = model.CompanyName,
-                IsEmployer = model.IsEmployer
-            };
-
-            using (var context = new MyJobRepo_DataContext())
-            {
-                context.Companies.Add(entity);
-                context.SaveChanges();
+                message.StatusCode = HttpStatusCode.OK;
             }
+            else
+            {
+                message.StatusCode = HttpStatusCode.InternalServerError;
+            }
+            return message;
         }
 
         // PUT: api/Company/5

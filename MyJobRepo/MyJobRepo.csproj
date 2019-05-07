@@ -179,12 +179,12 @@
     <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="API\CompanyController.cs" />
-    <Compile Include="API\ContactController.cs" />
-    <Compile Include="API\ContactTypeController.cs" />
-    <Compile Include="API\EventController.cs" />
+    <Compile Include="ApiControllers\CompanyController.cs" />
+    <Compile Include="ApiControllers\ContactController.cs" />
+    <Compile Include="ApiControllers\ContactTypeController.cs" />
+    <Compile Include="ApiControllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="API\PostingController.cs" />
+    <Compile Include="ApiControllers\PostingController.cs" />
     <Compile Include="DataAccess\MyJobRepo_MappingProfile.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -205,6 +205,11 @@
     <Compile Include="Models\EventModel.cs" />
     <Compile Include="Models\PostingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Services\CompanyService.cs" />
+    <Compile Include="Services\ContactService.cs" />
+    <Compile Include="Services\ContactTypeService.cs" />
+    <Compile Include="Services\EventService.cs" />
+    <Compile Include="Services\PostingService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
