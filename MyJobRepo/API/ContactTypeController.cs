@@ -9,7 +9,7 @@ using AutoMapper;
 using MyJobRepo.DataAccess;
 using MyJobRepo.Models;
 
-namespace MyJobRepo.Controllers
+namespace MyJobRepo.API
 {
     [RoutePrefix("api/contacttype")]
     public class ContactTypeController : ApiController

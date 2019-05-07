@@ -10,7 +10,7 @@ using AutoMapper;
 using MyJobRepo.DataAccess;
 using MyJobRepo.Models;
 
-namespace MyJobRepo.Controllers
+namespace MyJobRepo.API
 {
     [RoutePrefix("api/company")]
     public class CompanyController : ApiController

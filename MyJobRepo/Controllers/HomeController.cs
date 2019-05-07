@@ -1,24 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity.Infrastructure;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
-using AutoMapper;
+﻿using System.Web.Mvc;
 using MyJobRepo.DataAccess;
-using MyJobRepo.Models;
-using MyJobRepo.Controllers;
 
 namespace MyJobRepo.Controllers
 {
     public class HomeController : Controller
     {
-        private static readonly MyJobRepo_DataContext db = new MyJobRepo_DataContext();
-        private readonly Repository Repo = new Repository(db);
-
-        //private IMapper Mapper;
-
-
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";

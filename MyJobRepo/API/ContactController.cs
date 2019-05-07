@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Script.Serialization;
 
-namespace MyJobRepo.Controllers
+namespace MyJobRepo.API
 {
     [RoutePrefix("api/contact")]
     public class ContactController : ApiController

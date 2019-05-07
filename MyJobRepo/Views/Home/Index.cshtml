@@ -271,112 +271,115 @@
 
 <div class="jumbotron">
     <h1>MyJobRepo</h1>
-    <p class="lead">An exercise building a .NET Web API / MVC Application</p><br />
-    Add the entities, working from left to right. The dropdown lists will repopulate asynchronously.
+    <p class="lead">An exercise building a .NET Web API / MVC Application</p>
+    <ul>
+        <li>Start by adding a company, then the contact related to the company, then the posting related to both</li>
+        <li>Add events that are related to a posting (company)</li>
+    </ul>
 </div>
-<div class="row">
-    <div id="companyColumn" class="col-md-3">
-        <h2>Company</h2>
-        <p><input type="radio" name="companyRadio" value="add" checked="checked" onclick="RadioAddSelect('company')" /> Add</p>
-        <p>
-            <input type="radio" name="companyRadio" value="edit" onclick="RadioEditSelect('company')" /> Edit &nbsp;
-            <select id="companyEditDropdown" class="editDropdownStyle" style="display:none" onchange="ColumnDisplay('company', 'inline', true)"></select>
-        </p>
-        <p><label class="company">Name:</label><br /><input id="companyName" class="company" name="companyName" type="text" /><br /></p>
-        <p><label class="company">Is an employer?</label> &nbsp; <input id="companyIsEmployer" class="company" type="checkbox" /><br /></p>
-        <p><label class="company">Link:</label><br /><input id="companyLink" class="company" name="companyLink" type="text" /><br /></p>
-        <p><label class="company">Description:</label><br /><textarea id="companyDescription" class="company"></textarea><br /></p>
-        <p><button id="companyAddButton" class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
-        <p><button id="companyEditButton" class="btn btn-default" type="submit" onclick="EditCompany()" style="display: none;">Edit</button></p>
+    <div class="row">
+        <div id="companyColumn" class="col-md-3">
+            <h2>Company</h2>
+            <p><input type="radio" name="companyRadio" value="add" checked="checked" onclick="RadioAddSelect('company')" /> Add</p>
+            <p>
+                <input type="radio" name="companyRadio" value="edit" onclick="RadioEditSelect('company')" /> Edit &nbsp;
+                <select id="companyEditDropdown" class="editDropdownStyle" style="display:none" onchange="ColumnDisplay('company', 'inline', true)"></select>
+            </p>
+            <p><label class="company">Name:</label><br /><input id="companyName" class="company" name="companyName" type="text" /><br /></p>
+            <p><label class="company">Is an employer?</label> &nbsp; <input id="companyIsEmployer" class="company" type="checkbox" /><br /></p>
+            <p><label class="company">Link:</label><br /><input id="companyLink" class="company" name="companyLink" type="text" /><br /></p>
+            <p><label class="company">Description:</label><br /><textarea id="companyDescription" class="company"></textarea><br /></p>
+            <p><button id="companyAddButton" class="btn btn-default" type="submit" onclick="AddNewCompany()">Add</button></p>
+            <p><button id="companyEditButton" class="btn btn-default" type="submit" onclick="EditCompany()" style="display: none;">Edit</button></p>
+        </div>
+        <div id="contactColumn" class="col-md-3">
+            <h2>Contact</h2>
+            <p>
+                <input type="radio" name="contactRadio" value="add" checked="checked" onclick="RadioAddSelect('contact')" /> Add
+            </p>
+            <p>
+                <input type="radio" name="contactRadio" value="edit" onclick="RadioEditSelect('contact')" /> Edit &nbsp;
+                <select id="contactEditDropdown" class="editDropdownStyle" style="display:none" onchange="ColumnDisplay('contact', 'inline', true)"></select>
+            </p>
+            <p><label class="contact">Name:</label><br /><input id="contactName" name="contactName" type="text" class="contact" /><br /></p>
+            <p><label class="contact">Type:</label><br /><select id="contactTypeDropdown" class="dropdownStyle contact"></select><br /></p>
+            <p><label class="contact">Company:</label><br /><select id="contactCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
+            <p><label class="contact">Email:</label><br /><input id="contactEmail" name="contactEmail" type="text" class="contact" /><br /></p>
+            <p><label class="contact">Phone:</label><br /><input id="contactPhone" name="contactPhone" type="text" class="contact" /><br /></p>
+            <p><label class="contact">Notes:</label><br /><textarea id="contactNotes" class="contact"></textarea><br /></p>
+            <p><button id="contactAddButton" class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
+            <p><button id="contactEditButton" class="btn btn-default" type="submit" onclick="EditContact()" style="display: none;">Edit</button></p>
+        </div>
+        <div id="postingColumn" class="col-md-3">
+            <h2>Posting</h2>
+            <p>
+                <input type="radio" name="postingRadio" value="add" checked="checked" onclick="RadioAddSelect('posting')" /> Add
+            </p>
+            <p>
+                <input type="radio" name="postingRadio" value="edit" onclick="RadioEditSelect('posting')" /> Edit &nbsp;
+                <select id="postingEditDropdown" class="editDropdownStyle" style="display:none" onchange="ColumnDisplay('posting', 'inline', true)"></select>
+            </p>
+            <p><label class="posting">Job title:</label><br /><input id="jobTitle" class="posting" name="postingJobTitle" type="text" /><br /></p>
+            <p><label class="posting">Company:</label><br /><select id="postingCompanyDropdown" class="dropdownStyle posting"></select><br /></p>
+            <p><label class="posting">Link:</label><br /><input id="postingLink" class="posting" name="postingLink" type="text" /><br /></p>
+            <p><label class="posting">HR Representative:</label><br /><select id="hrRepDropdown" class="dropdownStyle posting"></select><br /></p>
+            <p><label class="posting">Senior Developer:</label><br /><select id="srDevDropdown" class="dropdownStyle posting"></select><br /></p>
+            <p><label class="posting">Developer:</label><br /><select id="devDropdown" class="dropdownStyle posting"></select><br /></p>
+            <p><label class="posting">Hiring Manager:</label><br /><select id="hiringMgrDropdown" class="dropdownStyle posting"></select><br /></p>
+        </div>
+        <div class="col-md-3">
+            <h2>&nbsp;</h2>
+            <p><label class="posting">Active:</label> &nbsp; <input id="isPostingActive" name="isPostingActive" class="posting" type="checkbox" value="Active" /><br /><br /></p>
+            <p><label class="posting">Recruiting Company:</label><br /><select id="postingRecruitingCompanyDropdown" class="dropdownStyle posting"></select><br /></p>
+            <p><label class="posting">Recruiter:</label><br /><select id="recruiterDropdown" class="dropdownStyle posting"></select><br /></p>
+            <p><label class="posting">Acct. Manager:</label><br /><select id="acctManagerDropdown" class="dropdownStyle posting"></select><br /></p>
+            <p><label class="posting">Description:</label><br /><textarea id="jobDescr" name="jobDescr" class="posting"></textarea><br /></p>
+            <p><button id="postingAddButton" class="btn btn-default" type="submit" onclick="AddNewPosting()">Add</button></p>
+            <p><button id="postingEditButton" class="btn btn-default" type="submit" onclick="EditPosting()" style="display: none;">Edit</button></p>
+        </div>
     </div>
-    <div id="contactColumn" class="col-md-3">
-        <h2>Contact</h2>
-        <p>
-            <input type="radio" name="contactRadio" value="add" checked="checked" onclick="RadioAddSelect('contact')" /> Add
-        </p>
-        <p>
-            <input type="radio" name="contactRadio" value="edit" onclick="RadioEditSelect('contact')" /> Edit &nbsp;
-            <select id="contactEditDropdown" class="editDropdownStyle" style="display:none" onchange="ColumnDisplay('contact', 'inline', true)"></select>
-        </p>
-        <p><label class="contact">Name:</label><br /><input id="contactName" name="contactName" type="text" class="contact" /><br /></p>
-        <p><label class="contact">Type:</label><br /><select id="contactTypeDropdown" class="dropdownStyle contact"></select><br /></p>
-        <p><label class="contact">Company:</label><br /><select id="contactCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
-        <p><label class="contact">Email:</label><br /><input id="contactEmail" name="contactEmail" type="text" class="contact" /><br /></p>
-        <p><label class="contact">Phone:</label><br /><input id="contactPhone" name="contactPhone" type="text" class="contact" /><br /></p>
-        <p><label class="contact">Notes:</label><br /><textarea id="contactNotes" class="contact"></textarea><br /></p>
-        <p><button id="contactAddButton" class="btn btn-default" type="submit" onclick="AddNewContact()">Add</button></p>
-        <p><button id="contactEditButton" class="btn btn-default" type="submit" onclick="EditContact()" style="display: none;">Edit</button></p>
+    <hr />
+    <div class="row">
+        <div class="col-md-3">
+            <h2>Event</h2>
+        </div>
     </div>
-    <div id="postingColumn" class="col-md-3">
-        <h2>Posting</h2>
-        <p>
-            <input type="radio" name="postingRadio" value="add" checked="checked" onclick="RadioAddSelect('posting')" /> Add
-        </p>
-        <p>
-            <input type="radio" name="postingRadio" value="edit" onclick="RadioEditSelect('posting')" /> Edit &nbsp;
-            <select id="postingEditDropdown" class="editDropdownStyle" style="display:none" onchange="ColumnDisplay('posting', 'inline', true)"></select>
-        </p>
-        <p><label class="posting">Job title:</label><br /><input id="jobTitle" class="posting" name="postingJobTitle" type="text" /><br /></p>
-        <p><label class="posting">Company:</label><br /><select id="postingCompanyDropdown" class="dropdownStyle posting"></select><br /></p>
-        <p><label class="posting">Link:</label><br /><input id="postingLink" class="posting" name="postingLink" type="text" /><br /></p>
-        <p><label class="posting">HR Representative:</label><br /><select id="hrRepDropdown" class="dropdownStyle posting"></select><br /></p>
-        <p><label class="posting">Senior Developer:</label><br /><select id="srDevDropdown" class="dropdownStyle posting"></select><br /></p>
-        <p><label class="posting">Developer:</label><br /><select id="devDropdown" class="dropdownStyle posting"></select><br /></p>
-        <p><label class="posting">Hiring Manager:</label><br /><select id="hiringMgrDropdown" class="dropdownStyle posting"></select><br /></p>
+    <div class="row">
+        <div class="col-md-3">
+            <p><label class="event">Company:</label><br /><select id="eventCompanyDropdown" class="dropdownStyle"></select></p>
+        </div>
+        <div class="col-md-3">
+            <p><label class="event">EntryDateTime:</label><br /><input id="entryDateTime" name="entryDateTime" type="date" /><br /></p>
+        </div>
+        <div class="col-md-3">
+            <p><label class="event">Event:</label><br /><textarea id="eventAction"></textarea><br /></p>
+        </div>
+        <div class="col-md-3">
+            <p><label class="event">Action is required: </label><input id="requiresAction" type="checkbox" /></p>
+            <p>
+                <button id="eventAddButton" class="btn btn-default" type="submit" onclick="AddNewEvent()">Add</button>
+                <button id="eventEditButton" class="btn btn-default" type="submit" onclick="EditEvent()" style="display: none;">Edit</button>
+            </p>
+        </div>
     </div>
-    <div class="col-md-3">
-        <h2>&nbsp;</h2>
-        <p><label class="posting">Active:</label> &nbsp; <input id="isPostingActive" name="isPostingActive" class="posting" type="checkbox" value="Active" /><br /><br /></p>
-        <p><label class="posting">Recruiting Company:</label><br /><select id="postingRecruitingCompanyDropdown" class="dropdownStyle posting"></select><br /></p>
-        <p><label class="posting">Recruiter:</label><br /><select id="recruiterDropdown" class="dropdownStyle posting"></select><br /></p>
-        <p><label class="posting">Acct. Manager:</label><br /><select id="acctManagerDropdown" class="dropdownStyle posting"></select><br /></p>
-        <p><label class="posting">Description:</label><br /><textarea id="jobDescr" name="jobDescr" class="posting"></textarea><br /></p>
-        <p><button id="postingAddButton" class="btn btn-default" type="submit" onclick="AddNewPosting()">Add</button></p>
-        <p><button id="postingEditButton" class="btn btn-default" type="submit" onclick="EditPosting()" style="display: none;">Edit</button></p>
+    <hr />
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Events by Posting</h2>
+        </div>
     </div>
-</div>
-<hr />
-<div class="row">
-    <div class="col-md-3">
-        <h2>Event</h2>
+    <div class="row">
+        <div class="col-md-2">
+            <label class="event">Company:</label><br /><select id="eventPostingDropdown" class="dropdownStyle" onchange="LoadEventsByPosting()"></select><br />
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-3">
-        <p><label class="event">Company:</label><br /><select id="eventCompanyDropdown" class="dropdownStyle"></select></p>
+    <div class="row">&nbsp;</div>
+    <div class="row">
+        <div class="col-md-1">Event Id</div>
+        <div class="col-md-2">Entry Date</div>
+        <div class="col-md-6">Event</div>
+        <div class="col-md-2">Action required?</div>
     </div>
-    <div class="col-md-3">
-        <p><label class="event">EntryDateTime:</label><br /><input id="entryDateTime" name="entryDateTime" type="date" /><br /></p>
+    <div id="eventsByPosting">
     </div>
-    <div class="col-md-3">
-        <p><label class="event">Event:</label><br /><textarea id="eventAction"></textarea><br /></p>
-    </div>
-    <div class="col-md-3">
-        <p><label class="event">Action is required: </label><input id="requiresAction" type="checkbox" /></p>
-        <p>
-            <button id="eventAddButton" class="btn btn-default" type="submit" onclick="AddNewEvent()">Add</button>
-            <button id="eventEditButton" class="btn btn-default" type="submit" onclick="EditEvent()" style="display: none;">Edit</button>
-        </p>
-    </div>
-</div>
-<hr />
-<div class="row">
-    <div class="col-md-6">
-        <h2>Events by Posting</h2>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-2">
-        <label class="event">Company:</label><br /><select id="eventPostingDropdown" class="dropdownStyle" onchange="LoadEventsByPosting()"></select><br />
-    </div>
-</div>
-<div class="row">&nbsp;</div>
-<div class="row">
-    <div class="col-md-1">Event Id</div>
-    <div class="col-md-2">Entry Date</div>
-    <div class="col-md-6">Event</div>
-    <div class="col-md-2">Action required?</div>
-</div>
-<div id="eventsByPosting">
-</div>
 
