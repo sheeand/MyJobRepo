@@ -184,7 +184,6 @@
     <Compile Include="Controllers\ContactTypeController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\PostingContactController.cs" />
     <Compile Include="Controllers\PostingController.cs" />
     <Compile Include="DataAccess\MyJobRepo_MappingProfile.cs" />
     <Compile Include="Global.asax.cs">
@@ -199,7 +198,6 @@
     <Compile Include="DataAccess\MyJobRepo_DataContextInitializer.cs" />
     <Compile Include="Models\MyJobRepo_Resources.cs" />
     <Compile Include="DTO\Posting.cs" />
-    <Compile Include="DTO\PostingContact.cs" />
     <Compile Include="DataAccess\Repository.cs" />
     <Compile Include="Models\CompanyModel.cs" />
     <Compile Include="Models\ContactModel.cs" />

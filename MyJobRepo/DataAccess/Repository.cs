@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Runtime.Remoting.Messaging;
 using System.Threading.Tasks;
-using System.Web;
-using Breeze.ContextProvider;
-using Breeze.ContextProvider.EF6;
-using Newtonsoft.Json.Linq;
 
 namespace MyJobRepo.DataAccess
 {

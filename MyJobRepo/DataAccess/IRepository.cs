@@ -1,7 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
-using Breeze.ContextProvider;
-using Newtonsoft.Json.Linq;
+﻿using System.Threading.Tasks;
 
 namespace MyJobRepo.DataAccess
 {

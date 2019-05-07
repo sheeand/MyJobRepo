@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Web;
+﻿using System.Data.Entity;
 
 namespace MyJobRepo.DataAccess
 {
@@ -26,6 +22,5 @@ namespace MyJobRepo.DataAccess
         public DbSet<ContactType> ContactTypes { get; set; }
         public DbSet<Event> Events { get; set; }
         public DbSet<Posting> Postings { get; set; }
-        public DbSet<PostingContact> PostingContacts { get; set; }
     }
 }
