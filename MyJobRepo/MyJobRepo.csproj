@@ -176,40 +176,13 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\NinjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="ApiControllers\CompanyController.cs" />
-    <Compile Include="ApiControllers\ContactController.cs" />
-    <Compile Include="ApiControllers\ContactTypeController.cs" />
-    <Compile Include="ApiControllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="ApiControllers\PostingController.cs" />
-    <Compile Include="DataAccess\MyJobRepo_MappingProfile.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="DTO\Company.cs" />
-    <Compile Include="DTO\Contact.cs" />
-    <Compile Include="DTO\ContactType.cs" />
-    <Compile Include="DTO\Event.cs" />
-    <Compile Include="DataAccess\IRepository.cs" />
-    <Compile Include="DataAccess\MyJobRepo_DataContext.cs" />
-    <Compile Include="DataAccess\MyJobRepo_DataContextInitializer.cs" />
-    <Compile Include="Models\MyJobRepo_Resources.cs" />
-    <Compile Include="DTO\Posting.cs" />
-    <Compile Include="DataAccess\Repository.cs" />
-    <Compile Include="Models\CompanyModel.cs" />
-    <Compile Include="Models\ContactModel.cs" />
-    <Compile Include="Models\ContactTypeModel.cs" />
-    <Compile Include="Models\EventModel.cs" />
-    <Compile Include="Models\PostingModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\CompanyService.cs" />
-    <Compile Include="Services\ContactService.cs" />
-    <Compile Include="Services\ContactTypeService.cs" />
-    <Compile Include="Services\EventService.cs" />
-    <Compile Include="Services\PostingService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -296,7 +269,12 @@
     <Content Include="Scripts\toastr.min.js.map" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="ApiControllers\" />
     <Folder Include="App_Data\" />
+    <Folder Include="DataAccess\" />
+    <Folder Include="DTO\" />
+    <Folder Include="Models\" />
+    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -326,6 +304,16 @@
     <None Include="packages.config" />
     <Content Include="Scripts\jquery-3.3.1.slim.min.map" />
     <Content Include="Scripts\jquery-3.3.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MyJobRepo.Data\MyJobRepo.Data\MyJobRepo.Data.csproj">
+      <Project>{e9a92825-b4e2-4972-bcca-86f4848afb65}</Project>
+      <Name>MyJobRepo.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MyJobRepo.Models\MyJobRepo.Models\MyJobRepo.Models.csproj">
+      <Project>{d1d206ee-e1bf-4fe5-bf3f-16434e850bb5}</Project>
+      <Name>MyJobRepo.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

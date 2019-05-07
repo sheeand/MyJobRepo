@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace MyJobRepo.DataAccess
+namespace MyJobRepo.Data
 {
     public interface IRepository
     {

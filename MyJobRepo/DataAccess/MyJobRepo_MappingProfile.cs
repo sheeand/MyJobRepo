@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using MyJobRepo.Models;
 
-namespace MyJobRepo.DataAccess
+namespace MyJobRepo.Data
 {
     public class MyJobRepo_MappingProfile : Profile
     {

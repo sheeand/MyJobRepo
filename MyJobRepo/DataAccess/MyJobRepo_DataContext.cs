@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
 
-namespace MyJobRepo.DataAccess
+namespace MyJobRepo.Data
 {
     public class MyJobRepo_DataContext : DbContext
     {

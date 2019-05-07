@@ -3,7 +3,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MyJobRepo.DataAccess
+namespace MyJobRepo.Data
 {
     public class Repository : IRepository
     {

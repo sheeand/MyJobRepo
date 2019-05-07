@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using MyJobRepo.DataAccess;
 
 namespace MyJobRepo.Controllers
 {
@@ -8,7 +7,7 @@ namespace MyJobRepo.Controllers
         public ActionResult Index()
         {
             ViewBag.Title = "Home Page";
-            ViewBag.Host = Request.Headers["Host"];
+            ViewBag.Host = "localhost:56097";
 
             return View();
         }

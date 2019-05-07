@@ -7,7 +7,7 @@ namespace MyJobRepo.App_Start
     using System.Web;
     using System.Web.Http;
     using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-    using DataAccess;
+    using Data;
     using Ninject;
     using Ninject.Web.Common;
     using MyJobRepo.Models;
