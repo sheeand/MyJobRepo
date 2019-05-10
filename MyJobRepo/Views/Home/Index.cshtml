@@ -1,4 +1,6 @@
-﻿@using System.Web.UI.HtmlControls
+﻿@using MyJobRepo.Models;
+
+@model MyJobRepo.Models.MyJobRepo_ResourcesModel
 
 
 <script type="text/javascript" src="../../Scripts/jquery-3.3.1.min.js"></script>
@@ -6,32 +8,33 @@
 <script type="text/javascript">
 
     $(document).ready(function () {
-        LoadDropdowns()
+        //LoadDropdowns()
+        LoadDropdown("contactTypeDropdown", "Contact Type", "ContactType", "contactTypeId", "name");
     });
 
     function ResetForm() {
         $("input[type=text], textarea").val("");
         $("select").find('option').remove();
-        LoadDropdowns();
+        //LoadDropdowns();
     }
 
-    function LoadDropdowns() {
-        LoadDropdown("contactTypeDropdown", "Contact Type", "ContactType", "contactTypeId", "name");
-        LoadDropdown("contactCompanyDropdown", "Company", "Company/All", "companyId", "companyName");
-        LoadDropdown("postingCompanyDropdown", "Company", "Company/Employers", "companyId", "companyName");
-        LoadDropdown("postingRecruitingCompanyDropdown", "Company", "Company/Recruiters", "companyId", "companyName");
-        LoadDropdown("hrRepDropdown", "Contact", "Contact/ByType/HR", "contactId", "contactName");
-        LoadDropdown("srDevDropdown", "Contact", "Contact/ByType/SR", "contactId", "contactName");
-        LoadDropdown("devDropdown", "Contact", "Contact/ByType/Developer", "contactId", "contactName");
-        LoadDropdown("hiringMgrDropdown", "Contact", "Contact/ByType/HM", "contactId", "contactName");
-        LoadDropdown("acctManagerDropdown", "Contact", "Contact/ByType/AM", "contactId", "contactName");
-        LoadDropdown("eventCompanyDropdown", "Company", "Posting/All", "postingId", "companyName");
-        LoadDropdown("eventPostingDropdown", "", "Posting/All", "postingId", "companyName");
-        LoadDropdown("recruiterDropdown", "Contact", "Contact/ByType/Recruiter", "contactId", "contactName");
-        LoadDropdown("postingEditDropdown", "", "Posting/All", "postingId", "companyName");
-        LoadDropdown("contactEditDropdown", "", "Contact/All", "contactId", "contactName");
-        LoadDropdown("companyEditDropdown", "", "Company/All", "companyId", "companyName");
-    }
+    //function LoadDropdowns() {
+    //    LoadDropdown("contactTypeDropdown", "Contact Type", "ContactType", "contactTypeId", "name");
+    //    LoadDropdown("contactCompanyDropdown", "Company", "Company/All", "companyId", "companyName");
+    //    LoadDropdown("postingCompanyDropdown", "Company", "Company/Employers", "companyId", "companyName");
+    //    LoadDropdown("postingRecruitingCompanyDropdown", "Company", "Company/Recruiters", "companyId", "companyName");
+    //    LoadDropdown("hrRepDropdown", "Contact", "Contact/ByType/HR", "contactId", "contactName");
+    //    LoadDropdown("srDevDropdown", "Contact", "Contact/ByType/SR", "contactId", "contactName");
+    //    LoadDropdown("devDropdown", "Contact", "Contact/ByType/Developer", "contactId", "contactName");
+    //    LoadDropdown("hiringMgrDropdown", "Contact", "Contact/ByType/HM", "contactId", "contactName");
+    //    LoadDropdown("acctManagerDropdown", "Contact", "Contact/ByType/AM", "contactId", "contactName");
+    //    LoadDropdown("eventCompanyDropdown", "Company", "Posting/All", "postingId", "companyName");
+    //    LoadDropdown("eventPostingDropdown", "", "Posting/All", "postingId", "companyName");
+    //    LoadDropdown("recruiterDropdown", "Contact", "Contact/ByType/Recruiter", "contactId", "contactName");
+    //    LoadDropdown("postingEditDropdown", "", "Posting/All", "postingId", "companyName");
+    //    LoadDropdown("contactEditDropdown", "", "Contact/All", "contactId", "contactName");
+    //    LoadDropdown("companyEditDropdown", "", "Company/All", "companyId", "companyName");
+    //}
 
     function LoadDropdown(dropdownId, title, path, dataId, dataValue) {
         var optionhtml0 = '<option value="' +
@@ -302,7 +305,10 @@
                 <select id="contactEditDropdown" class="editDropdownStyle" style="display:none" onchange="ColumnDisplay('contact', 'inline', true)"></select>
             </p>
             <p><label class="contact">Name:</label><br /><input id="contactName" name="contactName" type="text" class="contact" /><br /></p>
-            <p><label class="contact">Type:</label><br /><select id="contactTypeDropdown" class="dropdownStyle contact"></select><br /></p>
+            <p>
+                @*<label class="contact">Type:</label><br/><select id="contactTypeDropdown" class="dropdownStyle contact"></select><br/>*@
+                @Html.DropDownList("contactTypeDropdown", new SelectList(Enum.GetValues(typeof(ContactTypeModel))), new { @class = "dropdownStyle" })
+            </p>
             <p><label class="contact">Company:</label><br /><select id="contactCompanyDropdown" class="dropdownStyle contact"></select><br /></p>
             <p><label class="contact">Email:</label><br /><input id="contactEmail" name="contactEmail" type="text" class="contact" /><br /></p>
             <p><label class="contact">Phone:</label><br /><input id="contactPhone" name="contactPhone" type="text" class="contact" /><br /></p>

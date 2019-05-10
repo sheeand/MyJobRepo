@@ -11,11 +11,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyJobRepo", "MyJobRepo\MyJo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyJobRepo.API", "..\MyJobRepo.API\MyJobRepo.API\MyJobRepo.API.csproj", "{C6C91DBA-F8DC-4795-A8C2-31D800FA4247}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyJobRepo.Data", "..\MyJobRepo.Data\MyJobRepo.Data\MyJobRepo.Data.csproj", "{E9A92825-B4E2-4972-BCCA-86F4848AFB65}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyJobRepo.Data", "..\MyJobRepo.Data\MyJobRepo.Data\MyJobRepo.Data.csproj", "{E9A92825-B4E2-4972-BCCA-86F4848AFB65}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyJobRepo.Models", "..\MyJobRepo.Models\MyJobRepo.Models\MyJobRepo.Models.csproj", "{D1D206EE-E1BF-4FE5-BF3F-16434E850BB5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyJobRepo.Models", "..\MyJobRepo.Models\MyJobRepo.Models\MyJobRepo.Models.csproj", "{D1D206EE-E1BF-4FE5-BF3F-16434E850BB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyJobRepo.Services", "..\MyJobRepo.Services\MyJobRepo.Services\MyJobRepo.Services.csproj", "{96B6FB60-FED8-4071-8438-ABBD1F4D96D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MyJobRepo.Services", "..\MyJobRepo.Services\MyJobRepo.Services\MyJobRepo.Services.csproj", "{96B6FB60-FED8-4071-8438-ABBD1F4D96D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{45B31F6A-D00F-4EB7-A60B-B77A468079ED}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\Desktop\MyJobRepo.vsdx = ..\..\..\..\Desktop\MyJobRepo.vsdx
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

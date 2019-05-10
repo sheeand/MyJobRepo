@@ -182,6 +182,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mapping\MyJobRepo_MappingProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -269,12 +270,8 @@
     <Content Include="Scripts\toastr.min.js.map" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="ApiControllers\" />
     <Folder Include="App_Data\" />
-    <Folder Include="DataAccess\" />
-    <Folder Include="DTO\" />
     <Folder Include="Models\" />
-    <Folder Include="Services\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -313,6 +310,10 @@
     <ProjectReference Include="..\..\MyJobRepo.Models\MyJobRepo.Models\MyJobRepo.Models.csproj">
       <Project>{d1d206ee-e1bf-4fe5-bf3f-16434e850bb5}</Project>
       <Name>MyJobRepo.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\MyJobRepo.Services\MyJobRepo.Services\MyJobRepo.Services.csproj">
+      <Project>{96b6fb60-fed8-4071-8438-abbd1f4d96d9}</Project>
+      <Name>MyJobRepo.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
